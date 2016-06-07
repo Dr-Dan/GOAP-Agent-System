@@ -24,10 +24,10 @@ void StateModule::UpdateState(GridAgent* agent){
 	//    currentState.SetCondition("Is Hungry", agent->attributes.IsHungry()); // has no use?
 	//    currentState.SetCondition("Food Found", agent->memoryModule.KnowsOfCellType(CELL_FOOD));
 	currentState.SetCondition("Food Found", agent->memoryModule.KnowsOfResourceType(CELL_FOOD));
-	
-	//    currentState.SetCondition("Is At Food", agent->sensorModule.AtCell(CELL_FOOD) ||
-	//							  (agent->sensorModule.AtCell(CELL_STORAGE) && agent->sensorModule.AtCellWithResource(CELL_FOOD)));
 	currentState.SetCondition("Is At Food", agent->sensorModule.AtCell(CELL_FOOD));
+	
+	currentState.SetCondition("Wood Found", agent->memoryModule.KnowsOfResourceType(CELL_WOOD));
+	currentState.SetCondition("Is At Wood", agent->sensorModule.AtCell(CELL_WOOD));
 	
 	currentState.SetCondition("Is Full", agent->attributes.NeedIsSatisfied(CELL_FOOD));
 	
@@ -38,10 +38,13 @@ void StateModule::UpdateState(GridAgent* agent){
 	
 	currentState.SetCondition("Is Rested", agent->attributes.NeedIsSatisfied(CELL_HOME));
 	
-	currentState.SetCondition("Storage Found", agent->memoryModule.KnowsOfCellType(CELL_STORAGE));
+	currentState.SetCondition("Storage Found Food", agent->memoryModule.KnowsOfCellType(CELL_STORAGE));
 	currentState.SetCondition("Carrying Food", (agent->attributes.HasResource(CELL_FOOD) /*&&
 																						  agent->attributes.CanPickupResource(CELL_FOOD, agent->attributes.GetResourcePickupAmt(CELL_FOOD))*/));
-	currentState.SetCondition("Is At Storage", agent->sensorModule.AtCell(CELL_STORAGE));
+	
+	currentState.SetCondition("Carrying Wood", (agent->attributes.HasResource(CELL_WOOD)));
+	
+	currentState.SetCondition("Is At Storage Food", agent->sensorModule.AtCell(CELL_STORAGE));
 	
 	// where to put sort function
 	currentState.SetCondition("Home Location Found", agent->memoryModule.KnowsOfHomeLocation());

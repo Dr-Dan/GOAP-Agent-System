@@ -13,6 +13,7 @@
 #include "ofMain.h"
 #include "WorldTypes.h"
 #include "Resource.h"
+#include "GridValues.h"
 
 // consider: factId, ownerId...
 // Also some fact type class or more specific e.g. enum{CELL_FOOD}
@@ -166,6 +167,17 @@ public:
 	
 	vector<Resource> GetResourceVec(){
 		return cellResources;
+	}
+	
+	// TODO - implement this for multiple types in same cell
+	// could add all up? Will need to do this also in resource/cell class?
+	bool IsFull(){
+		for(int i = 0; i < cellResources.size(); i++){
+			if(cellResources[i].GetAmtResource() > GridValues::MAX_RESOURCES){
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	int GetResourceAmt(ItemType resType) const{

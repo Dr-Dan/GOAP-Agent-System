@@ -103,7 +103,7 @@ bool WorldState::SharesCondition(mapCond conditionsIn){
     return false;
 }
 
-void WorldState::PrintValues(){
+void WorldState::PrintValues() const{
     for(pairCond pC: conditions){
         cout<<pC.first<<" = "<<pC.second<<endl;
     }

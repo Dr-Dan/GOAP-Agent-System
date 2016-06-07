@@ -45,7 +45,7 @@ public:
     
     bool SharesCondition(mapCond conditionsIn);
     
-    void PrintValues();
+    void PrintValues() const;
     
 };
 #endif /* defined(__AgentGOAPActionsTestSimpler__WorldState__) */

@@ -67,9 +67,12 @@ void ActionUseCell::Execute(GridAgent* agent){
 	//    cout<<"Hg: "<<agent->attributes.hunger<<endl;
 	
 	GridCell* currentCell = agent->sensorModule.GetCurrentCell(); // get agent's cell
-	if(currentCell->IsResource()){
+	if(!currentCell->GetResource(cellType)){
+		return false;
+	}
+	if(currentCell->IsResource() && cellType != CELL_HOME){
 		int amt = agent->attributes.GetNeedReductionAmt(cellType);
-		if(ResourceUtility::RemoveResources(*currentCell->GetResource(cellType), amt)){
+		if(ResourceUtility::RemoveResources(currentCell->GetResource(cellType), amt)){
 //		if(currentCell->RemoveResources(cellType, agent->attributes.GetNeedReductionAmt(cellType))){
 			agent->attributes.SatisfyNeed(cellType);
 		}

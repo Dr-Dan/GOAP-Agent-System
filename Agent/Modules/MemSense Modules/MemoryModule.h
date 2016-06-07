@@ -90,6 +90,7 @@ public:
     bool KnowsOfResourceType(ItemType cellType);
 	
 	bool KnowsOfHomeLocation();
+	bool KnowsOfUnfilledStorage();
 
     bool KnowsOfAgent(int agentId);
 

@@ -44,6 +44,7 @@ void DebugUI::Display(){
 		displayString += "Current Goal: " + currentGoal;
 		displayString += " \nCurrent Action: " + currentActionName;
 		displayString += " \nFood Held: " + ofToString(agent->attributes.GetResourceAmt(CELL_FOOD));
+		displayString += " \nWood Held: " + ofToString(agent->attributes.GetResourceAmt(CELL_WOOD));
 		displayString += " \nHunger: " + ofToString(agent->attributes.GetNeedAmt(CELL_FOOD));
 		displayString += " \nTiredness: " + ofToString(agent->attributes.GetNeedAmt(CELL_HOME));
 		

@@ -21,15 +21,15 @@ class ResourceUtility {
 public:
 	ResourceUtility();
 	
-	static bool CanAddResources(Resource& res, int amt);
+	static bool CanAddResources(Resource* res, int amt);
 	
-	static bool HasResources(Resource& res, int amt);
+	static bool HasResources(Resource* res, int amt);
 	
 	// -----------------------------------------------------------------
 	// Resource Changers
-	static bool AddResource(Resource& res, int amt);
+	static bool AddResource(Resource* res, int amt);
 	
 	// this returns the amount that is removed if possible
-	static int RemoveResources(Resource& res, int amt);
+	static int RemoveResources(Resource* res, int amt);
 };
 #endif /* defined(__agentGridProto__ResourceUtility__) */

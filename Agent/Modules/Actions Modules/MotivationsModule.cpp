@@ -20,6 +20,8 @@ MotivationsModule::MotivationsModule(){
 	goals.back().AddVitalCondition(pairCond("Carrying Food", 1));
 	
 	goals.push_back(Goal("Build Home", 0));
+	goals.back().AddVitalCondition(pairCond("Carrying Wood", 1));
+
 	goals.push_back(Goal("Destroy Home", 0, 30));
 	
 	for(int i = 0; i < goals.size(); i++){
@@ -55,23 +57,14 @@ void MotivationsModule::UpdateGoal(GridAgent* agent){
 	mapGoals.at("Destroy Home")->SetValidity(shouldDestroyHome);
 	
 	mapGoals.at("Get Rested")->SetValidity(agent->memoryModule.HasHome());
-	//	} else{
-	//		mapGoals["Build Home"]->SetValidity(true);
-	//		mapGoals["Get Rested"]->SetValidity(false);
-	//	}
-	
+
 	//	if(agent->memoryModule.KnowsOfCellType(CELL_STORAGE)){
 	mapGoals.at("Store Food")->SetValidity(agent->memoryModule.KnowsOfCellType(CELL_STORAGE));
-	//	} else{
-	//		mapGoals["Store Food"]->SetValidity(false);
-	//	}
+
 	
 	//	if(agent->memoryModule.KnowsOfCellType(CELL_FOOD)){
 	mapGoals.at("Eat Food")->SetValidity(agent->memoryModule.KnowsOfCellType(CELL_FOOD));
-	//	} else{
-	//		mapGoals["Eat Food"]->SetValidity(false);
-	//	}
-	
+
 	// ------------------------------------------------------------
 	// RELEVANCE
 

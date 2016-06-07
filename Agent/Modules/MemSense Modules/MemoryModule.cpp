@@ -144,6 +144,22 @@ bool MemoryModule::KnowsOfHomeLocation(){
 	return false;
 }
 
+bool MemoryModule::KnowsOfUnfilledStorage(){
+	if(!cellFacts.empty()){
+		//		sort(cellFacts.begin(), cellFacts.end(), Utility::CellFactFoodRatingComp);
+		
+		for(int i = 0; i < cellFacts.size(); i++){
+			if(cellFacts[i] ->GetFactType() == CELL_STORAGE){
+				if(!cellFacts[i]->IsFull()){
+				return true;
+				}
+			}
+		}
+	}
+	
+	return false;
+}
+
 // is sort better than this comparing balls??
 bool MemoryModule::GetPosNearestCell(ofVec2f& targetVec, ofVec2f pos, ItemType cellType){
 	float currentDist = -1;

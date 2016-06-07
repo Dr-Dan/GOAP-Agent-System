@@ -39,7 +39,7 @@ void ActionTree::UpdateVitalInfo(Action* currentAction, int currentLevels){
 			if(!count(vitalTreeIndex.begin(), vitalTreeIndex.end(), currentLevels)){
 				vitalTreeIndex.push_back(currentLevels);
 				sort(vitalTreeIndex.begin(), vitalTreeIndex.end());
-//				reverse(vitalTreeIndex.begin(), vitalTreeIndex.end());
+				//				reverse(vitalTreeIndex.begin(), vitalTreeIndex.end());
 			}
 		}
 	}
@@ -81,9 +81,10 @@ void ActionTree::BuildTree(const deque<TimedAction*>&  actionsIn, Goal goal){
 						currentId++;
 					}
 				}
-				  // if below top level...
+				// if below top level...
 			} else{
 				vector<string> actionsOnLevel;
+				deque<pairCond> condPriority;
 				
 				for(int j = 0; j < mapTreeLevels[currentLevels-1].size(); j++) {
 					TreeNode* tNode = mapTreeLevels[currentLevels-1].at(j);
@@ -177,33 +178,68 @@ void ActionTree:: SetLevelAndPair(pairCond& refPair_, int& level_, const WorldSt
 	int vitalLevel = 0;
 	
 	vitalLevel = GetVitalIndex(currentState);
-	
+	deque<pairCond> condOrder;
+//	cout<<"----------------"<<endl;
+//	cout<<"----------------"<<endl;
+//	cout<<"----------------"<<endl;
+//	goalState.PrintValues();
+//	cout<<"----------------"<<endl;
+
+	currentState.PrintValues();
+
 	// for each level starting at highest
+//	cout<<"----------------"<<endl;
 	for(int i = numLevels-1; i >= vitalLevel; i--) {
+		//	for(int i = vitalLevel; i < numLevels ; i++) {
 		// for each node in this level
 		for(TreeNode* tNode : mapTreeLevels[i]){
-			
-			// for each goal and current pair
+			int num_precons = tNode->action->GetNumPrecons();
+			int num_postcons = tNode->action->GetNumPostcons();
+			int num_matches = 0;
+
+			// for each goal and current condition pair
 			for(pairCond goalPair : goalState.GetConditionsMap()){
 				for(pairCond currentPair : currentState.GetConditionsMap()){
 					
+					// if current cond found in goal state
 					if(goalPair.first == currentPair.first){
+//						for(int i = 0; i < num_precons; i++){
+//							condOrder.push_back(tNode->action->GetPrecon(i));
+//							printf("%s", condOrder[i].first.c_str());
+//						}
 						
 						if(!tNode->isStartNode()){
-							if(tNode->action->GetPrecon(0) == currentPair){
-								level_ = i;
-								refPair_ = goalPair;
-							}
+//							if(num_precons <= 1){
+								if(tNode->action->GetPrecon(0) == currentPair){
+//									printf("%s \n", tNode->action->name.c_str());
+
+									level_ = i;
+									refPair_ = goalPair;
+								}
+//							} else{
+//								for(int i = 0; i < num_precons; i++){
+//									if(tNode->action->GetPrecon(i) == currentPair){
+//										num_matches++;
+//									}
+//								}
+//								if(num_matches >= num_precons){
+//									level_ = i;
+//									refPair_ = goalPair;
+//								}
+//							}
 						} else{
 							if(tNode->action->GetPostcon(0) == goalPair){
 								level_ = i;
 								refPair_ = goalPair;
 							}
 						}
-					}
+					} // end: goalPair.first == currentPair.first
+					
 				}
+
 			}
-		}
+		
+		} // end: tNode : mapTreeLevels[i]
 	}
 }
 
@@ -236,7 +272,7 @@ int ActionTree::GetVitalIndex(const WorldState& currentState){
 	return levelOut;
 }
 
-
+// should also check actions are still valid here - pass in state
 TimedAction* ActionTree::GetActionLowestCost(pairCond& refPair_, int highestLevel){
 	TimedAction* actionOut;
 	int lowestCost = -1;

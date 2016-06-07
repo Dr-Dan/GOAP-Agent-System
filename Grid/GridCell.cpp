@@ -356,7 +356,7 @@ void GridCell::SetCombinedRating(vector<WorldTypes::ItemType> combineTypes){
 // Resource Changers
 
 bool GridCell::AddResource(ItemType resType, int amt) {
-return ResourceUtility::AddResource(*GetResource(resType), amt);
+return ResourceUtility::AddResource(GetResource(resType), amt);
 //	if(CanAddResources(resType, amt)){
 //		for(int i = 0; i < cellResourcesNext.size(); i++){
 //			if(cellResourcesNext[i].GetType() == resType){
@@ -373,7 +373,7 @@ return ResourceUtility::AddResource(*GetResource(resType), amt);
 int GridCell::RemoveResources(ItemType resType, int amt){
 //	Resource* resource = NULL;
 	
-	return ResourceUtility::RemoveResources(*GetResource(resType), amt);
+	return ResourceUtility::RemoveResources(GetResource(resType), amt);
 	
 //	for(int i = 0; i < cellResourcesNext.size(); i++){
 //		if(cellResourcesNext[i].GetType() == resType){
