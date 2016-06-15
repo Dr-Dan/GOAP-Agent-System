@@ -35,15 +35,17 @@ public:
 	mapCond GetConditionsMap() const;
     pairCond GetConditionPair(string name) const;
     
-    bool GetConditionValue(string name);
+    bool GetConditionValue(string name) const;
     
-    bool ConditionsContainPairMatch(pairCond pairConditionIn);
+    bool ConditionsContainPairMatch(pairCond pairConditionIn) const;
     
-    bool ConditionsMatch(mapCond conditionsIn);
+    bool ConditionsMatch(mapCond conditionsIn) const;
     
-    bool SharesCondition(pairCond conditionIn);
+    bool SharesCondition(pairCond conditionIn) const;
     
-    bool SharesCondition(mapCond conditionsIn);
+    bool SharesCondition(mapCond conditionsIn) const;
+	
+	bool ContainsConditions(mapCond conditionsIn) const;
     
     void PrintValues() const;
     

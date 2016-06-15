@@ -45,7 +45,8 @@ void DisplayVisitor::Render(const GridCell& cell){
 	
 	if(cellType != WorldTypes::CELL_HOME){
 		if(cellType != WorldTypes::CELL_NEUTRAL){
-			if(cellType != WorldTypes::CELL_STORAGE){
+			if(cellType != WorldTypes::CELL_STORAGE &&
+			   cellType != WorldTypes::CELL_STORAGE){
 				ofSetColor(255);
 				ofFill();
 				ofDrawBitmapString(ofToString(cell.GetAmtResource(cellType)), pos + ofVec2f(0, 10));
@@ -108,7 +109,8 @@ void DisplayVisitor::Render(const GridCell& cell, bool showNums, bool showingOve
 	if(showNums){
 		if(cellType != WorldTypes::CELL_HOME){
 			if(cellType != WorldTypes::CELL_NEUTRAL){
-				if(cellType != WorldTypes::CELL_STORAGE){
+				if(cellType != WorldTypes::CELL_STORAGE &&
+				   cellType != WorldTypes::CELL_STORAGE){
 					ofSetColor(255);
 					ofFill();
 					ofDrawBitmapString(ofToString(cell.GetAmtResource(cellType)), pos + ofVec2f(0, 10));

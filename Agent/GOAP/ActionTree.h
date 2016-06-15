@@ -18,6 +18,7 @@
 #include "Utility.h"
 
 using namespace std;
+class GridAgent;
 
 class TreeNode{
 public:
@@ -92,11 +93,16 @@ public:
 
     ActionTree();
 	
+	TreeNode* GetNode(int nodeId);
+	
     void ClearMapLevels();
 	void ClearNodes();
     
     void ResetTree();
     void BuildTree(const deque<TimedAction*>&  actionsIn, Goal goal);
+	void PruneTree(const deque<TimedAction*>&  actionsIn);
+	void LinkNodes(TreeNode* fromNode, TreeNode* toNode);
+	void AddAction(TimedAction* action, vector<TreeNode*>& newNodes, TreeNode* tNode);
 
 	bool GoalIsChanged(Goal goalIn);
 	int GetVitalIndex(const WorldState& currentState);
@@ -108,15 +114,18 @@ public:
 //    void PrintTree();
 	string GetTreeString();
 
-	void SetLevelAndPair(pairCond& refPair_, int& level_, const WorldState& currentState);
-
+//	void FindLevelAndPair(pairCond& refPair_, int& level_, const WorldState& currentState);
+	void FindLevelAndPair(pairCond& refPair_, int& level_, const WorldState& currentState, GridAgent& agent);
 	
     void PrintGoalState();
     
-    TimedAction* GetActionForState(WorldState currentState);
+//    TimedAction* GetActionForState(WorldState currentState);
+	TimedAction* GetAction(GridAgent& agent);
+
 	
-	
-	TimedAction* GetActionLowestCost(pairCond& refPair_, int highestLevel);
+	TimedAction* GetBestAction(pairCond& refPair_, int highestLevel);
+	TimedAction* GetBestAction(GridAgent* agent, pairCond& refPair_, int highestLevel);
+
 };
 
 #endif /* defined(__AgentGOAPActionsTestSimpler__ActionTree__) */

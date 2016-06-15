@@ -17,10 +17,14 @@ MotivationsModule::MotivationsModule(){
 	goals.push_back(Goal("Get Rested", 0));
 	
 	goals.push_back(Goal("Store Food", 0, 30));
-	goals.back().AddVitalCondition(pairCond("Carrying Food", 1));
+//	goals.back().AddVitalCondition(pairCond("Carrying Food", 1));
 	
+	goals.push_back(Goal("Store Wood", 0, 30));
+//	goals.back().AddVitalCondition(pairCond("Carrying Wood", 1));
+
 	goals.push_back(Goal("Build Home", 0));
-	goals.back().AddVitalCondition(pairCond("Carrying Wood", 1));
+//	goals.back().AddVitalCondition(pairCond("Carrying Wood", 1));
+//	goals.back().AddVitalCondition(pairCond("Is At Home Location", 1));
 
 	goals.push_back(Goal("Destroy Home", 0, 30));
 	
@@ -59,9 +63,12 @@ void MotivationsModule::UpdateGoal(GridAgent* agent){
 	mapGoals.at("Get Rested")->SetValidity(agent->memoryModule.HasHome());
 
 	//	if(agent->memoryModule.KnowsOfCellType(CELL_STORAGE)){
-	mapGoals.at("Store Food")->SetValidity(agent->memoryModule.KnowsOfCellType(CELL_STORAGE));
+	mapGoals.at("Store Food")->SetValidity(agent->memoryModule.KnowsOfCellType(CELL_STORAGE) &&
+										   agent->memoryModule.KnowsOfUnfilledStorage());
 
-	
+	mapGoals.at("Store Wood")->SetValidity(agent->memoryModule.KnowsOfCellType(CELL_STORAGE) &&
+										   agent->memoryModule.KnowsOfUnfilledStorage());
+
 	//	if(agent->memoryModule.KnowsOfCellType(CELL_FOOD)){
 	mapGoals.at("Eat Food")->SetValidity(agent->memoryModule.KnowsOfCellType(CELL_FOOD));
 
@@ -70,7 +77,7 @@ void MotivationsModule::UpdateGoal(GridAgent* agent){
 
 	
 	if(agent->attributes.NeedIsUrgent(CELL_HOME) || !agent->memoryModule.HasHome()){
-		SetGoalRelevance("Build Home", 50);
+		SetGoalRelevance("Build Home", 30);
 		//		SetGoalRelevance("Get Rested", 49);
 	} else{
 		SetGoalRelevance("Build Home", 0);
@@ -113,6 +120,13 @@ void MotivationsModule::UpdateGoal(GridAgent* agent){
 		ChangeGoalRelevance("Store Food", 10);
 	} else{
 		SetGoalRelevance("Store Food", 0);
+	}
+	
+	// wood storage
+	if(agent->memoryModule.KnowsOfCellType(CELL_STORAGE)){
+		ChangeGoalRelevance("Store Wood", 10);
+	} else{
+		SetGoalRelevance("Store Wood", 0);
 	}
 	
 	// later

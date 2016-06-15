@@ -38,7 +38,8 @@ public:
 	// provides a function for comparing cell distances
 	// useful as a predicate in sort functions
 	static bool CellDistCompare(pair<GridCell*, float>  a, pair<GridCell*, float>  b);
-	
+	static bool PairDistCompare(pair<ofVec2f, float>  a, pair<ofVec2f, float>  b);
+
 	static bool CellFactFoodRatingComp(CellFact* a, CellFact* b);
 	static bool CellFactCombinedRatingComp(CellFact* a, CellFact* b);
 

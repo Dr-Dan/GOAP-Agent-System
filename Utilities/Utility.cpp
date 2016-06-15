@@ -44,6 +44,10 @@ float Utility::GetGridDistance(ofVec2f startPos, ofVec2f endPos){
     return distOut.length();
 }
 
+bool Utility::PairDistCompare(pair<ofVec2f, float>  a, pair<ofVec2f, float>  b){
+	return a.second < b.second;
+}
+
 bool Utility::CellDistCompare(pair<GridCell*, float>  a, pair<GridCell*, float>  b){
 	return a.second < b.second;
 }

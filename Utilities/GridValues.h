@@ -30,7 +30,7 @@ public:
 	
 	static const int RATING_THRES;
 	
-	static const int NUM_AGENTS = 10;
+	static const int NUM_AGENTS = 1;
 	
 	static const bool displayResText = false;
 	

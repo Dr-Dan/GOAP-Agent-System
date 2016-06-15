@@ -39,10 +39,12 @@ void SensorModule::UpdateCellMemory(MemoryModule& memoryModule){
 		mapRat mapCellNearRat = cellsNear[i]->GetRatingMap();
 		float combinedRating = cellsNear[i]->GetCombinedRating();
 		
+		// TODO: this is crapppp
 		if(!memoryModule.IsInMemory(cellId)) { // if cell not known
 													  //			if(cellsNear[i]->GetType() != CELL_NEUTRAL) { // and if cell is not neutral
 			if(/*cellsNear[i]->GetType() != CELL_NEUTRAL ||
 				cellsNear[i]->GetAmtResource(CELL_FOOD) >= 0.1 || */
+			   cellsNear[i]->GetRatingMap()[CELL_WOOD] > 0 ||
 			   cellsNear[i]->GetRatingMap()[CELL_FOOD] > 0) { // and if cell is not neutral
 															  // Add to memory
 															  // CellFact(int factId_, string factType_, CellType itemType_, ofVec2f pos_)

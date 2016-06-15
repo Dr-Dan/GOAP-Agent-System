@@ -94,7 +94,7 @@ public:
 	
 	
 	void SetupResource(ItemType itemTypeIn, bool setRandom = false);
-	void SetupResource(ItemType itemTypeIn, int amtRes, bool setRandom = false);
+	void SetupResource(ItemType itemTypeIn, int amtRes, bool setRandom = false, bool reset = true);
 	
 	void SetupType(ItemType type);
 

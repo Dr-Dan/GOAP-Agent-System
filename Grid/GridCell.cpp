@@ -51,8 +51,8 @@ cellRect(ofRectangle(pos, cellSize, cellSize))
 // -----------------------------------------------------------------
 // Setup
 void GridCell::Setup(){
-	mapMaxRes[CELL_FOOD] = 50;
-	mapMaxRes[CELL_WOOD] = 50;
+	mapMaxRes[CELL_FOOD] = GridValues::MAX_RESOURCES;
+	mapMaxRes[CELL_WOOD] = GridValues::MAX_RESOURCES;
 	
 	SetupResource(CELL_NEUTRAL);
 	
@@ -81,6 +81,9 @@ void GridCell::SetupType(ItemType type){
 	
 	if(cellTypeNext == CELL_STORAGE){
 		SetupResource(CELL_FOOD, 0, false);
+		SetupResource(CELL_WOOD, 0, false, false);
+//	} else if(cellTypeNext == CELL_STORAGE){
+//		SetupResource(CELL_WOOD, 0, false);
 	}
 	
 	
@@ -89,8 +92,10 @@ void GridCell::SetupType(ItemType type){
 
 //TODO
 // needs to handle multiple types! e.g. storage
-void GridCell::SetupResource(ItemType itemTypeIn, int amtRes, bool setRandom){
+void GridCell::SetupResource(ItemType itemTypeIn, int amtRes, bool setRandom, bool reset){
+	if(reset){
 	cellResourcesNext.clear();
+	}
 	cellResourcesNext.push_back(Resource());
 	if(setRandom){
 		cellResourcesNext.back().SetupResourceRandom(itemTypeIn);
@@ -120,12 +125,14 @@ void GridCell::UpdateOverlay(WorldTypes::OverlayType overlayType){
 		if(cellType == CELL_HOME){
 			cellDisplay.SetCellType(CELL_HOME);
 //			mapRatings[CELL_HOME] = 10;
-		} else if(cellType == CELL_STORAGE){
-			cellDisplay.SetCellType(CELL_STORAGE);
-			//			mapRatings[CELL_HOME] = 10;
 		} else{
 			cellDisplay.SetCellType(CELL_NEUTRAL);
 		}
+	} else if(cellType == CELL_STORAGE){
+		cellDisplay.SetCellType(CELL_STORAGE);
+	} else if(cellType == CELL_STORAGE){
+		cellDisplay.SetCellType(CELL_STORAGE);
+		//			mapRatings[CELL_HOME] = 10;
 	} else{
 		cellDisplay.SetCellType(cellResourcesCur[0].GetType());
 	}
@@ -150,7 +157,8 @@ void GridCell::Update(){
 	}
 	//	}
 	
-	if(!hasRes && (cellType != CELL_HOME && cellType != CELL_STORAGE)){
+	if(!hasRes && (cellType != CELL_HOME && cellType != CELL_STORAGE &&
+				   cellType != CELL_STORAGE)){
 		SetupType(CELL_NEUTRAL);
 		isResourceNext = false;
 		SetChanged(true);

@@ -44,6 +44,15 @@ CellFact* MemoryModule::GetCellFact(int worldId){
 	return NULL;
 }
 
+CellFact* MemoryModule::GetCellFact(ofVec2f gridPos){
+	for(int i = 0; i < cellFacts.size(); i++){
+		if (cellFacts[i]->GetGridPos() == gridPos) {
+			return cellFacts[i];
+		}
+	}
+	return NULL;
+}
+
 AgentFact MemoryModule::GetAgentFact(int worldId){
 	for(int i = 0; i < agentFacts.size(); i++){
 		if (agentFacts[i].GetTargetId() == worldId) {
@@ -149,7 +158,8 @@ bool MemoryModule::KnowsOfUnfilledStorage(){
 		//		sort(cellFacts.begin(), cellFacts.end(), Utility::CellFactFoodRatingComp);
 		
 		for(int i = 0; i < cellFacts.size(); i++){
-			if(cellFacts[i] ->GetFactType() == CELL_STORAGE){
+			if(cellFacts[i] ->GetFactType() == CELL_STORAGE ||
+			   cellFacts[i] ->GetFactType() == CELL_STORAGE){
 				if(!cellFacts[i]->IsFull()){
 				return true;
 				}
@@ -178,6 +188,36 @@ bool MemoryModule::GetPosNearestCell(ofVec2f& targetVec, ofVec2f pos, ItemType c
 	
 	if(currentDist != -1){ // if currentDist has been changed
 		targetVec = closestPos;
+		return true;
+	}
+	
+	return false;
+}
+
+// is sort better than this comparing balls??
+bool MemoryModule::GetPosNearestCellList(vector<ofVec2f>& targetVec, ofVec2f pos, ItemType cellType){
+	float currentDist = -1;
+
+	vector<pair<ofVec2f, float>> distToPos;
+	
+	for(CellFact* cellFact : cellFacts){
+		if(cellType == cellFact->GetFactType()){
+			float newDist = Utility::GetGridDistance(pos, cellFact->GetGridPos());
+			// if new distance is closer or hasn't been set
+			if(newDist < currentDist || currentDist == -1){
+				currentDist = newDist;
+				distToPos.push_back(std::make_pair(cellFact->GetGridPos(), currentDist));
+			}
+		}
+	}
+	
+	vector<ofVec2f> finalVec;
+	for(pair<ofVec2f, float> d : distToPos){
+		finalVec.push_back(d.first);
+	}
+	
+	if(currentDist != -1){ // if currentDist has been changed
+		targetVec = finalVec;
 		return true;
 	}
 	

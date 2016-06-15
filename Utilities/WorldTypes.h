@@ -22,6 +22,7 @@ namespace WorldTypes{
     enum GotoSpec{
         NEAREST_CELL = 0,
         NEAREST_RES,
+		NEAREST_EMPTY,
 		NEAREST_BUILD_LOC,
 		NEAREST_OWNED_LOC,
         SPECIFIC

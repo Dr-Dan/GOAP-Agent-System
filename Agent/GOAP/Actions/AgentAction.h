@@ -16,7 +16,7 @@
 #include "Utility.h"
 
 class GridAgent;
-
+class WorldState;
 using namespace WorldTypes;
 
 class Action{
@@ -46,6 +46,16 @@ public:
     virtual bool TaskComplete(GridAgent* agent) = 0;
     
     virtual bool IsComplete(GridAgent* agent) = 0;
+	
+	virtual bool IsValid(GridAgent* agent){
+		return true;
+	}
+	
+	virtual void GetWorldStateEffect(WorldState& state);
+	
+//	virtual bool CanSolveCondition(
+	
+	bool PostconsInState(WorldState& state) const;
 	
 	int GetNumPrecons() const{
 		return preConditions.size();
@@ -153,25 +163,25 @@ public:
     }
 };
 
-class LocationAction: public TimedAction{
-	float distance;
-	
-public:
-LocationAction(string name_, float expiryTime_):
-	TimedAction(name_, expiryTime_)
-	{
-	}
-	
-LocationAction(string name_, float expiryTime_, int cost_):
-	TimedAction(name_, expiryTime_, cost_)
-	{
-	}
-	
-	void SetDistance(ofVec2f agentPos, ofVec2f targetPos){
-		distance = Utility::GetGridDistance(agentPos, targetPos);
-	}
-	
-	//	void CalculateCost(){}
-
-};
+//class LocationAction: public TimedAction{
+//	float distance;
+//	
+//public:
+//LocationAction(string name_, float expiryTime_):
+//	TimedAction(name_, expiryTime_)
+//	{
+//	}
+//	
+//LocationAction(string name_, float expiryTime_, int cost_):
+//	TimedAction(name_, expiryTime_, cost_)
+//	{
+//	}
+//	
+//	void SetDistance(ofVec2f agentPos, ofVec2f targetPos){
+//		distance = Utility::GetGridDistance(agentPos, targetPos);
+//	}
+//	
+//	//	void CalculateCost(){}
+//
+//};
 #endif /* defined(__AgentGridActions__AgentAction__) */

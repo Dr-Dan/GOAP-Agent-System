@@ -39,13 +39,16 @@ void StateModule::UpdateState(GridAgent* agent){
 	currentState.SetCondition("Is Rested", agent->attributes.NeedIsSatisfied(CELL_HOME));
 	
 	currentState.SetCondition("Storage Found Food", agent->memoryModule.KnowsOfCellType(CELL_STORAGE));
+	currentState.SetCondition("Storage Found Wood", agent->memoryModule.KnowsOfCellType(CELL_STORAGE));
+
 	currentState.SetCondition("Carrying Food", (agent->attributes.HasResource(CELL_FOOD) /*&&
 																						  agent->attributes.CanPickupResource(CELL_FOOD, agent->attributes.GetResourcePickupAmt(CELL_FOOD))*/));
 	
 	currentState.SetCondition("Carrying Wood", (agent->attributes.HasResource(CELL_WOOD)));
 	
 	currentState.SetCondition("Is At Storage Food", agent->sensorModule.AtCell(CELL_STORAGE));
-	
+	currentState.SetCondition("Is At Storage Wood", agent->sensorModule.AtCell(CELL_STORAGE));
+
 	// where to put sort function
 	currentState.SetCondition("Home Location Found", agent->memoryModule.KnowsOfHomeLocation());
 	
@@ -58,9 +61,12 @@ void StateModule::UpdateState(GridAgent* agent){
 	// shouldn't need to do this
 	if(currentCell) {
 	//	cout<<ofToString(homeLocation)<<endl;
-	currentState.SetCondition("At Home Location", currentCell->GetGridPos() == topHomeLocation);
+	currentState.SetCondition("Is At Home Location", currentCell->GetGridPos() == topHomeLocation);
 	currentState.SetCondition("At Owned Home", currentCell->GetId() == agent->memoryModule.GetCurrentHomeCellId() && agent->memoryModule.HasHome());
 	}
+	
+	currentState.SetCondition("Home Placed", agent->memoryModule.HasHome());
+	
 	
 	
 	//	currentState.SetCondition("Has Home", agent->attributes.hasHome);

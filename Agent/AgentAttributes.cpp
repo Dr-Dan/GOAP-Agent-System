@@ -95,13 +95,19 @@ bool AgentAttributes::PickupResource(ItemType resType, float amt, GridCell* targ
 
 bool AgentAttributes::DepositResource(ItemType resType, float amt, GridCell* targetCellOther){
 	if(CanUseResource(resType, amt)){
-		bool can_deposit = targetCellOther->AddResource(resType, amt);
+		bool can_deposit = ResourceUtility::AddResource(targetCellOther->GetResource(resType), amt);
+//		bool can_deposit = targetCellOther->AddResource(resType, amt);
 		if(can_deposit){
 			mapResources[resType].amtCarried -= amt;
 			return true;
+		} else {
+			cout<<"Cannot deposit type: "<< resType<<endl;
 		}
+		
+	} else{
+		cout<<"I don't have the resources"<<endl;
 	}
-	cout<<"I don't have the resources"<<endl;
+	
 	return false;
 }
 

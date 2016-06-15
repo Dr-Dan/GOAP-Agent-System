@@ -45,6 +45,7 @@ public:
 	// POSITION FUNCTIONS
     // get position of nearest ...
     bool GetPosNearestCell(ofVec2f& targetVec, ofVec2f pos, ItemType cellType);
+	bool GetPosNearestCellList(vector<ofVec2f>& targetVec, ofVec2f pos, ItemType cellType);
 
     bool GetPosNearestResource(ofVec2f& targetVec, ofVec2f pos, ItemType resType);
 
@@ -79,7 +80,8 @@ public:
 	
 	// get facts
     CellFact* GetCellFact(int worldId);
-    
+	CellFact* GetCellFact(ofVec2f gridPos);
+
     AgentFact GetAgentFact(int worldId);
 	
 	// Check if info is known
