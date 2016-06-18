@@ -49,11 +49,11 @@ void DisplayVisitor::Render(const GridCell& cell){
 			   cellType != WorldTypes::CELL_STORAGE){
 				ofSetColor(255);
 				ofFill();
-				ofDrawBitmapString(ofToString(cell.GetAmtResource(cellType)), pos + ofVec2f(0, 10));
+				ofDrawBitmapString(ofToString(cell.GetResourceHandler()->GetAmtResource(cellType)), pos + ofVec2f(0, 10));
 			} else {
 				ofSetColor(255);
 				ofFill();
-				ofDrawBitmapString(ofToString(cell.GetAmtResource(WorldTypes::CELL_FOOD)), cell.GetPos() + ofVec2f(0, 10));
+				ofDrawBitmapString(ofToString(cell.GetResourceHandler()->GetAmtResource(WorldTypes::CELL_FOOD)), cell.GetPos() + ofVec2f(0, 10));
 			}
 		}
 	}
@@ -76,23 +76,23 @@ void DisplayVisitor::Render(const GridCell& cell, bool showNums, bool showingOve
 	ofDrawRectangle(cellRect);
 	
 	// for special cases
-//	if(!showingOverlay){
-		// e.g. trees
-		if(cellType == WorldTypes::CELL_WOOD){
-			int stumpWd = cellSize/4, stumpHt = cellSize/2;
-			
-			// draw tree object
-			ofSetRectMode(OF_RECTMODE_CENTER);
-			ofSetColor(120,40,10);
-			ofFill();
-			ofDrawRectangle(pos.x+cellSize/2, cell.GetPos().y+cellSize/2+5, stumpWd, stumpHt);
-			ofSetRectMode(OF_RECTMODE_CORNER);
-			
-			ofSetColor(10,200,0);
-			ofFill();
-			ofDrawEllipse(pos.x+cellSize/2, cell.GetPos().y+cellSize/2, cellSize/1.5, cellSize/1.5);
-		}
-//	}
+	//	if(!showingOverlay){
+	// e.g. trees
+	if(cellType == WorldTypes::CELL_WOOD){
+		int stumpWd = cellSize/4, stumpHt = cellSize/2;
+		
+		// draw tree object
+		ofSetRectMode(OF_RECTMODE_CENTER);
+		ofSetColor(120,40,10);
+		ofFill();
+		ofDrawRectangle(pos.x+cellSize/2, cell.GetPos().y+cellSize/2+5, stumpWd, stumpHt);
+		ofSetRectMode(OF_RECTMODE_CORNER);
+		
+		ofSetColor(10,200,0);
+		ofFill();
+		ofDrawEllipse(pos.x+cellSize/2, cell.GetPos().y+cellSize/2, cellSize/1.5, cellSize/1.5);
+	}
+	//	}
 	
 	if(showingOverlay){
 		ofSetColor(overlayColor);
@@ -107,18 +107,16 @@ void DisplayVisitor::Render(const GridCell& cell, bool showNums, bool showingOve
 	ofDrawRectangle(cellRect);
 	
 	if(showNums){
-		if(cellType != WorldTypes::CELL_HOME){
-			if(cellType != WorldTypes::CELL_NEUTRAL){
-				if(cellType != WorldTypes::CELL_STORAGE &&
-				   cellType != WorldTypes::CELL_STORAGE){
-					ofSetColor(255);
-					ofFill();
-					ofDrawBitmapString(ofToString(cell.GetAmtResource(cellType)), pos + ofVec2f(0, 10));
-				} else {
-					ofSetColor(255);
-					ofFill();
-					ofDrawBitmapString(ofToString(cell.GetAmtResource(WorldTypes::CELL_FOOD)), pos + ofVec2f(0, 10));
-				}
+		if(cellType != WorldTypes::CELL_NEUTRAL){
+			if(cellType != WorldTypes::CELL_HOME &&
+			   cellType != WorldTypes::CELL_STORAGE){
+				ofSetColor(255);
+				ofFill();
+				ofDrawBitmapString(ofToString(cell.GetResourceHandler()->GetAmtResource(cellType)), pos + ofVec2f(0, 10));
+			} else {
+				ofSetColor(255);
+				ofFill();
+				ofDrawBitmapString(ofToString(cell.GetResourceHandler()->GetAmtResource(WorldTypes::CELL_FOOD)), pos + ofVec2f(0, 10));
 			}
 		}
 	}

@@ -35,7 +35,7 @@ void SensorModule::UpdateCellMemory(MemoryModule& memoryModule){
 	for(int i = 0; i < cellsNear.size(); i++){
 		int cellId = cellsNear[i]->GetId();
 		// get neaby cell resource map
-		vector<Resource> vecCellNearRes = cellsNear[i]->GetResources();
+		vector<Resource> vecCellNearRes = cellsNear[i]->GetResourceHandler()->GetResources();
 		mapRat mapCellNearRat = cellsNear[i]->GetRatingMap();
 		float combinedRating = cellsNear[i]->GetCombinedRating();
 		
@@ -161,7 +161,7 @@ bool SensorModule::AtCell(ItemType itemType){
 
 bool SensorModule::AtCellWithResource(ItemType itemType){
 	if(currentCell){
-		if(currentCell->GetAmtResource(itemType)){
+		if(currentCell->GetResourceHandler()->GetAmtResource(itemType)){
 			return true;
 		}
 	}

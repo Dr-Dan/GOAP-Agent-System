@@ -149,12 +149,8 @@ public:
 		return isHome;
 	}
 	
-	bool SetType(ItemType newItemType){
-		if(newItemType != AGENT){
+	void SetType(ItemType newItemType){
 			itemType = newItemType;
-			return true;
-		}
-		return false;
 	}
 	
 	ItemType GetFactType(){

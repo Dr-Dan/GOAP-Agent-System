@@ -50,6 +50,7 @@ void Grid::Update(){
 	}
 }
 
+// shouldn't be here
 void Grid::Display(bool showResAmt){
 	
 	bool showInfluence = false;
@@ -193,8 +194,8 @@ void Grid::UpdateRatings(){
 					
 					if(dist < CellMath::GetRatingThreshold(GridValues::RATING_THRES)){
 						
-						float resAmtFood = cells[j].GetAmtResource(WorldTypes::CELL_FOOD); // get amount of food in cell
-						float resAmtWood = cells[j].GetAmtResource(WorldTypes::CELL_WOOD); // get amount of food in cell
+						float resAmtFood = cells[j].GetResourceHandler()->GetAmtResource(WorldTypes::CELL_FOOD); // get amount of food in cell
+						float resAmtWood = cells[j].GetResourceHandler()->GetAmtResource(WorldTypes::CELL_WOOD); // get amount of food in cell
 						
 						
 						cells[i].SetResourceRating(WorldTypes::CELL_FOOD, dist, resAmtFood, CellMath::CellRatingCalcPlateau);

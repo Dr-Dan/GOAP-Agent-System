@@ -17,19 +17,18 @@
 #include "GridCellDisplay.h"
 #include "Resource.h"
 #include "ResourceUtility.h"
+#include "ResourceHandler.hpp"
 
 using namespace WorldTypes;
 
 class GridCell: public Entity{
-	
-
+protected:
 	// Variables
 	
 	ofVec2f pos;
 	ofVec2f gridPos;
 	int cellSize;
 	ofRectangle cellRect;
-//	ofColor cellColor;
 	
 	bool isOccupied = false;
 	float cellAmt = 1.0f;
@@ -48,31 +47,10 @@ class GridCell: public Entity{
 	float combinedRating = 0 /*, combinedRatingNext*/;
 	
 	ItemType cellType, cellTypeNext;
-	
-	// stores max resource amounts
-	map<ItemType, int> mapMaxRes;
-	
-	// Next state info
-	// Could this just be some kind of resource class???
-	// should both sets of state values belong to same object
-//	struct CellStateRes {
-//		CellStateRes():
-//		itemType(WorldTypes::CELL_NEUTRAL),
-//		mapResources(mapRes())
-//		{
-//			
-//		}
-//		
-//		// vars
-//		ItemType itemType;
-//		mapRes mapResources;
-//		
-//	} nextState, currentState;
-//	
-	vector<Resource> cellResourcesCur, cellResourcesNext;
-	
-	// PVT FUNCTIONS
+
 	void Setup();
+	
+	ResourceHandler resHandler;
 
 //	Resource nextStateRes, currentStateRes;
 public:
@@ -91,10 +69,6 @@ public:
 	
 	// -----------------------------------------------------------------
 	// Setup
-	
-	
-	void SetupResource(ItemType itemTypeIn, bool setRandom = false);
-	void SetupResource(ItemType itemTypeIn, int amtRes, bool setRandom = false, bool reset = true);
 	
 	void SetupType(ItemType type);
 
@@ -123,15 +97,8 @@ public:
 	
 	ItemType GetType() const;
 	
-//	mapRes GetResourceMap();
 	mapRat GetRatingMap();
 	float GetCombinedRating();
-	
-	Resource* GetResource(WorldTypes::ItemType type);
-	
-	vector<Resource> GetResources();
-	
-	float GetAmtResource(WorldTypes::ItemType type) const;
 
 	void SetChanged(bool state);
 	
@@ -144,17 +111,12 @@ public:
     bool IsResource();
     
     bool CellContainsResource(ItemType resType);
-    
-    // sum all stored resources and compare against max capacity
-    bool CellIsFull();
 
-    bool CanAddResources(ItemType resType, int amt);
-	
-    bool HasResources(ItemType resType, int amt);
-	
 	bool IsChanged(){
 		return hasChanged;
 	}
+	
+	ResourceHandler* GetResourceHandler() const;
 
 	// -----------------------------------------------------------------
 	// Resource Ratings
@@ -167,13 +129,7 @@ public:
 	// this could perhaps take a map of pair<ItemType, itemImportance>
 	// but for now will just average
 	void SetCombinedRating(vector<WorldTypes::ItemType> combineTypes);
-	// -----------------------------------------------------------------
-	// Resource Changers
-	
-	bool AddResource(ItemType resType, int amt);
-	
-	// this returns the amount that is removed if possible
-	int RemoveResources(ItemType resType, int amt);
+
 	
 };
 

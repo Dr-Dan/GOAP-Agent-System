@@ -13,7 +13,6 @@ void GridCellDisplay::SetupDisplay(){
 }
 
 void GridCellDisplay::UpdateOverlay(WorldTypes::OverlayType overlayType, mapRat& mapRatings, float combinedRating){
-//	cellColor = ofColor(255);
 	cellOverlayColor = ofColor(255, 0);
 	
 	float foodRat = mapRatings[CELL_FOOD];

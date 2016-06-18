@@ -94,8 +94,8 @@ public:
 	
 	bool CanPickupResource(ItemType resType, float amt);
 	
-	bool PickupResource(ItemType resType, float amt, GridCell* targetCellOther);
-	bool DepositResource(ItemType resType, float amt, GridCell* targetCellOther);
+	bool PickupResource(ItemType resType, float amt, GridCell* targetCell);
+	bool DepositResource(ItemType resType, float amt, GridCell* targetCell);
 	bool GiveResource(ItemType resType, float amt, GridAgent* agentOther);
 	bool CanUseResource(ItemType resType, float amt);
 	
