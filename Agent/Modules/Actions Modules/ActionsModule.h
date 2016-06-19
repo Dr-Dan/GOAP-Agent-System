@@ -24,7 +24,8 @@
 class GridAgent;
 
 class ActionsModule{
-	deque<TimedAction*> possibleActions;
+	deque<TimedAction*> possibleActions; // is there a way to group these and use globally?
+	
 	Action* currentAction = NULL;
 	
 	Action* GetNextAction(GridAgent& agent);
@@ -36,10 +37,15 @@ public:
 	~ActionsModule();
 	ActionsModule();
 	
-	void BuildTree(GridAgent& agent);
+	void Update(GridAgent& agent);
+	
 	ActionTree* GetTree();
 	
 	void DoNextAction(GridAgent& agent);
 	Action* GetCurrentAction();
+	
+	deque<TimedAction*> getPossibleActions(){
+		return possibleActions;
+	}
 };
 #endif /* defined(__AgentGOAPActionsTestSimpler__ActionsModule__) */

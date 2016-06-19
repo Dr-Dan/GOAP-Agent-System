@@ -16,68 +16,18 @@
 #include <deque>
 #include "WorldState.h"
 #include "Utility.h"
+#include "PlannerNode.hpp"
+#include "AIBase.hpp"
+#include "NodeBase.hpp"
 
 using namespace std;
 class GridAgent;
 
-class TreeNode{
-public:
-    TimedAction* action;
-    vector<int> linkToIds, linkFromIds;
-    int nodeId = 0;
-//    bool isValid = true;
-	
-//    string name;
-//    int cost;
-	
-    ~TreeNode(){
-        action = NULL;
-		linkFromIds.clear();
-		linkToIds.clear();
-    }
-	
-    TreeNode(TimedAction* actionIn_, int nodeId_){
-        action = actionIn_;
-        nodeId = nodeId_;
-    }
-	
-	// ---------------------------------------------
-    
-    bool isEndNode(){
-        if(linkToIds.empty()){
-            return true;
-        }
-        return false;
-    }
-    
-    bool isStartNode(){
-        if(linkFromIds.empty()){
-            return true;
-        }
-        return false;
-    }
-    
-    bool HasPrecondition(){
-        if(action->GetPrecon(0).first.empty()){
-            return false;
-        }
-        return true;
-    }
-    
-    bool HasPostcondition(){
-        if(action->GetPostcon(0).first.empty()){
-            return false;
-        }
-        return true;
-    }
-    
-};
-
-class ActionTree{
+class ActionTree: public AIBase{
     // problem somewhere in tree node
     Goal previousGoal;
     bool goalSet = false;
-    map<int, vector<TreeNode*> > mapTreeLevels;
+    map<int, vector<PlannerNode*> > mapTreeLevels;
     
     int numLevels = 0;
     int firstValidLevel = 0;
@@ -93,7 +43,9 @@ public:
 
     ActionTree();
 	
-	TreeNode* GetNode(int nodeId);
+	void Update(GridAgent& agent);
+	
+	PlannerNode* GetNode(int nodeId);
 	
     void ClearMapLevels();
 	void ClearNodes();
@@ -101,18 +53,18 @@ public:
     void ResetTree();
     void BuildTree(const deque<TimedAction*>&  actionsIn, Goal goal);
 	void PruneTree(const deque<TimedAction*>&  actionsIn);
-	void LinkNodes(TreeNode* fromNode, TreeNode* toNode);
-	void AddAction(TimedAction* action, vector<TreeNode*>& newNodes, TreeNode* tNode);
+	void LinkNodes(PlannerNode* fromNode, PlannerNode* toNode);
+	void AddAction(TimedAction* action, vector<PlannerNode*>& newNodes, PlannerNode* tNode);
 
 	bool GoalIsChanged(Goal goalIn);
 	int GetVitalIndex(const WorldState& currentState);
 	void UpdateVitalInfo(Action* currentAction, int currentLevels);
 	
     // gets first valid node in tree
-    TreeNode GetFirstValidNode();
+    PlannerNode GetFirstValidNode();
     
 //    void PrintTree();
-	string GetTreeString();
+	string ToString();
 
 //	void FindLevelAndPair(pairCond& refPair_, int& level_, const WorldState& currentState);
 	void FindLevelAndPair(pairCond& refPair_, int& level_, const WorldState& currentState, GridAgent& agent);

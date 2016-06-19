@@ -14,10 +14,10 @@ ActionTree::~ActionTree(){
 	ClearMapLevels();
 }
 
-TreeNode* ActionTree::GetNode(int nodeId){
-	for(pair<int, vector<TreeNode*> > tNV : mapTreeLevels){
+PlannerNode* ActionTree::GetNode(int nodeId){
+	for(pair<int, vector<PlannerNode*> > tNV : mapTreeLevels){
 		for(int i = 0; i < tNV.second.size(); i++){
-			if (tNV.second[i]->nodeId == nodeId) {
+			if (tNV.second[i]->GetId() == nodeId) {
 				return tNV.second[i];
 			}
 		}
@@ -25,8 +25,15 @@ TreeNode* ActionTree::GetNode(int nodeId){
 	return NULL;
 }
 
+void ActionTree::Update(GridAgent& agent){
+	Goal topGoal = agent.motiveModule.GetTopGoal();
+	if(GoalIsChanged(topGoal)){
+		BuildTree(agent.actionsModule->getPossibleActions(), topGoal);
+}
+}
+
 void ActionTree::ClearMapLevels(){
-	for(pair<int, vector<TreeNode*> > tNV : mapTreeLevels){
+	for(pair<int, vector<PlannerNode*> > tNV : mapTreeLevels){
 		Utility::ClearContainerPointers(tNV.second);
 	}
 	
@@ -79,6 +86,7 @@ void ActionTree::UpdateVitalInfo(Action* currentAction, int currentLevels){
  If any nodes are not in any goal meeting solutions then prune them
  */
 
+// TODO: this is way too long!!! Shorten please
 void ActionTree::BuildTree(const deque<TimedAction*>&  actionsIn, Goal goal){
 	ResetTree(); // clear currently stored tree for rebuild
 	
@@ -92,8 +100,8 @@ void ActionTree::BuildTree(const deque<TimedAction*>&  actionsIn, Goal goal){
 	}
 	
 	while(currentLevels < maxLevels && !treeComplete ){
-		// stores created ActionTreeNode(s)
-		vector<TreeNode*> newNodes;
+		// stores created ActionPlannerNode(s)
+		vector<PlannerNode*> newNodes;
 		vector<WorldState> refStates;
 		
 		// for all actions
@@ -113,7 +121,7 @@ void ActionTree::BuildTree(const deque<TimedAction*>&  actionsIn, Goal goal){
 						goalState.SetCondition(goal.GetCondition(0));
 						refStates.push_back(goalState);
 						
-						newNodes.push_back(new TreeNode(currentAction, currentId));
+						newNodes.push_back(new PlannerNode(currentAction, currentId));
 						
 						// increase assigned node id number
 						currentId++;
@@ -126,14 +134,14 @@ void ActionTree::BuildTree(const deque<TimedAction*>&  actionsIn, Goal goal){
 				
 				// for all nodes at current level...
 				for(int j = 0; j < mapTreeLevels[currentLevels-1].size(); j++) {
-					TreeNode* tNode = mapTreeLevels[currentLevels-1].at(j);
+					PlannerNode* tNode = mapTreeLevels[currentLevels-1].at(j);
 					
 					// ----------------------------------------------------------
 					// if action has no preconditions, try to add an action that is useful
 					if(tNode->action->GetNumPrecons() == 0 &&
 					   tNode->linkFromIds.empty()){
 						WorldState checkState;
-						TreeNode* checkNode = tNode;
+						PlannerNode* checkNode = tNode;
 						vector<int> linkToIds = tNode->linkToIds;
 						checkNode->action->GetWorldStateEffect(checkState);
 						
@@ -217,7 +225,7 @@ void ActionTree::BuildTree(const deque<TimedAction*>&  actionsIn, Goal goal){
 		
 		if(!newNodes.empty()){
 			// insert current nodes for this tree level into map
-			mapTreeLevels.insert(pair<int, vector<TreeNode*> >(currentLevels,newNodes));
+			mapTreeLevels.insert(pair<int, vector<PlannerNode*> >(currentLevels,newNodes));
 			currentLevels++;
 			
 		} else{
@@ -241,7 +249,7 @@ void ActionTree::PruneTree(const deque<TimedAction*>&  actionsIn){
 	int numRuns = 1;
 	int runsDone = 0;
 	
-	vector<TreeNode*> startNodes = mapTreeLevels[mapTreeLevels.size()-1];
+	vector<PlannerNode*> startNodes = mapTreeLevels[mapTreeLevels.size()-1];
 	
 	vector<int> goodNodes;
 	mapCond priorityConds;
@@ -258,7 +266,7 @@ void ActionTree::PruneTree(const deque<TimedAction*>&  actionsIn){
 		
 		// do a pass whilst updating a stored state
 		// at end of pass, check if goal conds met
-		// if so add visited nodeIds to a list
+		// if so add visited GetId()s to a list
 		// if enough runs done:
 		//		remove all unsuccessful nodes
 		
@@ -266,14 +274,14 @@ void ActionTree::PruneTree(const deque<TimedAction*>&  actionsIn){
 			vector<int> visitedNodes;
 			
 			WorldState checkState;
-			TreeNode* checkNode = startNodes[sNode];
+			PlannerNode* checkNode = startNodes[sNode];
 			
 			vector<int> linkToIds = checkNode->linkToIds;
 			
 			// while there are still nodes to traverse
 			while(!linkToIds.empty()){
 				// store visited node id
-				visitedNodes.push_back(checkNode->nodeId);
+				visitedNodes.push_back(checkNode->GetId());
 				
 				// update world state for each
 				checkNode->action->GetWorldStateEffect(checkState);
@@ -290,7 +298,7 @@ void ActionTree::PruneTree(const deque<TimedAction*>&  actionsIn){
 				
 			}
 			// store visited node id
-			visitedNodes.push_back(checkNode->nodeId);
+			visitedNodes.push_back(checkNode->GetId());
 			
 			checkNode->action->GetWorldStateEffect(checkState);
 			
@@ -308,8 +316,8 @@ void ActionTree::PruneTree(const deque<TimedAction*>&  actionsIn){
 	// remove all nodes that are of no use
 	for(int i = 0; i < mapTreeLevels.size(); i++){
 		for(int j = 0; j < mapTreeLevels[i].size(); j++){
-			int nodeId = mapTreeLevels[i][j]->nodeId;
-			// check if nodeId isn't in good nodes list
+			int nodeId = mapTreeLevels[i][j]->GetId();
+			// check if GetId() isn't in good nodes list
 			if(!count(goodNodes.begin(), goodNodes.end(), nodeId)){
 				// remove if necessary
 				mapTreeLevels[i].erase(find(mapTreeLevels[i].begin(), mapTreeLevels[i].end(), mapTreeLevels[i][j]));
@@ -318,14 +326,14 @@ void ActionTree::PruneTree(const deque<TimedAction*>&  actionsIn){
 	}
 }
 
-void ActionTree::LinkNodes(TreeNode* fromNode, TreeNode* toNode){
-	fromNode->linkFromIds.push_back(toNode->nodeId);
-	toNode->linkToIds.push_back(fromNode->nodeId);
+void ActionTree::LinkNodes(PlannerNode* fromNode, PlannerNode* toNode){
+	fromNode->linkFromIds.push_back(toNode->GetId());
+	toNode->linkToIds.push_back(fromNode->GetId());
 }
 
-void ActionTree::AddAction(TimedAction* action, vector<TreeNode*>& newNodes, TreeNode* tNode){
+void ActionTree::AddAction(TimedAction* action, vector<PlannerNode*>& newNodes, PlannerNode* tNode){
 	// create node and add to vector of nodes on this level
-	newNodes.push_back(new TreeNode(action, currentId));
+	newNodes.push_back(new PlannerNode(action, currentId));
 	// setup IDs for node links
 	LinkNodes(tNode, newNodes.back());
 	
@@ -411,7 +419,7 @@ void ActionTree:: FindLevelAndPair(pairCond& refPair_, int& level_, const WorldS
 	}
 	
 	for(int i = mapTreeLevels.size()-1; i > 0; i--){
-		for(TreeNode* node:mapTreeLevels[i]){
+		for(PlannerNode* node:mapTreeLevels[i]){
 			for(pairCond pC : priorityConds){
 				if(node->action->postConditions[0].first == pC.first){
 					if(currentState.GetConditionValue(pC.first) != pC.second){
@@ -426,7 +434,7 @@ void ActionTree:: FindLevelAndPair(pairCond& refPair_, int& level_, const WorldS
 stop: ;
 //	printf("%s\n", mapTreeLevels[0][0]->action->name.c_str());
 	for(int i = level-1; i < mapTreeLevels.size(); i++){
-		for(TreeNode* node:mapTreeLevels[i]){
+		for(PlannerNode* node:mapTreeLevels[i]){
 			pairCond pC = node->action->postConditions[0];
 			
 			// if condition not met in world state
@@ -446,7 +454,7 @@ int ActionTree::GetVitalIndex(const WorldState& currentState){
 	if(!vitalTreeIndex.empty()){
 		for(int i = numLevels-1; i >= 0; i--) {
 			// for each node in this level
-			for(TreeNode* tNode : mapTreeLevels[i]){
+			for(PlannerNode* tNode : mapTreeLevels[i]){
 				for(pairCond currentPair : currentState.GetConditionsMap()){
 					
 					for(pairCond vitalPair : vitalConditions){
@@ -477,7 +485,7 @@ TimedAction* ActionTree::GetBestAction(GridAgent* agent, pairCond& refPair_, int
 	if(mapTreeLevels[highestLevel].size() > 1){
 		
 		if(highestLevel != -1){
-			for(TreeNode* tNode : mapTreeLevels[highestLevel]){
+			for(PlannerNode* tNode : mapTreeLevels[highestLevel]){
 				int num_precons = tNode->action->GetNumPrecons();
 				int num_postcons = tNode->action->GetNumPostcons();
 				
@@ -513,7 +521,7 @@ TimedAction* ActionTree::GetBestAction(GridAgent* agent, pairCond& refPair_, int
 }
 
 
-string ActionTree::GetTreeString(){
+string ActionTree::ToString(){
 	string treeOut = "";
 	treeOut+="::START::\n";
 	
@@ -525,13 +533,13 @@ string ActionTree::GetTreeString(){
 		//		treeOut += "\n";
 		
 		
-		for(TreeNode* tNode : mapTreeLevels[i]){
+		for(PlannerNode* tNode : mapTreeLevels[i]){
 			treeOut += "\n";
 			
 			treeOut +=tNode->action->name;
 			treeOut += "\n";
 			
-			treeOut +="Node ID: " + ofToString(tNode->nodeId);
+			treeOut +="Node ID: " + ofToString(tNode->GetId());
 			treeOut += "\n";
 			
 			
@@ -593,7 +601,7 @@ string ActionTree::GetTreeString(){
 	
 	if(mapTreeLevels[highestLevel].size() > 1){
  if(highestLevel != -1){
- for(TreeNode* tNode : mapTreeLevels[highestLevel]){
+ for(PlannerNode* tNode : mapTreeLevels[highestLevel]){
  
  if(tNode->isStartNode()){
  
@@ -630,8 +638,8 @@ string ActionTree::GetTreeString(){
 	}
 	
 	while(currentLevels < maxLevels && !treeComplete ){
- // stores created ActionTreeNode(s)
- vector<TreeNode*> newNodes;
+ // stores created ActionPlannerNode(s)
+ vector<PlannerNode*> newNodes;
  
  // for all actions
  for(int i = 0; i < actionsIn.size(); i++) {
@@ -648,7 +656,7 @@ string ActionTree::GetTreeString(){
  
  // Update goal state
  goalState.SetCondition(goal.GetCondition(0));
- newNodes.push_back(new TreeNode(currentAction, currentId));
+ newNodes.push_back(new PlannerNode(currentAction, currentId));
  
  // increase assigned node id number
  currentId++;
@@ -661,7 +669,7 @@ string ActionTree::GetTreeString(){
  
  // for all nodes at current level...
  for(int j = 0; j < mapTreeLevels[currentLevels-1].size(); j++) {
- TreeNode* tNode = mapTreeLevels[currentLevels-1].at(j);
+ PlannerNode* tNode = mapTreeLevels[currentLevels-1].at(j);
  
  for(int k = 0; k < tNode->action->GetNumPrecons(); k++) {
  for(int l = 0; l < currentAction->GetNumPostcons(); l++) {
@@ -675,14 +683,14 @@ string ActionTree::GetTreeString(){
  // check action doesn't already exists on level
  if(!count(actionsOnLevel.begin(), actionsOnLevel.end(), currentAction->name)){
  // create node and add to vector of nodes on this level
- newNodes.push_back(new TreeNode(currentAction, currentId));
+ newNodes.push_back(new PlannerNode(currentAction, currentId));
  // add action name to list of those used on this level
  actionsOnLevel.push_back(currentAction->name);
  }
  
  // setup IDs for node links
- tNode->linkFromIds.push_back(newNodes.back()->nodeId);
- newNodes.back()->linkToIds.push_back(tNode->nodeId);
+ tNode->linkFromIds.push_back(newNodes.back()->GetId());
+ newNodes.back()->linkToIds.push_back(tNode->GetId());
  
  // increase assigned node id number
  currentId++;
@@ -696,7 +704,7 @@ string ActionTree::GetTreeString(){
  
  if(!newNodes.empty()){
  // insert current nodes for this tree level into map
- mapTreeLevels.insert(pair<int, vector<TreeNode*> >(currentLevels,newNodes));
+ mapTreeLevels.insert(pair<int, vector<PlannerNode*> >(currentLevels,newNodes));
  currentLevels++;
  
  } else{
@@ -717,7 +725,7 @@ string ActionTree::GetTreeString(){
  void ActionTree:: FindLevelAndPair(pairCond& refPair_, int& level_, const WorldState& currentState, GridAgent& agent){
 	
 	int vitalLevel = 0;
-	vector<TreeNode*> startNodes = mapTreeLevels[mapTreeLevels.size()-1];
+	vector<PlannerNode*> startNodes = mapTreeLevels[mapTreeLevels.size()-1];
 	
 	vector<int> goodNodes;
 	mapCond priorityConds;
@@ -745,7 +753,7 @@ string ActionTree::GetTreeString(){
 	for(int i = numLevels-1; i >= vitalLevel; i--) {
  //	for(int i = vitalLevel; i < numLevels ; i++) {
  // for each node in this level
- for(TreeNode* tNode : mapTreeLevels[i]){
+ for(PlannerNode* tNode : mapTreeLevels[i]){
  int num_precons = tNode->action->GetNumPrecons();
  int num_postcons = tNode->action->GetNumPostcons();
  int num_matches = 0;
@@ -813,9 +821,9 @@ string ActionTree::GetTreeString(){
  cout<<endl<<"LEVEL : "<<i<<endl;
  cout<<"Possible Actions: "<<endl;
  
- for(TreeNode* tNode : mapTreeLevels[i]){
+ for(PlannerNode* tNode : mapTreeLevels[i]){
  //            cout<<endl<<tNode->action->name<<endl;
- cout<<"Node ID: "<<tNode->nodeId<<endl;
+ cout<<"Node ID: "<<tNode->GetId()<<endl;
  
  for(int nId : tNode->linkFromIds){
  cout<<"Linked from: "<<nId<<endl;

@@ -48,6 +48,8 @@ void ofApp::draw(){
 	
 	dUI.Display();
 	dUI.DisplayFPS();
+	
+	gameUI.Display();
 }
 
 //--------------------------------------------------------------

@@ -34,6 +34,7 @@ void GridAgent::Update(){
     
     stateModule.UpdateState(this);
     motiveModule.UpdateGoal(this);
+	actionsModule->Update(*this);
 }
 
 void GridAgent::ManageAttributes(){

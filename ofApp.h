@@ -7,6 +7,7 @@
 #include "TimeMaster.h"
 #include "DebugUI.h"
 #include "WorldTypes.h"
+#include "GameUI.hpp"
 
 class ofApp : public ofBaseApp{
 	
@@ -37,4 +38,6 @@ public:
 	
 	bool isPlaying = true;
 	bool showResAmts = false;
+	
+	GameUI gameUI;
 };
