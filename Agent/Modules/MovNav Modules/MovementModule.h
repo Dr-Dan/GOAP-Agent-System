@@ -10,7 +10,8 @@
 #define __AgentGOBGridTest__MovementModule__
 
 #include <stdio.h>
-#include "ofMain.h"
+//#include "ofMain.h"
+#include "ofVec2f.h"
 #include "GridValues.h"
 
 class GridAgent;

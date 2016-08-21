@@ -19,28 +19,36 @@ using namespace WorldTypes;
 
 class GridAgent;
 class MemoryModule;
+
 class SensorModule{
 	
 	// stores cells for agent
 	vector<GridCell*> cellsNear;
 	vector<GridAgent*> agentsNear;
 	
-	GridCell* currentCell = NULL;
+	GridCell* currentCell = nullptr;
 	
 public:
-    SensorModule() = default;
+	SensorModule() = default;
 	
-	void SetCurrentCell(GridCell* cellIn);
+	void SetCurrentCell(GridCell* cellIn); // to BB
 	GridCell* GetCurrentCell();
 	int GetCurrentCellId();
 	
-    void UpdateCellMemory(MemoryModule& memoryModule);
-    void UpdateAgentMemory(MemoryModule& memoryModule);
-
-    bool AtCell(ItemType itemType);
-    bool AtCellWithResource(ItemType itemType);
-
-	void UpdateCellView(vector<GridCell*> cellsNear_);
-	void UpdateAgentView(vector<GridAgent*> agentsNear_);
+	void UpdateCellMemory(MemoryModule& memoryModule,
+						  const vector<GridCell*>& cellsNear_);
+	void UpdateAgentMemory(MemoryModule& memoryModule,
+						   const vector<GridAgent*>& agentsNear_);
+	
+//	void UpdateCellInfo(MemoryModule& memoryModule);
+	bool ShouldAddCell(const GridCell& cell);
+	
+	bool AtCell(ItemType itemType);
+	bool AtCellWithResource(ItemType itemType);
+	
+//	void UpdateCellView(const vector<GridCell*>& cellsNear_);
+//	void UpdateAgentView(const vector<GridAgent*>& agentsNear_);
+	bool CellResourcesChanged(const vector<Resource>& vecKnownCellRes, const vector<Resource>& vecCellNearRes);
+//	bool HomeHasChanged(const GridCell& cell, MemoryModule& memoryModule);
 };
 #endif /* defined(__AgentGOBGridTest__SensorModule__) */

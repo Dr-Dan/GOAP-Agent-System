@@ -10,7 +10,8 @@
 #define __AgentGOBGridTest__NavigationModule__
 
 #include <stdio.h>
-#include "ofMain.h"
+//#include "ofMain.h"
+#include "ofVec2f.h"
 
 class GridAgent;
 

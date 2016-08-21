@@ -11,7 +11,7 @@
 
 #include <stdio.h>
 #include "AgentAction.h"
-#include "ofMain.h"
+//#include "ofMain.h"
 #include "WorldTypes.h"
 #include "AgentActionGoto.hpp"
 #include "AgentActionBuild.hpp"

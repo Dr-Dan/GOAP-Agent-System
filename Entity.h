@@ -20,7 +20,7 @@ public:
         worldId = Utility::GetWorldId();
     }
     
-    int GetId(){
+    int GetId() const{
 //		cout<< worldId<<endl;
 
         return worldId;

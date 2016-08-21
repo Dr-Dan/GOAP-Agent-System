@@ -88,6 +88,7 @@ public:
 	bool IsInMemory(int worldId);
     
     bool KnowsOfCellType(ItemType cellType);
+	bool KnowsOfCell(int cellId);
     
     bool KnowsOfResourceType(ItemType cellType);
 	
@@ -99,10 +100,11 @@ public:
 	void sortCellsByFoodRating();
 	void sortCellsByCombinedRating();
 	
+	void UpdateHomeInfo(int cellId);
+	bool HomeHasChanged(const GridCell& cell);
 	void SetHomeCell(int cellId);
 	
 	int GetCurrentHomeCellId();
-	
 	int GetBestHomeCellId();
 	
 	void RemoveHome();

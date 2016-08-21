@@ -7,6 +7,7 @@
 //
 
 #include "TimeMaster.h"
+#include "ofUtils.h"
 
 long long TimeMaster::curMilli = 0;
 long long TimeMaster::prevMilli = 0;

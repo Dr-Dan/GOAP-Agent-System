@@ -10,16 +10,17 @@
 #define __AgentGOAPActionsTestSimpler__ActionsModule__
 
 #include <stdio.h>
-#include "WorldState.h"
-#include "AgentAction.h"
-#include "Goal.h"
 #include <vector>
 #include <list>
 #include <iostream>
-#include "Utility.h"
+
+#include "WorldState.h"
+#include "AgentAction.h"
+#include "Goal.h"
 #include "GridAgentActions.h"
-#include "actionTree.h"
+#include "GOAPPlanner.h"
 #include "WorldTypes.h"
+#include "Utility.h"
 
 class GridAgent;
 
@@ -30,7 +31,7 @@ class ActionsModule{
 	
 	Action* GetNextAction(GridAgent& agent);
 	
-	ActionTree* actionTree;
+	AIBase* planner;
 	
 public:
 	
@@ -39,7 +40,7 @@ public:
 	
 	void Update(GridAgent& agent);
 	
-	ActionTree* GetTree();
+	AIBase* GetPlanner();
 	
 	void DoNextAction(GridAgent& agent);
 	Action* GetCurrentAction();

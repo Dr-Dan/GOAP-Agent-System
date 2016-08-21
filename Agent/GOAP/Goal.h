@@ -11,7 +11,7 @@
 
 #include <stdio.h>
 #include "ActionsRegister.h"
-#include "ofMain.h"
+//#include "ofMain.h"
 
 //#include "WorldTypes.h"
 //using namespace WorldTypes;
@@ -77,15 +77,15 @@ public:
 	
 	// FUNCTIONS
 	
-	string GetName(){
+	string GetName() const{
 		return name;
 	}
 	
-	int GetNumCons(){
+	int GetNumCons() const{
 		return satisfactionConds.size();
 	}
 	
-	pairCond GetCondition(int num){
+	pairCond GetCondition(int num) const{
 		pairCond pC = pairCond();
 		if(num < GetNumCons()){
 			pC = satisfactionConds.at(num);
@@ -111,7 +111,7 @@ public:
 
 	}
 	
-	float GetRelevance(){
+	float GetRelevance() const{
 		return relevance;
 	}
 	

@@ -52,7 +52,6 @@ void ResourceHandler::SetupResource(ItemType itemTypeIn, bool setRandom){
 	SetupResource(itemTypeIn, 0, setRandom);
 }
 
-
 Resource* ResourceHandler::GetResource(WorldTypes::ItemType type){
 	for(int i = 0; i < resourcesNext.size(); i++){
 		if(resourcesNext[i].GetType() == type){
@@ -61,7 +60,7 @@ Resource* ResourceHandler::GetResource(WorldTypes::ItemType type){
 	}
 }
 
-vector<Resource> ResourceHandler:: GetResources(){
+vector<Resource> ResourceHandler:: GetResources() const{
 	return resourcesNext;
 }
 
@@ -71,7 +70,6 @@ float ResourceHandler::GetAmtResource(WorldTypes::ItemType type) const{
 			return resourcesNext[i].GetAmtResource();
 		}
 	}
-	
 	return 0;
 }
 
@@ -132,14 +130,14 @@ bool ResourceHandler::HasResources(ItemType resType, int amt){
 	return false;
 }
 
-bool ResourceHandler::HasResource(){
+bool ResourceHandler::HasResource() const{
 	if(!resourcesCur.empty()){
 		return true;
 	}
 	return false;
 }
 
-bool ResourceHandler::HasResourceNext(){
+bool ResourceHandler::HasResourceNext() const{
 	if(!resourcesNext.empty()){
 		return true;
 	}

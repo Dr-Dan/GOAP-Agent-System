@@ -29,9 +29,6 @@ moveModule(startCell,1)
 }
 
 void GridAgent::Update(){
-    sensorModule.UpdateCellMemory(memoryModule); // take current cell parameter?
-    sensorModule.UpdateAgentMemory(memoryModule); // take current cell parameter?
-    
     stateModule.UpdateState(this);
     motiveModule.UpdateGoal(this);
 	actionsModule->Update(*this);
@@ -49,12 +46,12 @@ void GridAgent::Move(){
     moveModule.DoMovement();
 }
 
-void GridAgent::SetNearbyCells(vector<GridCell*> cellsNear){
-    sensorModule.UpdateCellView(cellsNear);
+void GridAgent::ScanCells(const vector<GridCell*>& cellsNear){
+	sensorModule.UpdateCellMemory(memoryModule, cellsNear);
 }
 
-void GridAgent::SetNearbyAgents(vector<GridAgent*> agentsNear){
-    sensorModule.UpdateAgentView(agentsNear);
+void GridAgent::ScanAgents(const vector<GridAgent*>& agentsNear){
+	sensorModule.UpdateAgentMemory(memoryModule, agentsNear);
 }
 
 void GridAgent::SetCurrentCell(GridCell* currentCellIn){

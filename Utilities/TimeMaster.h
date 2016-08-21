@@ -10,7 +10,10 @@
 #define __AgentGOBGridTest__TimeMaster__
 
 #include <stdio.h>
-#include "ofMain.h"
+#include <map>
+#include <string>
+
+using namespace std;
 
 class TimeMaster{
     static long long curMilli;

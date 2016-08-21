@@ -11,7 +11,7 @@
 
 #include <stdio.h>
 #include "GridAgent.h"
-#include "ofMain.h"
+#include "ofVec2f.h"
 #include "DisplayVisitor.h"
 #include "GridValues.h"
 

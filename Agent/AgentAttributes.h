@@ -10,7 +10,6 @@
 #define __AgentGOBGridTest__AgentAttributes__
 
 #include <stdio.h>
-//#include "ofMain.h"
 #include "GridCell.h"
 #include "WorldTypes.h"
 #include "AgentNeeds.h"

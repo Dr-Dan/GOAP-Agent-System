@@ -10,7 +10,9 @@
 #define __AgentGOBGridTest__AgentFact__
 
 #include <stdio.h>
-#include "ofMain.h"
+//#include "ofMain.h"
+#include "ofVec2f.h"
+//#include <vector>
 #include "WorldTypes.h"
 #include "Resource.h"
 #include "GridValues.h"
@@ -18,6 +20,7 @@
 // consider: factId, ownerId...
 // Also some fact type class or more specific e.g. enum{CELL_FOOD}
 using namespace WorldTypes;
+//using namespace std;
 
 // ------------------------------------------------------------------
 class Fact{

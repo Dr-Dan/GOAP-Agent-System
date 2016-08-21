@@ -10,7 +10,11 @@
 #define __AgentGOBGridTest__GridAgent__
 
 #include <stdio.h>
-#include "ofMain.h"
+//#include <memory>
+
+//#include "ofMain.h"
+#include "ofVec2f.h"
+
 #include "Entity.h"
 
 #include "GridAgentActions.h"
@@ -25,7 +29,6 @@
 #include "MovementModule.h"
 #include "MotivationsModule.h"
 #include "ActionsModule.h"
-#include <memory>
 
 class GridAgent:public Entity{
     
@@ -72,9 +75,9 @@ public:
     // Knowledge related
     
     // Cells
-    void SetNearbyCells(vector<GridCell*> cellsNear);
+    void ScanCells(const vector<GridCell*>& cellsNear);
     
-    void SetNearbyAgents(vector<GridAgent*> agentsNear);
+    void ScanAgents(const vector<GridAgent*>& agentsNear);
     
     void SetCurrentCell(GridCell* currentCellIn);
 };

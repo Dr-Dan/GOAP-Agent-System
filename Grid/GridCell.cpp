@@ -153,11 +153,11 @@ ofRectangle GridCell::GetRect() const {
 	return cellRect;
 }
 
-mapRat GridCell::GetRatingMap(){
+mapRat GridCell::GetRatingMap() const{
 	return mapRatings;
 }
 
-float GridCell:: GetCombinedRating(){
+float GridCell:: GetCombinedRating() const{
 	return combinedRating;
 }
 
@@ -176,11 +176,11 @@ void GridCell:: SetChanged(bool state){
 // -----------------------------------------------------------------
 // Checkers
 
-bool GridCell::IsResource(){
+bool GridCell::IsResource() const{
 	return isResourceNext;
 }
 
-bool GridCell::CellContainsResource(ItemType resType){
+bool GridCell::CellContainsResource(ItemType resType) const{
 	if(resHandler.HasResourceNext()){
 		vector<Resource> res = resHandler.GetResources();
 		for(int i = 0; i < res.size(); i++){

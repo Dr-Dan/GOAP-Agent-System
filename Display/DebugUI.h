@@ -11,6 +11,7 @@
 
 #include <stdio.h>
 #include "DisplayVisitor.h"
+//#include "ofMain.h"
 #include "ofMain.h"
 
 class AgentManager;

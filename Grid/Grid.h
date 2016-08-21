@@ -10,7 +10,10 @@
 #define __AgentGOBGridTest__Grid__
 
 #include <stdio.h>
-#include "ofMain.h"
+
+//#include "ofMain.h"
+#include "ofVec2f.h"
+
 #include "GridCell.h"
 #include "DisplayVisitor.h"
 #include "TimeMaster.h"

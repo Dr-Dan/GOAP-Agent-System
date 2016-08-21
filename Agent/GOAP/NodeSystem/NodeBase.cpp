@@ -7,14 +7,14 @@
 //
 
 #include "NodeBase.hpp"
-#include "PlannerNode.hpp"
+
+NodeBase::NodeBase(int nodeId_){
+	SetId(nodeId_);
+}
 void NodeBase::SetId(int nodeId_){
 	nodeId = nodeId_;
 }
-void NodeBase::LinkNodes(PlannerNode* fromNode, PlannerNode* toNode){
-	fromNode->linkFromIds.push_back(toNode->nodeId);
-	toNode->linkToIds.push_back(fromNode->nodeId);
-}
+
 
 void NodeBase::Add(NodeBase* tree){
 	nodes.push_back(tree);
@@ -36,4 +36,9 @@ bool NodeBase::isStartNode(){
 		return true;
 	}
 	return false;
+}
+
+void NodeBase::LinkNodes(NodeBase* fromNode, NodeBase* toNode){
+	fromNode->linkFromIds.push_back(toNode->nodeId);
+	toNode->linkToIds.push_back(fromNode->nodeId);
 }

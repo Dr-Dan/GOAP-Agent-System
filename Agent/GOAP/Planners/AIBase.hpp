@@ -17,8 +17,9 @@ class TimedAction;
 
 class AIBase{
 public:
-	virtual TimedAction* GetAction(GridAgent& agent){}
-	virtual void Update(GridAgent& agent){}
-	virtual std::string ToString(){}
+	virtual ~AIBase(){}
+	virtual TimedAction* GetNextAction(GridAgent& agent)=0;
+	virtual void Update(GridAgent& agent)=0;
+	virtual std::string ToString()=0;
 };
 #endif /* AIBase_hpp */

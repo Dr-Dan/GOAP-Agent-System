@@ -10,28 +10,16 @@
 
 
 PlannerNode::~PlannerNode(){
-	action = NULL;
-	linkFromIds.clear();
-	linkToIds.clear();
 }
 
-PlannerNode::PlannerNode(TimedAction* actionIn_, int nodeId_){
+PlannerNode::PlannerNode():
+NodeBase()
+{}
+
+PlannerNode::PlannerNode(TimedAction* actionIn_, int nodeId_):
+NodeBase(nodeId_)
+{
 	action = actionIn_;
-	nodeId = nodeId_;
-}
-
-bool PlannerNode::isEndNode(){
-	if(linkToIds.empty()){
-		return true;
-	}
-	return false;
-}
-
-bool PlannerNode::isStartNode(){
-	if(linkFromIds.empty()){
-		return true;
-	}
-	return false;
 }
 
 bool PlannerNode::HasPrecondition(){

@@ -44,8 +44,8 @@ void AgentManager::UpdateStepTime(){
 
 void AgentManager::UpdateAgentsGridView(Grid& gridIn){
 	for(GridAgent* agent: agents){
-		agent->SetNearbyCells(gridIn.GetSurroundingCells(agent->moveModule.GetGridPos(), 2));
-		agent->SetNearbyAgents(GetNearbyAgents(agent->moveModule.GetGridPos(), 2));
+		agent->ScanCells(gridIn.GetSurroundingCells(agent->moveModule.GetGridPos(), GridValues::AGENT_VIEW_RADIUS));
+		agent->ScanAgents(GetNearbyAgents(agent->moveModule.GetGridPos(), GridValues::AGENT_VIEW_RADIUS));
 		
 		agent->SetCurrentCell(gridIn.GetCell(agent->moveModule.GetGridPos()));
 	}

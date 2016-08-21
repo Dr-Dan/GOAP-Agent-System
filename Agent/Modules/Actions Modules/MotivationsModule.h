@@ -11,7 +11,7 @@
 
 #include <stdio.h>
 #include "Goal.h"
-#include "ofMain.h"
+//#include "ofMain.h"
 
 class GridAgent;
 

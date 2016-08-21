@@ -12,7 +12,7 @@
 #include <stdio.h>
 #include "WorldTypes.h"
 #include "GridValues.h"
-#include "ofMain.h"
+//#include "ofMain.h"
 
 using namespace WorldTypes;
 

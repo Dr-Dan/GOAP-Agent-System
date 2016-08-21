@@ -52,7 +52,7 @@ public:
 	
 	Resource* GetResource(WorldTypes::ItemType type);
 	
-	vector<Resource> GetResources();
+	vector<Resource> GetResources() const;
 	
 	float GetAmtResource(WorldTypes::ItemType type) const;
 	float GetAmtResourceTotal() const;
@@ -73,8 +73,8 @@ public:
 	
 	bool HasResources(ItemType resType, int amt);
 	
-	bool HasResource();
-	bool HasResourceNext();
+	bool HasResource() const;
+	bool HasResourceNext() const;
 
 	// -----------------------------------------------------------------
 	// Resource Changers

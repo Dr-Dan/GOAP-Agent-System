@@ -14,31 +14,23 @@
 
 #include "AgentAction.h"
 #include "PlannerNode.hpp"
+#include "NodeBase.hpp"
 
 // should extend NodeBase really
 class TimedAction;
-class PlannerNode{
+class PlannerNode: public NodeBase{
 public:
-	TimedAction* action;
-	vector<int> linkToIds, linkFromIds;
-	int nodeId = 0;
-	//    bool isValid = true;
-	
-	//    string name;
-	//    int cost;
-	
+	TimedAction* action = nullptr;
+
 	~PlannerNode();
+	PlannerNode();
 	PlannerNode(TimedAction* actionIn_, int nodeId_);
 	
 	// ---------------------------------------------
-	
-	bool isEndNode();
-	bool isStartNode();
+
 	bool HasPrecondition();
 	bool HasPostcondition();
-	
-	int GetId(){return nodeId;}
-	
+		
 };
 
 #endif /* PlanningNode_hpp */

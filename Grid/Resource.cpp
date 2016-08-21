@@ -7,6 +7,7 @@
 //
 
 #include "Resource.h"
+#include "ofMath.h"
 
 Resource::Resource():
 itemType(WorldTypes::CELL_NEUTRAL),

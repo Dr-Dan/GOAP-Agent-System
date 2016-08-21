@@ -23,6 +23,8 @@ public:
 
     static const int CELL_SIZE;
     static const int GRID_DIMS[2];
+	
+	static const int AGENT_VIEW_RADIUS{2};
 
 	// for cells
 	static const int MAX_RESOURCES = 50;

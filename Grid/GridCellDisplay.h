@@ -10,7 +10,8 @@
 #define __agentGridProto__GridCellDisplay__
 
 #include <stdio.h>
-#include "ofMain.h"
+//#include "ofMain.h"
+#include "ofColor.h"
 #include "WorldTypes.h"
 #include "GridValues.h"
 using namespace WorldTypes;

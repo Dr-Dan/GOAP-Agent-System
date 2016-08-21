@@ -10,7 +10,10 @@
 #define __AgentGOBGridTest__GridCell__
 
 #include <stdio.h>
-#include "ofMain.h"
+//#include "ofMain.h"
+#include "ofVec2f.h"
+#include "ofRectangle.h"
+
 #include "Entity.h"
 #include "WorldTypes.h"
 #include "CellMath.h"
@@ -97,8 +100,8 @@ public:
 	
 	ItemType GetType() const;
 	
-	mapRat GetRatingMap();
-	float GetCombinedRating();
+	mapRat GetRatingMap() const;
+	float GetCombinedRating() const;
 
 	void SetChanged(bool state);
 	
@@ -108,11 +111,11 @@ public:
 	// -----------------------------------------------------------------
 	// Checkers
 	
-    bool IsResource();
+    bool IsResource() const;
     
-    bool CellContainsResource(ItemType resType);
+    bool CellContainsResource(ItemType resType) const;
 
-	bool IsChanged(){
+	bool IsChanged() const{
 		return hasChanged;
 	}
 	

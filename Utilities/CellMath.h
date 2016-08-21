@@ -10,7 +10,8 @@
 #define __agentGridProto__CellMath__
 
 #include <stdio.h>
-#include "ofMain.h"
+//#include "ofMain.h"
+//#include <pair>
 #include "GridValues.h"
 
 class GridCell;

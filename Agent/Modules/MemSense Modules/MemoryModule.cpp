@@ -61,6 +61,17 @@ AgentFact MemoryModule::GetAgentFact(int worldId){
 	}
 }
 
+//void MemoryModule::UpdateCellInfo(const GridCell& cell){
+//	bool homeChanged = HomeHasChanged(cell);
+//	int cellId = cell.GetId();
+//	if(homeChanged){
+//		UpdateHomeInfo(cellId);
+//	}
+//	// Update memory
+//	UpdateCellFact(cellId, cell.GetType(), vecCellNearRes, mapCellNearRat, combinedRating);
+//}
+//}
+
 void MemoryModule::UpdateCellFact(int worldId, ItemType cellTypeIn, vector<Resource> cellResources_){
 	for(int i = 0; i < cellFacts.size(); i++){
 		CellFact* cellFact = cellFacts[i];
@@ -103,6 +114,17 @@ void MemoryModule::UpdatePosAgentFact(int worldId, ofVec2f newPos){
 			aF->SetGridPos(posToAdd);
 		}
 	}
+}
+
+bool MemoryModule::KnowsOfCell(int cellId){
+	if(cellFacts.size() > 0){
+		for(CellFact* cellFact : cellFacts){
+			if(cellFact->GetTargetId() == cellId){
+				return true;
+			}
+		}
+	}
+	return false;
 }
 
 bool MemoryModule::KnowsOfCellType(ItemType cellType){
@@ -449,6 +471,17 @@ void MemoryModule::sortCellsByCombinedRating(){
 	//	cellsSorted = true;
 }
 
+void MemoryModule::UpdateHomeInfo(int cellId){
+	RemoveHome();
+	GetCellFact(cellId)->SetHome(true);
+}
+
+// move to memory module or similar
+bool MemoryModule::HomeHasChanged(const GridCell& cell){
+	bool homeMatch = cell.GetId() == GetCurrentHomeCellId();
+	return homeMatch && HasHome() &&
+	cell.GetType() != CELL_HOME;
+}
 
 void MemoryModule::RemoveHome(){
 	if(homeCellId != -1){

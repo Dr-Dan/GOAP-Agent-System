@@ -75,7 +75,12 @@ void MotivationsModule::UpdateGoal(GridAgent* agent){
 	// ------------------------------------------------------------
 	// RELEVANCE
 
+	// this could be replaced by a static function that gets all these values from somewhere else... then no need for these horrible implicit values
+	// e.g. GoalRelevanceMaster::SetRelevance(mapGoals["Build Home"])
+	// OR.. GoalRelevanceMaster::SetRelevance(GoalBuildHome) or
 	
+	// GoalBuildHome.SetRelevance(agentBB)  then...
+	// for(Goal g: goals){g.setRelevance(agentBB);}
 	if(agent->attributes.NeedIsUrgent(CELL_HOME) || !agent->memoryModule.HasHome()){
 		SetGoalRelevance("Build Home", 30);
 		//		SetGoalRelevance("Get Rested", 49);

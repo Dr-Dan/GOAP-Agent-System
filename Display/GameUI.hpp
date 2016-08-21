@@ -13,6 +13,7 @@
 #include "ofxGUI.h"
 #include <map>
 #include "ofMain.h"
+#include "ofParameter.h"
 
 class GameUI{
 	

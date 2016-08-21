@@ -15,25 +15,30 @@
 
 #include <stdio.h>
 #include <vector>
-class PlannerNode;
+
 class NodeBase
 {
 protected:
 	std::vector<NodeBase*> nodes;
-	int nodeId = 0;
+	int nodeId = -1;
 	
 public:
+	NodeBase() = default;
+	NodeBase(int nodeId_);
 	std::vector<int> linkToIds, linkFromIds;
 
 	void SetId(int nodeId_);
+	int GetId(){return nodeId;}
+
 	virtual void Add(NodeBase* tree);
 	void Clear();
-
-	static void LinkNodes(PlannerNode* fromNode, PlannerNode* toNode);
 	
 	bool isEndNode();
 	bool isStartNode();
 	
-	int GetId(){return nodeId;}
+	// does this make sense? Should probably be in separate class
+	static void LinkNodes(NodeBase* fromNode, NodeBase* toNode);
+
+	
 };
 #endif /* NodeBase_hpp */

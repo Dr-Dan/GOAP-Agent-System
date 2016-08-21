@@ -52,7 +52,7 @@ void DebugUI::Display(){
 		
 		// draw goal planning 
 		
-		ofDrawBitmapString(agent->actionsModule->GetTree()->ToString(), ofVec2f(750,  offset.y));
+		ofDrawBitmapString(agent->actionsModule->GetPlanner()->ToString(), ofVec2f(750,  offset.y));
 		offset.y += 20* mC.size();
 		//			cout<<agent->actionsModule->GetTree()->GetTreeString()<<endl;
 		

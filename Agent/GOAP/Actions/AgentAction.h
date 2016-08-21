@@ -10,7 +10,7 @@
 #define __AgentGridActions__AgentAction__
 
 #include <stdio.h>
-#include "ofMain.h"
+//#include "ofMain.h"
 #include "ActionsRegister.h"
 #include "WorldTypes.h"
 #include "Utility.h"
@@ -51,6 +51,7 @@ public:
 		return true;
 	}
 	
+	// TODO: could be static and take action as arg also??
 	virtual void GetWorldStateEffect(WorldState& state);
 	
 //	virtual bool CanSolveCondition(

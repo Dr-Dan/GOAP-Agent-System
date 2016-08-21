@@ -15,7 +15,7 @@
 
 #include <stdio.h>
 #include "ofxXmlSettings.h"
-#include "ofMain.h"
+//#include "ofMain.h"
 #include "WorldTypes.h"
 
 using namespace WorldTypes;

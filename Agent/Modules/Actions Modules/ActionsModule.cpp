@@ -10,8 +10,8 @@
 #include "GridAgent.h"
 ActionsModule::~ActionsModule(){
 	Utility::ClearContainerPointers(possibleActions);
-	if(actionTree){
-		delete actionTree;
+	if(planner){
+		delete planner;
 	}
 }
 
@@ -55,18 +55,15 @@ ActionsModule::ActionsModule(){
 	possibleActions.push_back(new ActionSleep("Sleep", 4));
 	possibleActions.push_back(new ActionUseCarriedResource("Eat", 4, WorldTypes::CELL_FOOD));
 	
-
-	
 	// ---------------------------------------
 	
-	actionTree = new ActionTree();
+	planner = new GOAPPlanner();
 	
 	currentAction = NULL;
-	//        actionTree->PrintTree();
 }
 
 void ActionsModule::Update(GridAgent& agent){
-	actionTree->Update(agent);
+	planner->Update(agent);
 }
 
 
@@ -75,7 +72,7 @@ Action* ActionsModule::GetNextAction(GridAgent& agent){
 	
 	Action* nextAction = NULL;
 	//	nextAction = actionTree->GetActionForState(*agent.stateModule.GetCurrentState());
-	nextAction = actionTree->GetAction(agent);
+	nextAction = planner->GetNextAction(agent);
 	
 	return nextAction;
 }
@@ -95,7 +92,6 @@ Action* ActionsModule::GetCurrentAction(){
 	return NULL;
 }
 
-
-ActionTree* ActionsModule:: GetTree(){
-	return actionTree;
+AIBase* ActionsModule:: GetPlanner(){
+	return planner;
 }
