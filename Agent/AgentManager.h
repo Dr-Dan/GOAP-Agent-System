@@ -22,8 +22,6 @@ class AgentManager{
 	
 public:
     
-    int agentSize; // size of agent ellipse, should be stored elsewhere?
-
     ~AgentManager();
     AgentManager();
     

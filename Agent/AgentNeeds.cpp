@@ -66,6 +66,15 @@ bool AgentNeeds::NeedIsUrgent(ItemType itemType){
 	return false;
 }
 
+bool AgentNeeds::NeedIsUrgentAny(){
+	for(pairNeeds need : mapNeeds){
+	if(NeedIsUrgent(need.first)){
+		return true;
+	}
+	}
+	return false;
+}
+
 bool AgentNeeds::NeedIsSatisfied(ItemType itemType){
 	if(mapNeeds[itemType].need <= mapNeeds[itemType].needSatisfaction){
 		return true;

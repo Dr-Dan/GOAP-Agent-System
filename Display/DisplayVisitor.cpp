@@ -15,7 +15,7 @@ void DisplayVisitor::Render(const GridAgent& agent){
 	int halfCell = GridValues::CELL_SIZE/2;
 	ofSetColor(0,0,220);
 	ofFill();
-	ofDrawEllipse(halfCell + (agent.moveModule.GetGridPos() * GridValues::CELL_SIZE), agent.agentSize, agent.agentSize);
+	ofDrawEllipse(halfCell + (agent.moveModule.GetGridPos() * GridValues::CELL_SIZE), GridValues::AGENT_SIZE, GridValues::AGENT_SIZE);
 }
 
 

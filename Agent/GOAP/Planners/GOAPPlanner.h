@@ -79,6 +79,9 @@ public:
     
     void ResetTree();
     void BuildTree(const deque<TimedAction*>&  actionsIn, Goal goal);
+	TimedAction* GetHighestAction(PlannerNode* checkNode, const deque<TimedAction*>&  actionsIn, WorldState& checkState);
+	void AddActionWithPreconds(PlannerNode* tNode, TimedAction* currentAction, vector<string>& actionsOnLevel, vector<PlannerNode*>& newNodes);
+	
 	void FindGoalLevelActions(int& currentId, const Goal& goal, TimedAction* currentAction, vector<PlannerNode*>& newNodes, vector<WorldState>& refStates);
 	
 	void PruneTree(const deque<TimedAction*>&  actionsIn);

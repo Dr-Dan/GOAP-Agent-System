@@ -90,6 +90,7 @@ public:
 	// Attribute state checking bools
 	
 	bool NeedIsUrgent(ItemType itemType);
+	bool NeedIsUrgentAny();
 	bool NeedIsSatisfied(ItemType itemType);
 };
 #endif /* AgentNeeds_hpp */

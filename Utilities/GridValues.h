@@ -21,24 +21,25 @@ using namespace WorldTypes;
 class GridValues{
 public:
 
-    static const int CELL_SIZE;
+	static const int CELL_SIZE{20};
+	static const int AGENT_SIZE{18};
+
     static const int GRID_DIMS[2];
-	
 	static const int AGENT_VIEW_RADIUS{2};
 
 	// for cells
-	static const int MAX_RESOURCES = 50;
-	static const int MAX_RATING = 20;
+	static const int MAX_RESOURCES{50};
+	static const int MAX_RATING{20};
 	
-	static const int RATING_THRES;
+	static const int RATING_THRES{3};
 	
-	static const int NUM_AGENTS = 1;
+	static const int NUM_AGENTS{1};
 	
 	static const bool displayResText = false;
 	
 	static const bool displayRatText = false;
 
-	static const int CELL_CHANGE_DIST = 0;
+	static const int CELL_CHANGE_DIST{0};
 	
 	typedef std::map<ItemType, ofColor> colourMap;
 	static const colourMap CELL_COLOURS;

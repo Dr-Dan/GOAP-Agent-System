@@ -29,7 +29,7 @@ AgentAttributes::AgentAttributes(){
 // need bank of attribute inc/dec effects somewhere to use?
 void AgentAttributes::UpdateNeeds(){
 	agentNeeds.UpdateNeed(CELL_FOOD);
-	agentNeeds.UpdateNeed(CELL_HOME);
+//	agentNeeds.UpdateNeed(CELL_HOME);
 }
 
 // ---------------------------------------------
@@ -167,6 +167,10 @@ bool AgentAttributes::UseResource(ItemType resType){
 // Attribute state checking bools
 bool AgentAttributes::NeedIsUrgent(ItemType itemType){
 	return agentNeeds.NeedIsUrgent(itemType);
+}
+
+bool AgentAttributes::NeedIsUrgentAny(){
+	return agentNeeds.NeedIsUrgentAny();
 }
 
 bool AgentAttributes::NeedIsSatisfied(ItemType itemType){

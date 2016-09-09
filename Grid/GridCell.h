@@ -114,6 +114,7 @@ public:
     bool IsResource() const;
     
     bool CellContainsResource(ItemType resType) const;
+//	bool IsEmpty()
 
 	bool IsChanged() const{
 		return hasChanged;

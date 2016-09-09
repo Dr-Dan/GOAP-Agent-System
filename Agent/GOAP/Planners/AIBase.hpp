@@ -21,5 +21,6 @@ public:
 	virtual TimedAction* GetNextAction(GridAgent& agent)=0;
 	virtual void Update(GridAgent& agent)=0;
 	virtual std::string ToString()=0;
+	// Display(DisplayThing* caller)
 };
 #endif /* AIBase_hpp */

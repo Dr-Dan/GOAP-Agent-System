@@ -72,6 +72,7 @@ public:
 	bool CanAddResources(ItemType resType, int amt);
 	
 	bool HasResources(ItemType resType, int amt);
+	bool HasNoResource(vector<Resource>& res, WorldTypes::ItemType type) const;
 	
 	bool HasResource() const;
 	bool HasResourceNext() const;

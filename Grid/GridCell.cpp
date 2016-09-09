@@ -58,6 +58,13 @@ void GridCell::Setup(){
 void GridCell::SetupType(ItemType type){
 	cellTypeNext = type;
 	
+	if(cellTypeNext == CELL_NEUTRAL){
+		resHandler.ClearResources();
+		isResourceNext = false;
+		SetChanged(true);
+		return;
+	}
+	
 	if(cellTypeNext == CELL_FOOD || cellTypeNext == CELL_WOOD){
 		isResourceNext = true;
 	} else{
@@ -109,11 +116,10 @@ void GridCell::Update(){
 	//	}
 	
 	if(!hasRes &&
-	   (cellType != CELL_HOME && cellType != CELL_STORAGE &&
-		cellType != CELL_STORAGE)){
+	   (cellType != CELL_HOME && cellType != CELL_STORAGE)){
 		   SetupType(CELL_NEUTRAL);
-		   isResourceNext = false;
-		   SetChanged(true);
+//		   isResourceNext = false;
+//		   SetChanged(true);
 	   }
 }
 

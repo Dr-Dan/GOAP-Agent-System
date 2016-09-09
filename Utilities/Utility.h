@@ -47,8 +47,8 @@ public:
 	
     template<typename T>
     static void ClearContainerPointers(vector<T>& vecToClear){
-        int numGoals = vecToClear.size()-1;
-        for(int i = 0; i < numGoals; i++) {
+        int numItems = vecToClear.size()-1;
+        for(int i = 0; i < numItems; i++) {
             if(vecToClear[i]){
                 delete vecToClear[i];
             }
@@ -58,8 +58,8 @@ public:
     
     template<typename T>
     static void ClearContainerPointers(deque<T>& dequeToClear){
-        int numGoals = dequeToClear.size()-1;
-        for(int i = 0; i < numGoals; i++) {
+        int numItems = dequeToClear.size()-1;
+        for(int i = 0; i < numItems; i++) {
             if(dequeToClear[i]){
                 delete dequeToClear[i];
             }

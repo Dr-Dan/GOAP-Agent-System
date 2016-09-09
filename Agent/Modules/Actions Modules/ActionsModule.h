@@ -25,7 +25,7 @@
 class GridAgent;
 
 class ActionsModule{
-	deque<TimedAction*> possibleActions; // is there a way to group these and use globally?
+	static deque<TimedAction*> possibleActions; // is there a way to group these and use globally?
 	
 	Action* currentAction = NULL;
 	

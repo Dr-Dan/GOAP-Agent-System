@@ -144,6 +144,14 @@ bool ResourceHandler::HasResourceNext() const{
 	return false;
 }
 
+bool ResourceHandler::HasNoResource(vector<Resource>& res, WorldTypes::ItemType type) const{
+	if(!res.empty() &&
+	   GetAmtResource(type) == 0){
+		return true;
+	}
+	return false;
+}
+
 // -----------------------------------------------------------------
 // Resource Changers
 

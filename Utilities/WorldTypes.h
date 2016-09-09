@@ -27,7 +27,7 @@ namespace WorldTypes{
 		NEAREST_OWNED_LOC,
         SPECIFIC
     };
-    
+	
     enum ItemType{
         AGENT = 0,
         CELL_NEUTRAL,

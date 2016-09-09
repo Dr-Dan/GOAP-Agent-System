@@ -47,11 +47,14 @@ void GridAgent::Move(){
 }
 
 void GridAgent::ScanCells(const vector<GridCell*>& cellsNear){
-	sensorModule.UpdateCellMemory(memoryModule, cellsNear);
+	sensorModule.UpdateCellMemory(memoryModule, cellsNear); // take current cell parameter?
+
+//    sensorModule.UpdateCellView(cellsNear);
 }
 
 void GridAgent::ScanAgents(const vector<GridAgent*>& agentsNear){
-	sensorModule.UpdateAgentMemory(memoryModule, agentsNear);
+	sensorModule.UpdateAgentMemory(memoryModule, agentsNear); // take current cell parameter?
+	//    sensorModule.UpdateAgentView(agentsNear);
 }
 
 void GridAgent::SetCurrentCell(GridCell* currentCellIn){

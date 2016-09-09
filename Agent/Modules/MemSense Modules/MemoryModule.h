@@ -109,5 +109,9 @@ public:
 	
 	void RemoveHome();
 	bool HasHome();
+	bool ShouldDestroyHome();
+	
+	bool CellResourcesChanged(const vector<Resource>& vecKnownCellRes, const vector<Resource>& vecCellNearRes);
+	void RefreshCellMemory(const GridCell& cell);
 };
 #endif /* defined(__AgentGOBGridTest__MemoryModule__) */

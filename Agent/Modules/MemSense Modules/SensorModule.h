@@ -21,11 +21,6 @@ class GridAgent;
 class MemoryModule;
 
 class SensorModule{
-	
-	// stores cells for agent
-	vector<GridCell*> cellsNear;
-	vector<GridAgent*> agentsNear;
-	
 	GridCell* currentCell = nullptr;
 	
 public:
@@ -36,19 +31,15 @@ public:
 	int GetCurrentCellId();
 	
 	void UpdateCellMemory(MemoryModule& memoryModule,
-						  const vector<GridCell*>& cellsNear_);
+						  const vector<GridCell*>& cellsNear);
 	void UpdateAgentMemory(MemoryModule& memoryModule,
-						   const vector<GridAgent*>& agentsNear_);
+						   const vector<GridAgent*>& agentsNear);
 	
-//	void UpdateCellInfo(MemoryModule& memoryModule);
 	bool ShouldAddCell(const GridCell& cell);
 	
+	// should be in BB or similar
 	bool AtCell(ItemType itemType);
 	bool AtCellWithResource(ItemType itemType);
-	
-//	void UpdateCellView(const vector<GridCell*>& cellsNear_);
-//	void UpdateAgentView(const vector<GridAgent*>& agentsNear_);
-	bool CellResourcesChanged(const vector<Resource>& vecKnownCellRes, const vector<Resource>& vecCellNearRes);
-//	bool HomeHasChanged(const GridCell& cell, MemoryModule& memoryModule);
+
 };
 #endif /* defined(__AgentGOBGridTest__SensorModule__) */

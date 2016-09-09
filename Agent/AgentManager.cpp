@@ -14,18 +14,15 @@ AgentManager::~AgentManager(){
 }
 
 AgentManager::AgentManager():
-gridDims(ofVec2f(GridValues::GRID_DIMS[0], GridValues::GRID_DIMS[1])),
-agentSize(GridValues::CELL_SIZE-2)
+gridDims(ofVec2f(GridValues::GRID_DIMS[0], GridValues::GRID_DIMS[1]))
 {}
 
 AgentManager::AgentManager(ofVec2f gridDims_):
-gridDims(gridDims_),
-agentSize(GridValues::CELL_SIZE-2)
+gridDims(gridDims_)
 {}
 
 AgentManager::AgentManager(ofVec2f gridDims_, int agentSize_):
-gridDims(gridDims_),
-agentSize(agentSize_)
+gridDims(gridDims_)
 {}
 
 void AgentManager::UpdateAgents(){
@@ -44,10 +41,11 @@ void AgentManager::UpdateStepTime(){
 
 void AgentManager::UpdateAgentsGridView(Grid& gridIn){
 	for(GridAgent* agent: agents){
-		agent->ScanCells(gridIn.GetSurroundingCells(agent->moveModule.GetGridPos(), GridValues::AGENT_VIEW_RADIUS));
-		agent->ScanAgents(GetNearbyAgents(agent->moveModule.GetGridPos(), GridValues::AGENT_VIEW_RADIUS));
+		ofVec2f gridPos = agent->moveModule.GetGridPos();
+		agent->ScanCells(gridIn.GetSurroundingCells(gridPos, GridValues::AGENT_VIEW_RADIUS));
+		agent->ScanAgents(GetNearbyAgents(gridPos, GridValues::AGENT_VIEW_RADIUS));
 		
-		agent->SetCurrentCell(gridIn.GetCell(agent->moveModule.GetGridPos()));
+		agent->SetCurrentCell(gridIn.GetCell(gridPos));
 	}
 }
 
@@ -73,7 +71,6 @@ void AgentManager::AddAgent(ofVec2f pos_){
 	GridAgent* latestAgent = agents.back();
 	
 	//    latestAgent->agentId = agents.size();
-	latestAgent->agentSize = agentSize;
 }
 
 void AgentManager::AddAgentsRandomPos(int numAgents){

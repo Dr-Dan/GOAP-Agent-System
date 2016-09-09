@@ -10,13 +10,18 @@
 #define __AgentGOBGridTest__MotivationsModule__
 
 #include <stdio.h>
-#include "Goal.h"
 //#include "ofMain.h"
+#include "GoalMore.hpp"
+#include <memory>
 
 class GridAgent;
 
-static bool goalRelevanceComp(Goal a, Goal b){
-	return a.GetRelevance() > b.GetRelevance();
+//static bool goalRelevanceComp(Goal a, Goal b){
+//	return a.GetRelevance() > b.GetRelevance();
+//}
+
+static bool goalRelevanceComp(Goal* a, Goal* b){
+	return a->GetRelevance() > b->GetRelevance();
 }
 
 static bool goalRelevanceCompMap(pair<string, Goal*> a, pair<string, Goal*> b){
@@ -24,7 +29,7 @@ static bool goalRelevanceCompMap(pair<string, Goal*> a, pair<string, Goal*> b){
 }
 
 class MotivationsModule{
-	vector<Goal> goals;
+	vector<Goal*> goals;
 	map<string, Goal*> mapGoals;
 		
 	bool goalChanged = false;
@@ -32,9 +37,13 @@ class MotivationsModule{
 public:
 	
 	MotivationsModule();
+	~MotivationsModule();
+
+	// void SetStrategy(GoalStrategy)
 	
 	void UpdateGoal(GridAgent* agent);
 	void SetGoalRelevance(string name, float value);
+	void UpdateGoalValidity(GridAgent* agent);
 	void ChangeGoalRelevance(string name, float changeValue);
 	Goal GetTopGoal();
 	

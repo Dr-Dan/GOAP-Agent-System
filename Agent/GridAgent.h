@@ -42,9 +42,6 @@ public:
 	StateModule stateModule;
     AgentAttributes attributes;
     
-//    int agentId;
-
-    int agentSize = 0;
     
     bool isHoming = false;
     

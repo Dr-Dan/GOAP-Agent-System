@@ -403,7 +403,7 @@ CellFact* MemoryModule::GetFactHighestRatingCellCombined(ItemType desiredType){
 			//		targetVec = cellFacts[0]->GetGridPos();
 		}
 	}
-	return NULL;
+	return nullptr;
 }
 
 CellFact* MemoryModule::GetFactHighestRatingCell(ItemType desiredType, CellCompareFunc compFunc){
@@ -476,22 +476,24 @@ void MemoryModule::UpdateHomeInfo(int cellId){
 	GetCellFact(cellId)->SetHome(true);
 }
 
-// move to memory module or similar
 bool MemoryModule::HomeHasChanged(const GridCell& cell){
 	bool homeMatch = cell.GetId() == GetCurrentHomeCellId();
-	return homeMatch && HasHome() &&
+	if(homeMatch){
+	return HasHome() &&
 	cell.GetType() != CELL_HOME;
+	}
+	return false;
 }
 
 void MemoryModule::RemoveHome(){
 	if(homeCellId != -1){
 		GetCellFact(homeCellId)->SetHome(false);
 		homeCellId = -1;
+		hasHome = false;
 	}
 	//	for(int i = 0; i < cellFacts.size(); i++){
 	//		cellFacts[i]->SetHome(false);
 	//	}
-	hasHome = false;
 }
 
 void MemoryModule::SetHomeCell(int cellId){
@@ -514,13 +516,15 @@ void MemoryModule::SetHomeCell(int cellId){
 }
 
 int MemoryModule::GetBestHomeCellId(){
-	if(HasHome()){
-		if(GetFactHighestRatingCellCombined(CELL_NEUTRAL) != NULL){
+//	if(HasHome()){
+		CellFact* homeCell = GetFactHighestRatingCellCombined(CELL_NEUTRAL);
+		if(homeCell){
 			//			float currentRat = agent->memoryModule.GetFactHighestRatingCellCombined(CELL_NEUTRAL)->GetCombinedRating();
 			
-			return GetFactHighestRatingCellCombined(CELL_NEUTRAL)->GetTargetId();
+			return homeCell->GetTargetId();
 		}
-}
+//}
+	return -1;
 }
 
 int MemoryModule:: GetCurrentHomeCellId(){
@@ -531,3 +535,75 @@ int MemoryModule:: GetCurrentHomeCellId(){
 bool MemoryModule::HasHome(){
 	return hasHome;
 }
+
+bool MemoryModule::ShouldDestroyHome(){
+	bool knowsBetterCell = false;
+
+	if(HasHome()){
+		int bestHomeId = GetBestHomeCellId();
+		
+		if(GetCellFact(bestHomeId)->GetCombinedRating() >
+		   GetCellFact(GetCurrentHomeCellId())->GetCombinedRating()){
+			knowsBetterCell = GetCurrentHomeCellId() != bestHomeId;
+		}
+	}
+	
+	return HasHome() && knowsBetterCell;
+	
+}
+
+void MemoryModule::RefreshCellMemory(const GridCell& cell){
+	ItemType typeCellFact;
+	mapRat mapKnownCellRat;
+	vector<Resource> vecKnownCellRes;
+	int cellId = cell.GetId();
+	
+	vector<Resource> vecCellNearRes = cell.GetResourceHandler()->GetResources();
+	mapRat mapCellNearRat = cell.GetRatingMap();
+	float combinedRating = cell.GetCombinedRating();
+	
+	if(KnowsOfCell(cellId)){
+		CellFact* cellFact = GetCellFact(cellId);
+		vecKnownCellRes = cellFact->GetResourceVec();
+		typeCellFact = cellFact->GetFactType();
+		mapKnownCellRat = cellFact->GetRatingsMap();
+	} else {
+		return;
+	}
+	
+	// if cell differs from memory by...
+	// type
+	bool cellTypeChanged = cell.GetType() != typeCellFact;
+	// or resource amount
+	bool cellResourcesChanged = CellResourcesChanged(vecKnownCellRes, vecCellNearRes);
+	// or by rating
+	bool cellRatingsChanged = mapCellNearRat != mapKnownCellRat;
+	
+	// ----------------------------------------------------------------------
+	
+	if(cellTypeChanged || cellResourcesChanged || cellRatingsChanged) {
+		bool homeChanged = HomeHasChanged(cell);
+		if(homeChanged){
+			UpdateHomeInfo(cellId);
+		}
+		// Update memory
+		UpdateCellFact(cellId, cell.GetType(), vecCellNearRes, mapCellNearRat, combinedRating);
+	}
+}
+
+bool MemoryModule::CellResourcesChanged(const vector<Resource>& vecKnownCellRes, const vector<Resource>& vecCellNearRes){
+	if(vecCellNearRes.size() == vecKnownCellRes.size()){
+		for(int i = 0; i < vecCellNearRes.size(); i++){
+			if(vecCellNearRes[i].GetAmtResource() ==
+			   vecKnownCellRes[i].GetAmtResource()
+			   &&
+			   vecCellNearRes[i].GetType() ==
+			   vecKnownCellRes[i].GetType()
+			   ){
+				return true;
+			}
+		}
+	}
+	return false;
+}
+

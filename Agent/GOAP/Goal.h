@@ -10,14 +10,16 @@
 #define __AgentGOAPActionsTestSimpler__Goal__
 
 #include <stdio.h>
+#include "GoalTypes.hpp"
 #include "ActionsRegister.h"
 //#include "ofMain.h"
 
 //#include "WorldTypes.h"
 //using namespace WorldTypes;
 
+class GridAgent;
 class Goal{
-	float relevanceLimit;
+	float relevanceLimit{50};
 	bool isValid = true;
 	
 	// VARS
@@ -28,125 +30,41 @@ class Goal{
 	
 	
 public:
-
+	
+	virtual ~Goal();
 	// CONSTRUCTORS
-	Goal():
-	relevance(1),
-	relevanceLimit(50),
-	name("Neutral Goal"),
-	changeRate(1)
-	{
-		LoadConditions(name);
-	}
+	Goal();
 	
-	Goal(string name_):
-	relevance(1),
-	relevanceLimit(50),
-	name(name_),
-	changeRate(1)
-	{
-		LoadConditions(name);
-	}
+	Goal(string name_);
 	
-	Goal(string name_, int relevance):
-	relevance(relevance),
-	relevanceLimit(50),
-	name(name_),
-	changeRate(1)
-	{
-		LoadConditions(name);
-	}
-	
-	Goal(string name_, int relevance, int relevanceLimit):
-	relevance(relevance),
-	relevanceLimit(relevanceLimit),
-	name(name_),
-	changeRate(1)
-	{
-		LoadConditions(name);
-	}
-	
-	Goal(string name_, int relevance, int relevanceLimit, int changeRate):
-	relevance(relevance),
-	relevanceLimit(relevanceLimit),
-	name(name_),
-	changeRate(changeRate)
-	{
-		LoadConditions(name);
-	}
+	Goal(string name_, int relevance);
 	
 	// FUNCTIONS
 	
-	string GetName() const{
-		return name;
-	}
+	virtual void Update();
 	
-	int GetNumCons() const{
-		return satisfactionConds.size();
-	}
+	string GetName() const;
 	
-	pairCond GetCondition(int num) const{
-		pairCond pC = pairCond();
-		if(num < GetNumCons()){
-			pC = satisfactionConds.at(num);
-		}
-		return pC;
-	}
+	int GetNumCons() const;
 	
-	void SetChangeRate(int newRate){
-		changeRate = newRate;
-	}
-	
-	void UpdateRelevance(){
-		ChangeRelevance(changeRate);
-		relevance = ofClamp(relevance, 0, relevanceLimit);
-	}
-	
-	void SetRelevance(int newValue){
+	pairCond GetCondition(int num) const;
 		
-			relevance = newValue;
-		
-		// remove this later...
-		relevance = ofClamp(relevance, 0, relevanceLimit);
+	virtual void UpdateRelevance(GridAgent& agent){}
+	
+	void SetRelevance(int newValue);
+	
+	float GetRelevance() const;
+	
+	void ChangeRelevance(float changeVal);
 
-	}
+	void SetValidity(bool newValidity);
 	
-	float GetRelevance() const{
-		return relevance;
-	}
-	
-	void ChangeRelevance(float changeVal){
-//		if(IsValid())
-		relevance += changeVal;
-		
-//		limit relevance value
-		relevance = ofClamp(relevance, 0, relevanceLimit);
-		
-	}
-	
-	void AddVitalCondition(pairCond condition){
-		vitalConds.push_back(condition);
-	}
-	
-	vector<pairCond> GetVitalConditions(){
-		return vitalConds;
-	}
-	
-	bool HasVitalCondition(){
-		if(vitalConds.size() > 0){
-			return true;
-		}
-		return false;
-	}
-	
-	void SetValidity(bool newValidity){
-		isValid = newValidity;
-	}
+	virtual void UpdateValidity(GridAgent& agent){}
 
-	bool IsValid(){
-		return isValid;
-	}
-private:
+
+	bool IsValid();
+
+protected:
 	vector<pairCond> satisfactionConds;
 	vector<pairCond> vitalConds; // conditions vital to goal completion
 	
@@ -159,3 +77,11 @@ private:
 	}
 };
 #endif /* defined(__AgentGOAPActionsTestSimpler__Goal__) */
+
+/*
+	
+ 	void AddVitalCondition(pairCond condition);
+ 	bool HasVitalCondition();
+ 	vector<pairCond> GetVitalConditions();
+	
+*/

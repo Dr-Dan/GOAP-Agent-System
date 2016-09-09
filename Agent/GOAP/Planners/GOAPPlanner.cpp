@@ -111,20 +111,7 @@ void GOAPPlanner::BuildTree(const deque<TimedAction*>&  actionsIn, Goal goal){
 						TimedAction* highestAc = NULL;
 						
 						while(!linkToIds.empty()){
-							int numPrecons = checkNode->action->GetNumPrecons();
-							
-							// check if any preconditions can be solved by any actions
-							for(int i = 0; i < numPrecons; i++){
-								pairCond p = checkNode->action->GetPrecon(i);
-								
-								for(int j = 0; j < actionsIn.size(); j++){
-									if(p == actionsIn[j]->GetPostcon(0) &&
-									   !checkState.SharesCondition(actionsIn[j]->GetPostcon(0))){
-										highestAc = actionsIn[j];
-									}
-								}
-							}
-							
+							highestAc = GetHighestAction(checkNode, actionsIn, checkState);
 							// retrace back towards goal and check
 							// which goal conditions have been met
 							linkToIds = checkNode->linkToIds;
@@ -154,37 +141,15 @@ void GOAPPlanner::BuildTree(const deque<TimedAction*>&  actionsIn, Goal goal){
 						}
 						//						continue;
 						break;
-					}
+					} else {
 					// ----------------------------------------------------------
-					
-					for(int k = 0; k < tNode->action->GetNumPrecons(); k++) {
-						for(int l = 0; l < currentAction->GetNumPostcons(); l++) {
-							
-							if(currentAction->GetPostcon(l) == tNode->action->GetPrecon(k)){
-								//								UpdateVitalInfo(currentAction, currentLevels);
-								
-								// Update goal state
-								goalState.SetCondition(currentAction->GetPostcon(k));
-								
-								// check action doesn't already exists on level
-								if(!count(actionsOnLevel.begin(), actionsOnLevel.end(), currentAction->name)){
-									
-									// add action name to list of those used on this level
-									actionsOnLevel.push_back(currentAction->name);
-									
-									// add action to lists etc
-									AddAction(currentAction, newNodes, tNode);
-								}
-								
-								
-							}
-						} // for l
-					} // for k
+					// else if action has preconditions
+						AddActionWithPreconds(tNode, currentAction, actionsOnLevel,newNodes);
 					
 				} // for j
 			}
 		} // for i
-		
+		}
 		if(!newNodes.empty()){
 			// insert current nodes for this tree level into map
 			mapTreeLevels.insert(pair<int, vector<PlannerNode*> >(currentLevels,newNodes));
@@ -204,6 +169,45 @@ void GOAPPlanner::BuildTree(const deque<TimedAction*>&  actionsIn, Goal goal){
 	previousGoal = goal;
 	
 	PruneTree(actionsIn);
+}
+
+TimedAction* GOAPPlanner::GetHighestAction(PlannerNode* checkNode, const deque<TimedAction*>&  actionsIn, WorldState& checkState){
+	int numPrecons = checkNode->action->GetNumPrecons();
+	TimedAction* highestAc = NULL;
+
+	// check if any preconditions can be solved by any actions
+	for(int i = 0; i < numPrecons; i++){
+		pairCond p = checkNode->action->GetPrecon(i);
+		
+		for(int j = 0; j < actionsIn.size(); j++){
+			if(p == actionsIn[j]->GetPostcon(0) &&
+			   !checkState.SharesCondition(actionsIn[j]->GetPostcon(0))){
+				highestAc = actionsIn[j];
+			}
+		}
+	}
+	return highestAc;
+}
+
+void GOAPPlanner::AddActionWithPreconds(PlannerNode* tNode, TimedAction* currentAction, vector<string>& actionsOnLevel, vector<PlannerNode*>& newNodes){
+	for(int k = 0; k < tNode->action->GetNumPrecons(); k++) {
+		for(int l = 0; l < currentAction->GetNumPostcons(); l++) {
+			
+			if(currentAction->GetPostcon(l) == tNode->action->GetPrecon(k)){
+				// Update goal state
+				goalState.SetCondition(currentAction->GetPostcon(k));
+				
+				// check action doesn't already exists on level
+				if(!count(actionsOnLevel.begin(), actionsOnLevel.end(), currentAction->name)){
+					// add action name to list of those used on this level
+					actionsOnLevel.push_back(currentAction->name);
+					
+					// add action to lists etc
+					AddAction(currentAction, newNodes, tNode);
+				}
+			}
+		} // for l
+	} // for k
 }
 
 void GOAPPlanner::FindGoalLevelActions(int& currentId, const Goal& goal, TimedAction* currentAction, vector<PlannerNode*>& newNodes, vector<WorldState>& refStates){
@@ -547,281 +551,3 @@ string GOAPPlanner::ToString(){
 	
 	return treeOut;
 }
-
-
-/*
- ------------------------------------------------------------
- HOSPICE
- 
- TimedAction* GOAPPlanner::GetActionForState(WorldState currentState){
-	TimedAction* actionOut = NULL;
-	
-	if(!goalState.ConditionsMatch(currentState.GetConditionsMap())){
- pairCond refPair;
- int highestLevelMatch = -1, currentLevelMatch = -1;
- 
- // finds the highest tree level that matches the supplied state
- // refPair is set to the matching condition pair
- 
- FindLevelAndPair(refPair, highestLevelMatch, currentState);
- actionOut = GetBestAction(refPair, highestLevelMatch);
-	}
-	return actionOut;
- }
- 
- 
- // should also check actions are still valid here - pass in state
- TimedAction* GOAPPlanner::GetBestAction(pairCond& refPair_, int highestLevel){
-	TimedAction* actionOut;
-	int lowestCost = -1;
-	
-	if(mapTreeLevels[highestLevel].size() > 1){
- if(highestLevel != -1){
- for(PlannerNode* tNode : mapTreeLevels[highestLevel]){
- 
- if(tNode->isStartNode()){
- 
- if(refPair_ == tNode->action->GetPostcon(0)
- && (tNode->action->cost < lowestCost || lowestCost == -1)){
- actionOut = tNode->action;
- lowestCost = tNode->action->cost;
- }
- } else{
- if(refPair_ == tNode->action->GetPrecon(0)
- && (tNode->action->cost < lowestCost || lowestCost == -1)){
- actionOut = tNode->action;
- lowestCost = tNode->action->cost;
- }
- }
- }
- }
-	} else{
- actionOut = mapTreeLevels[highestLevel].at(0)->action;
-	}
-	return actionOut;
- }
- 
- 
- void GOAPPlanner::BuildTree(const deque<TimedAction*>&  actionsIn, Goal goal){
-	ResetTree(); // clear currently stored tree for rebuild
-	
-	int currentLevels = 0;
-	int maxLevels = 10;
-	bool treeComplete = false;
-	
-	if(goal.HasVitalCondition()){
- vitalConditions = goal.GetVitalConditions();
-	}
-	
-	while(currentLevels < maxLevels && !treeComplete ){
- // stores created ActionPlannerNode(s)
- vector<PlannerNode*> newNodes;
- 
- // for all actions
- for(int i = 0; i < actionsIn.size(); i++) {
- TimedAction* currentAction = actionsIn[i];
- 
- // firstly get goal (Level 0) relative actions
- if(currentLevels == 0){
- for(int j = 0; j < currentAction->GetNumPostcons(); j++) {
- 
- // does action postcondition match goal condition
- if(currentAction->GetPostcon(j) == goal.GetCondition(0)){
- 
- UpdateVitalInfo(currentAction, currentLevels);
- 
- // Update goal state
- goalState.SetCondition(goal.GetCondition(0));
- newNodes.push_back(new PlannerNode(currentAction, currentId));
- 
- // increase assigned node id number
- currentId++;
- }
- }
- // if below top level...
- } else{
- vector<string> actionsOnLevel;
- deque<pairCond> condPriority;
- 
- // for all nodes at current level...
- for(int j = 0; j < mapTreeLevels[currentLevels-1].size(); j++) {
- PlannerNode* tNode = mapTreeLevels[currentLevels-1].at(j);
- 
- for(int k = 0; k < tNode->action->GetNumPrecons(); k++) {
- for(int l = 0; l < currentAction->GetNumPostcons(); l++) {
- 
- if(currentAction->GetPostcon(l) == tNode->action->GetPrecon(k)){
- UpdateVitalInfo(currentAction, currentLevels);
- 
- // Update goal state
- goalState.SetCondition(currentAction->GetPostcon(k));
- 
- // check action doesn't already exists on level
- if(!count(actionsOnLevel.begin(), actionsOnLevel.end(), currentAction->name)){
- // create node and add to vector of nodes on this level
- newNodes.push_back(new PlannerNode(currentAction, currentId));
- // add action name to list of those used on this level
- actionsOnLevel.push_back(currentAction->name);
- }
- 
- // setup IDs for node links
- tNode->linkFromIds.push_back(newNodes.back()->GetId());
- newNodes.back()->linkToIds.push_back(tNode->GetId());
- 
- // increase assigned node id number
- currentId++;
- }
- } // for l
- } // for k
- 
- } // for j
- }
- } // for i
- 
- if(!newNodes.empty()){
- // insert current nodes for this tree level into map
- mapTreeLevels.insert(pair<int, vector<PlannerNode*> >(currentLevels,newNodes));
- currentLevels++;
- 
- } else{
- // if no nodes are created the tree is finished/failed
- treeComplete = true;
- }
-	}
-	
-	
-	numLevels = currentLevels;
-	
-	// store goal for checking if later goals are different
-	previousGoal = goal;
-	
- }
- 
- // ----------------------------------------------------------------------
- void GOAPPlanner:: FindLevelAndPair(pairCond& refPair_, int& level_, const WorldState& currentState, GridAgent& agent){
-	
-	int vitalLevel = 0;
-	vector<PlannerNode*> startNodes = mapTreeLevels[mapTreeLevels.size()-1];
-	
-	vector<int> goodNodes;
-	mapCond priorityConds;
-	
-	// get conditions required for top level
-	for(int i = 0; i < mapTreeLevels[0].size(); i++){
- for(pairCond pC:mapTreeLevels[0][i]->action->preConditions){
- priorityConds.insert(pC);
- }
-	}
-	
-	
-	vitalLevel = GetVitalIndex(currentState);
-	deque<pairCond> condOrder;
-	//	cout<<"----------------"<<endl;
-	//	cout<<"----------------"<<endl;
-	//	cout<<"----------------"<<endl;
-	//	goalState.PrintValues();
-	//	cout<<"----------------"<<endl;
-	
-	//	currentState.PrintValues();
-	
-	// for each level starting at highest
-	//	cout<<"----------------"<<endl;
-	for(int i = numLevels-1; i >= vitalLevel; i--) {
- //	for(int i = vitalLevel; i < numLevels ; i++) {
- // for each node in this level
- for(PlannerNode* tNode : mapTreeLevels[i]){
- int num_precons = tNode->action->GetNumPrecons();
- int num_postcons = tNode->action->GetNumPostcons();
- int num_matches = 0;
- 
- if(!(tNode->action->IsValid(&agent))){
- continue;
- }
- 
- // for each goal and current condition pair
- for(pairCond goalPair : goalState.GetConditionsMap()){
- for(pairCond currentPair : currentState.GetConditionsMap()){
- 
- // if current cond found in goal state
- if(goalPair.first == currentPair.first){
- //						for(int i = 0; i < num_precons; i++){
- //							condOrder.push_back(tNode->action->GetPrecon(i));
- //							printf("%s", condOrder[i].first.c_str());
- //						}
- 
- // if we are at start of plan
- if(tNode->isStartNode()){
- if(tNode->action->GetPostcon(0) == goalPair){
- level_ = i;
- refPair_ = goalPair;
- }
- } else{
- 
- //							if(num_precons <= 1){
- if(tNode->action->GetPrecon(0) == currentPair){
- //								printf("%s \n", tNode->action->name.c_str());
- 
- level_ = i;
- refPair_ = goalPair;
- }
- //							} else{
- //								for(int i = 0; i < num_precons; i++){
- //									if(tNode->action->GetPrecon(i) == currentPair){
- //										num_matches++;
- //									}
- //								}
- //								if(num_matches >= num_precons){
- //									level_ = i;
- //									refPair_ = goalPair;
- //								}
- //							}
- }
- } // end: goalPair.first == currentPair.first
- 
- }
- 
- }
- 
- } // end: tNode : mapTreeLevels[i]
-	}
- }
- 
- ------------------------------------------------------------
- GRAVEYARD
- 
- void GOAPPlanner::PrintTree(){
-	//        cout<<mapTreeLevels.size()<<endl;
-	cout<<endl<<"::START::"<<endl;
-	
-	for(int i = 0; i < numLevels; i++) {
- cout<<endl<<"LEVEL : "<<i<<endl;
- cout<<"Possible Actions: "<<endl;
- 
- for(PlannerNode* tNode : mapTreeLevels[i]){
- //            cout<<endl<<tNode->action->name<<endl;
- cout<<"Node ID: "<<tNode->GetId()<<endl;
- 
- for(int nId : tNode->linkFromIds){
- cout<<"Linked from: "<<nId<<endl;
- }
- 
- for(int nId : tNode->linkToIds){
- cout<<"Linked to: "<<nId<<endl;
- }
- 
- Action* tNA = tNode->action;
- cout<<"Conditions:"<<endl;
- pairCond preCondition = tNA->GetPrecon(0);
- pairCond postCondition = tNA->GetPostcon(0);
- cout<<"Pre: "<<preCondition.first<<" = "<<preCondition.second<<endl;
- cout<<"Post: "<<postCondition.first<<" = "<<postCondition.second<<endl;
- 
- //            if(tNode->isValid) cout<<"Is Valid"<<endl;
- //                if(tNode->action.IsValid()) cout<<"Is Valid"<<endl;
- }
- cout<<"----------------------"<<endl;
-	}
-	cout<<endl<<"::END::"<<endl;
-	
- }
- */
