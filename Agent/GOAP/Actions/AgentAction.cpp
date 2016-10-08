@@ -11,7 +11,7 @@
 #include "WorldState.h"
 
 // are any postcons found in state
-bool Action::PostconsInState(WorldState& state) const{
+bool TimedAction::PostconsInState(WorldState& state) const{
 	for(pairCond p : state.GetConditionsMap()) {
 		for(int l = 0; l < GetNumPostcons(); l++) {
 			
@@ -24,8 +24,12 @@ bool Action::PostconsInState(WorldState& state) const{
 	return false;
 }
 
-void Action::GetWorldStateEffect(WorldState& state){
+void TimedAction::GetWorldStateEffect(WorldState& state){
 		for(int l = 0; l < GetNumPostcons(); l++) {
 				state.SetCondition(GetPostcon(l));
 		}
+}
+
+void TimedAction::AddEffect(pairCond effect){
+	postConditions.push_back(effect);
 }

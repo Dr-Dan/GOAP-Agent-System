@@ -12,6 +12,7 @@
 #include <stdio.h>
 #include "GoalTypes.hpp"
 #include "ActionsRegister.h"
+#include "GridAgentActions.h"
 //#include "ofMain.h"
 
 //#include "WorldTypes.h"
@@ -35,9 +36,13 @@ public:
 	// CONSTRUCTORS
 	Goal();
 	
-	Goal(string name_);
+	Goal(pairCond effect);
 	
-	Goal(string name_, int relevance);
+	Goal(pairCond effect, pairCond precondition);
+	
+//	Goal(string name_);
+	
+//	Goal(string name_, int relevance);
 	
 	// FUNCTIONS
 	
@@ -61,20 +66,27 @@ public:
 	
 	virtual void UpdateValidity(GridAgent& agent){}
 
+	void AddPrecondition(pairCond pair);
+	void AddEffect(pairCond pair);
 
 	bool IsValid();
-
-protected:
-	vector<pairCond> satisfactionConds;
-	vector<pairCond> vitalConds; // conditions vital to goal completion
 	
-	void LoadConditions(string name_){
-		int numConds = ActionsRegister::Instance()->GoalCountConditions(name_);
-		
-		for(int i = 0; i < numConds; i++){
-			satisfactionConds.push_back(ActionsRegister::Instance()->GetGoalCondition(name_.c_str(), i));
-		}
-	}
+	bool CanBeSolvedBy(Goal goal);
+	bool CanBeSolvedBy(TimedAction action);
+	bool CanBeSolvedBy(pairCond effect);
+
+	vector<pairCond> preconditions;
+	vector<pairCond> effects;
+//protected:
+
+	
+//	void LoadConditions(string name_){
+//		int numConds = ActionsRegister::Instance()->GoalCountConditions(name_);
+//		
+//		for(int i = 0; i < numConds; i++){
+//			satisfactionConds.push_back(ActionsRegister::Instance()->GetGoalCondition(name_.c_str(), i));
+//		}
+//	}
 };
 #endif /* defined(__AgentGOAPActionsTestSimpler__Goal__) */
 

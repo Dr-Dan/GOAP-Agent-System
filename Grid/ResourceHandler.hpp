@@ -15,7 +15,10 @@
 #include "CellMath.h"
 #include "Resource.h"
 #include "ResourceUtility.h"
+#include <vector>
+#include <map>
 
+using namespace std;
 class ResourceHandler{
 	
 	// resources variables

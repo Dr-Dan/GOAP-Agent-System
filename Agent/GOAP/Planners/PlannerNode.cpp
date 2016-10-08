@@ -22,12 +22,12 @@ NodeBase(nodeId_)
 	action = actionIn_;
 }
 
-bool PlannerNode::HasPrecondition(){
-	if(action->GetPrecon(0).first.empty()){
-		return false;
-	}
-	return true;
-}
+//bool PlannerNode::HasPrecondition(){
+//	if(action->GetPrecon(0).first.empty()){
+//		return false;
+//	}
+//	return true;
+//}
 
 bool PlannerNode::HasPostcondition(){
 	if(action->GetPostcon(0).first.empty()){

@@ -13,29 +13,103 @@
 #include "Goal.h"
 class GridAgent;
 
-class GoalExplore: public Goal{
+//class GoalExplore: public Goal{
+//public:
+//	GoalExplore():Goal(){}
+//	
+////	GoalExplore(string name_):Goal(name_){}
+//	
+////	GoalExplore(string name_, int relevance):Goal(name_, relevance){}
+//	
+//	virtual void UpdateValidity(GridAgent& agent);
+//	virtual void UpdateRelevance(GridAgent& agent);
+//};
+
+class GoalKnowsOfFood: public Goal{
 public:
-	GoalExplore():Goal(){}
-	
-	GoalExplore(string name_):Goal(name_){}
-	
-	GoalExplore(string name_, int relevance):Goal(name_, relevance){}
+	GoalKnowsOfFood():Goal(){}
+	GoalKnowsOfFood(pairCond effect):
+	Goal(effect){}
+	GoalKnowsOfFood(pairCond effect, pairCond precondition):
+	Goal(effect, precondition){}
 	
 	virtual void UpdateValidity(GridAgent& agent);
 	virtual void UpdateRelevance(GridAgent& agent);
 };
 
-class GoalEat: public Goal{
+class GoalBeAtFood: public Goal{
 public:
-	GoalEat():Goal(){}
-	
-	GoalEat(string name_):Goal(name_){}
-	
-	GoalEat(string name_, int relevance):Goal(name_, relevance){}
+	GoalBeAtFood():Goal(){}
+	GoalBeAtFood(pairCond effect):
+	Goal(effect){}
+	GoalBeAtFood(pairCond effect, pairCond precondition):
+	Goal(effect, precondition){}
 	
 	virtual void UpdateValidity(GridAgent& agent);
 	virtual void UpdateRelevance(GridAgent& agent);
 };
+
+class GoalGetFood: public Goal{
+public:
+	GoalGetFood():Goal(){}
+	GoalGetFood(pairCond effect):
+	Goal(effect){}
+	GoalGetFood(pairCond effect, pairCond precondition):
+	Goal(effect, precondition){}
+	
+	virtual void UpdateValidity(GridAgent& agent){}
+	virtual void UpdateRelevance(GridAgent& agent){}
+};
+class GoalEatFood: public Goal{
+public:
+	GoalEatFood():Goal(){}
+	GoalEatFood(pairCond effect):
+	Goal(effect){}
+	GoalEatFood(pairCond effect, pairCond precondition):
+	Goal(effect, precondition){}
+	
+	virtual void UpdateValidity(GridAgent& agent){}
+	virtual void UpdateRelevance(GridAgent& agent){}
+};
+
+
+class GoalBeFull: public Goal{
+public:
+	GoalBeFull():Goal(){}
+	GoalBeFull(pairCond effect):
+	Goal(effect){}
+	GoalBeFull(pairCond effect, pairCond precondition):
+	Goal(effect, precondition){}
+	
+	virtual void UpdateValidity(GridAgent& agent);
+	virtual void UpdateRelevance(GridAgent& agent);
+};
+
+class GoalRelax: public Goal{
+public:
+	GoalRelax():Goal(){}
+	GoalRelax(pairCond effect):
+	Goal(effect){}
+	GoalRelax(pairCond effect, pairCond precondition):
+	Goal(effect, precondition){}
+	
+	virtual void UpdateValidity(GridAgent& agent){}
+	virtual void UpdateRelevance(GridAgent& agent);
+};
+
+class GoalBeIdle: public Goal{
+public:
+	GoalBeIdle():Goal(){}
+	GoalBeIdle(pairCond effect):
+	Goal(effect){}
+	GoalBeIdle(pairCond effect, pairCond precondition):
+	Goal(effect, precondition){}
+	
+	virtual void UpdateValidity(GridAgent& agent){}
+	virtual void UpdateRelevance(GridAgent& agent){}
+};
+/*
+
 
 class GoalBuildHome: public Goal{
 public:
@@ -61,5 +135,5 @@ public:
 	void UpdateRelevance(GridAgent& agent);
 };
 
-
+*/
 #endif /* GoalMore_hpp */

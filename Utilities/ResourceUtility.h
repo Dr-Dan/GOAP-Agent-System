@@ -10,12 +10,12 @@
 #define __agentGridProto__ResourceUtility__
 
 #include <stdio.h>
+#include <iostream>
 #include "WorldTypes.h"
 #include "GridValues.h"
 
 using namespace WorldTypes;
 class Resource;
-
 class ResourceUtility {
 	
 public:

@@ -29,7 +29,6 @@ static bool goalRelevanceCompMap(pair<string, Goal*> a, pair<string, Goal*> b){
 }
 
 class MotivationsModule{
-	vector<Goal*> goals;
 	map<string, Goal*> mapGoals;
 		
 	bool goalChanged = false;
@@ -47,5 +46,8 @@ public:
 	void ChangeGoalRelevance(string name, float changeValue);
 	Goal GetTopGoal();
 	
+	vector<Goal*> goals;
+	vector<Goal*> primaryGoals;
+
 };
 #endif /* defined(__AgentGOBGridTest__MotivationsModule__) */

@@ -13,14 +13,9 @@
 
 //#include "ofMain.h"
 #include "ofVec2f.h"
-
 #include "GridCell.h"
-#include "DisplayVisitor.h"
-#include "TimeMaster.h"
 #include "WorldTypes.h"
-#include "GridValues.h"
-#include "CellMath.h"
-#include "AgentManager.h"
+
 class Grid{
     
     // Variables

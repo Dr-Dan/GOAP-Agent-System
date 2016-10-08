@@ -7,6 +7,11 @@
 //
 
 #include "Grid.h"
+//#include "AgentManager.h"
+#include "GridValues.h"
+#include "CellMath.h"
+#include "DisplayVisitor.h"
+#include "TimeMaster.h"
 
 Grid::Grid():
 gridDims(ofVec2f(GridValues::GRID_DIMS[0],GridValues::GRID_DIMS[1])),
@@ -80,7 +85,7 @@ void Grid::Display(bool showResAmt){
 			}
 			
 			if(cells[i].GetType() == CELL_HOME){
-				if(GridValues::displayRatText){
+				if(DisplayValues::displayRatText){
 
 				if(cellFoodInf <= -0.1){
 					ofSetColor(255,0,0);
@@ -93,7 +98,7 @@ void Grid::Display(bool showResAmt){
 				}
 			} else {
 		 if(cellFoodInf >= 0.1){
-			 if(GridValues::displayRatText){
+			 if(DisplayValues::displayRatText){
 			 ofSetColor(255,0,0);
 			 ofFill();
 			 
@@ -293,72 +298,3 @@ vector<GridCell*> Grid::GetSurroundingCells(ofVec2f gridPos,int radius){
 // ----------------------------------------------------------------------------------
 
 // GRAVEYARD
-
-//void Grid::UpdateRatings(WorldTypes::ItemType currentRes){
-//	//	changedCells.clear();
-//
-//	//	WorldTypes::mapRat mapRatings;
-//	//	mapRatings.insert(WorldTypes::pairRat(WorldTypes::CELL_FOOD, 0));
-//	//	mapRatings.insert(WorldTypes::pairRat(WorldTypes::CELL_WOOD, 0));
-//
-//	// clear cell ratings
-//	//	for(int i = 0; i < cells.size(); i++){
-//	//		cells[i].ClearResourceRating(currentRes);
-//	//	}
-//
-//	// calculate new ratings
-//	for(int i = 0; i < cells.size(); i++){
-//
-//		if(cells[i].IsChanged()){
-//			//					cells[i].ClearResourceRatingAll();
-//
-//			for(int j = 0; j < cells.size(); j++){
-//
-//				if(cells[j].GetType() == currentRes){
-//					float resAmt = cells[j].GetAmtResource(currentRes); // get amount of food in cell
-//
-//					ofVec2f cellPos[2] = {cells[i].GetGridPos(), cells[j].GetGridPos()};
-//
-//					float dist = Utility::GetGridDistance(cellPos[0], cellPos[1]);
-//
-//					if(dist < CellMath::GetRatingThreshold(GridValues::RATING_THRES)){
-//						//						cells[i].ClearResourceRatingAll();
-//
-//						cells[i].SetResourceRating(currentRes, dist, resAmt, CellMath::CellRatingCalcPlateau);
-//
-//
-//						cells[i].SetChanged(true);
-//
-//						// store changed cell id for later
-//						//						if(find(changedCells.begin(), changedCells.end(), i) == changedCells.end()){
-//						//						changedCells.push_back(i);
-//						//						}
-//					}
-//
-//					//				cells[i].SetResourceRating(currentRes,dist);
-//					//				cells[i].GetResourceMap()[WorldTypes::CELL_FOOD] += ((10/powf((1.0 + dist), 1.9)));
-//
-//					//                                        cells[i].foodRating += maxFoodInfluence/sqrt(1+dist);
-//				}
-//			}
-//			//						cells[i].SetChanged(false);
-//		}
-//	}
-//}
-
-
-//void Grid:: UpdateRatingsCombined(){
-//	for(int i = 0; i < cells.size(); i++){
-//		if(cells[i].IsChanged()){
-//			cells[i].SetCombinedRating(resTypes);
-//		}
-//	}
-//}
-
-
-//void Grid::SetCellsIsChanged(bool state){
-//	for(int i = 0; i < cells.size(); i++){
-//		cells[i].SetChanged(state);
-//	}
-//}
-

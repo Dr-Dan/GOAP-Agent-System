@@ -28,7 +28,7 @@ public:
 	
 	// ---------------------------------------------
 
-	bool HasPrecondition();
+//	bool HasPrecondition();
 	bool HasPostcondition();
 		
 };

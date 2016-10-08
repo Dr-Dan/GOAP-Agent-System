@@ -4,6 +4,7 @@
 #include "Grid.h"
 #include "AgentManager.h"
 #include "GridValues.h"
+#include "WorldSetupValues.hpp"
 #include "TimeMaster.h"
 #include "DebugUI.h"
 #include "WorldTypes.h"

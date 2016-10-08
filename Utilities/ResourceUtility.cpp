@@ -13,7 +13,7 @@ bool ResourceUtility::CanAddResources(Resource* res, int amt){
 	if(res->GetAmtResource() + amt <= GridValues::MAX_RESOURCES){
 		return true;
 	}
-	cout<<"cell is full"<<endl;
+	std::cout<<"cell is full"<<std::endl;
 	//	cout<<"Cell: "<<GetId()<<" Is full of type "<<resType<<endl;
 	return false;
 }

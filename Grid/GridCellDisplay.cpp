@@ -9,7 +9,7 @@
 #include "GridCellDisplay.h"
 
 void GridCellDisplay::SetupDisplay(){
-	cellColor = GridValues::CELL_COLOURS.at(cellType);
+	cellColor = DisplayValues::CELL_COLOURS.at(cellType);
 }
 
 void GridCellDisplay::UpdateOverlay(WorldTypes::OverlayType overlayType, mapRat& mapRatings, float combinedRating){

@@ -22,17 +22,17 @@ class GridAgent;
 
 class ActionSleep: public TimedAction{
 public:
-	ActionSleep(string name_, float expiryTime_):
-	TimedAction(name_, expiryTime_)
+	ActionSleep(pairCond effect):
+	TimedAction(effect)
 	{
 		//SetConditions(name);
 	}
 	
-	ActionSleep(string name_, float expiryTime_, float cost_):
-	TimedAction(name_, expiryTime_, cost_)
-	{
-		//SetConditions(name);
-	}
+//	ActionSleep(float expiryTime_, float cost_):
+//	TimedAction(expiryTime_, cost_)
+//	{
+//		//SetConditions(name);
+//	}
 	
 	void Execute(GridAgent* agent);
 	
@@ -45,25 +45,42 @@ public:
 class ActionWander:public TimedAction{
 	
 public:
-	ActionWander()
-	:TimedAction("Wander", 2){
+	ActionWander(pairCond effect)
+	:TimedAction(effect){
 		
 	}
 	
-	ActionWander(int cost_)
-	:TimedAction("Wander", 2,cost_){
-		
-	}
-	
-	ActionWander(string name_,int cost_)
-	:TimedAction(name_, 2,cost_){
-		
-	}
-	
+//	ActionWander(int cost_)
+//	:TimedAction(2,cost_){
+//		
+//	}
+
 	void Execute(GridAgent* agent);
 	
 	bool TaskComplete(GridAgent* agent);
 };
+
+class ActionIdle:public TimedAction{
+	
+public:
+	ActionIdle(pairCond effect)
+	:TimedAction(effect){
+		
+	}
+	
+	//	ActionWander(int cost_)
+	//	:TimedAction(2,cost_){
+	//
+	//	}
+	
+	void Execute(GridAgent* agent);
+	bool TaskComplete(GridAgent* agent){
+		return true;
+	}
+};
+
+
+
 
 #endif /* defined(__AgentGridActions__GridAgentActions__) */
 

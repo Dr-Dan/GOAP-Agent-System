@@ -19,21 +19,21 @@ protected:
 	WorldTypes::GotoSpec gotoSpec;
 	
 public:
-	ActionGoto(string name_, float expiryTime_, ItemType gotoType_, GotoSpec gotoSpec_):
-	TimedAction(name_, expiryTime_),
+	ActionGoto(pairCond effect, ItemType gotoType_, GotoSpec gotoSpec_):
+	TimedAction(effect),
 	gotoType(gotoType_),
 	gotoSpec(gotoSpec_)
 	{
 		//SetConditions(name);
 	}
 	
-	ActionGoto(string name_, float expiryTime_, float cost_, ItemType gotoType_, GotoSpec gotoSpec_):
-	TimedAction(name_, expiryTime_, cost_),
-	gotoType(gotoType_),
-	gotoSpec(gotoSpec_)
-	{
-		//SetConditions(name);
-	}
+//	ActionGoto(float expiryTime_, float cost_, ItemType gotoType_, GotoSpec gotoSpec_):
+//	TimedAction( expiryTime_, cost_),
+//	gotoType(gotoType_),
+//	gotoSpec(gotoSpec_)
+//	{
+//		//SetConditions(name);
+//	}
 	
 	void Execute(GridAgent* agent);
 	
@@ -47,19 +47,19 @@ protected:
 	WorldTypes::GotoSpec gotoSpec;
 	
 public:
-	ActionGotoStorage(string name_, float expiryTime_, GotoSpec gotoSpec_):
-	TimedAction(name_, expiryTime_),
+	ActionGotoStorage(pairCond effect, GotoSpec gotoSpec_):
+	TimedAction(effect),
 	gotoSpec(gotoSpec_)
 	{
 		//SetConditions(name);
 	}
 	
-	ActionGotoStorage(string name_, float expiryTime_, float cost_, ItemType gotoType_, GotoSpec gotoSpec_):
-	TimedAction(name_, expiryTime_, cost_),
-	gotoSpec(gotoSpec_)
-	{
-		//SetConditions(name);
-	}
+//	ActionGotoStorage(float expiryTime_, float cost_, ItemType gotoType_, GotoSpec gotoSpec_):
+//	TimedAction( expiryTime_, cost_),
+//	gotoSpec(gotoSpec_)
+//	{
+//		//SetConditions(name);
+//	}
 	
 	void Execute(GridAgent* agent);
 	

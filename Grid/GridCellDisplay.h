@@ -14,6 +14,7 @@
 #include "ofColor.h"
 #include "WorldTypes.h"
 #include "GridValues.h"
+#include "DisplayValues.hpp"
 using namespace WorldTypes;
 
 class GridCellDisplay{

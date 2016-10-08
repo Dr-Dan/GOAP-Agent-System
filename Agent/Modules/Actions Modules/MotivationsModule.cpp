@@ -12,9 +12,18 @@
 
 MotivationsModule::MotivationsModule(){
 	// GOALS
+	primaryGoals = {
+		new GoalBeFull(pairCond("is full", 1), pairCond("used food", 1)),
+		new GoalRelax(pairCond("is relaxed", 1), pairCond("is waiting", 1)),
+	};
 	goals = {
-		new GoalEat("Eat Food", 0),
-		new GoalExplore("Explore", 1),
+		new GoalBeIdle(pairCond("is waiting", 1)),
+		new GoalKnowsOfFood(pairCond("found food", 1)),
+		new GoalBeAtFood(pairCond("at food", 1), pairCond("found food", 1)),
+		new GoalGetFood(pairCond("has food", 1), pairCond("at food", 1)),
+		new GoalEatFood(pairCond("used food", 1), pairCond("has food", 1)),
+//		new GoalEat("Eat Food", 0),
+//		new GoalExplore("Explore", 1),
 		//		Goal("Get Rested", 0),
 		
 		//		Goal("Store Food", 0),
@@ -105,11 +114,18 @@ void MotivationsModule::UpdateGoal(GridAgent* agent){
 	 */
 	
 //	map<string, Goal*>::iterator i{mapGoals.begin()};
+	
+	for(int i = 0;i < primaryGoals.size(); ++i){
+		primaryGoals[i]->UpdateRelevance(*agent);
+		primaryGoals[i]->Update();
+	}
+	
+	
 	for(int i = 0;i < goals.size(); ++i){
 		goals[i]->UpdateRelevance(*agent);
 		goals[i]->Update();
 	}
-	
+
 	
 	
 //	for(pair<string, Goal*> g : mapGoals){
@@ -139,6 +155,10 @@ void MotivationsModule::UpdateGoalValidity(GridAgent* agent){
 	 */
 	
 //	map<string, Goal*>::iterator i{mapGoals.begin()};
+	for(int i = 0;i < primaryGoals.size(); ++i){
+		primaryGoals[i]->UpdateValidity (*agent);
+	}
+	
 for(int i = 0;i < goals.size(); ++i){
 	goals[i]->UpdateValidity (*agent);
 	}
@@ -157,22 +177,22 @@ void MotivationsModule::ChangeGoalRelevance(string name, float changeValue){
 }
 
 Goal MotivationsModule::GetTopGoal(){
-	if(!goals.empty()){
-		Goal* topGoal = goals[0];
+	if(!primaryGoals.empty()){
+		Goal* topGoal = primaryGoals[0];
 		
-		sort(goals.begin(), goals.end(), goalRelevanceComp);
+		sort(primaryGoals.begin(), primaryGoals.end(), goalRelevanceComp);
 		//		sort(mapGoals.begin(), mapGoals.end(), goalRelevanceCompMap); // not allowed apparently
 		
 		// reallocate mapGoals
 		mapGoals.clear();
-		for(int i = 0; i < goals.size(); i++){
-			mapGoals.insert(pair<string, Goal*>(goals[i]->GetName(), goals[i]));
+		for(int i = 0; i < primaryGoals.size(); i++){
+			mapGoals.insert(pair<string, Goal*>(primaryGoals[i]->GetName(), primaryGoals[i]));
 		}
 		
 		// return highest ranking valid goal
-		for(int i = 0; i < goals.size(); i++){
-			if(goals[i]->IsValid()){
-				Goal goalOut = *goals[i];
+		for(int i = 0; i < primaryGoals.size(); i++){
+			if(primaryGoals[i]->IsValid()){
+				Goal goalOut = *primaryGoals[i];
 				
 				if(topGoal->GetName() != goalOut.GetName()){
 					goalChanged = true;

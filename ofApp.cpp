@@ -5,14 +5,14 @@ void ofApp::setup(){
 	tM.AddTimer("world_timer", 250);
 	
 	agentManager = AgentManager();
-	agentManager.AddAgentsRandomPos(GridValues::NUM_AGENTS);
+	agentManager.AddAgentsRandomPos(WorldSetupValues::NUM_AGENTS);
 	grid = Grid();
 	grid.Update();
 	
-	grid.RandomizeGrid();
+//	grid.RandomizeGrid();
 	
 	dUI = DebugUI(&agentManager);
-	
+
 }
 
 //--------------------------------------------------------------

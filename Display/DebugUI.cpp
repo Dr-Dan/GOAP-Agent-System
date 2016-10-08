@@ -28,7 +28,7 @@ void DebugUI::Display(){
 		GridAgent* agent = agentManager->GetAgent(i);
 		mapCond mC = agent->stateModule.GetCurrentState()->GetConditionsMap();
 		string currentGoal = agent->motiveModule.GetTopGoal().GetName();
-		Action* currentAction = agent->actionsModule->GetCurrentAction();
+		TimedAction* currentAction = agent->actionsModule->GetCurrentAction();
 		string currentActionName = currentAction ? currentAction->name : "None";
 		
 		displayString += "ID: " + ofToString(agent->GetId()) + "\n";

@@ -40,7 +40,7 @@ bool ActionSleep::IsValid(GridAgent* agent){
 
 
 // -----------------------------------------------------------------
-// ActionFindFood
+// ActionWander
 // currently just wander, needs real implementation
 
 void ActionWander::Execute(GridAgent* agent){
@@ -68,4 +68,10 @@ void ActionWander::Execute(GridAgent* agent){
 
 bool ActionWander::TaskComplete(GridAgent* agent){
 	return false;
+}
+
+// -----------------------------------------------------------------
+// ActionIdle
+void ActionIdle::Execute(GridAgent* agent){
+	agent->moveModule.StopMovement();
 }

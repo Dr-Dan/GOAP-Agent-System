@@ -12,36 +12,51 @@
 
 Goal::Goal():
 relevance(1),
-name("Neutral Goal"),
+//name("Neutral Goal"),
 changeRate(1)
 {
-	LoadConditions(name);
+	//	LoadConditions(name);
 }
 
-Goal::Goal(string name_):
-relevance(1),
-name(name_),
-changeRate(1)
+Goal::Goal(pairCond effect):
+Goal()
 {
-	LoadConditions(name);
+	AddEffect(effect);
 }
 
-Goal::Goal(string name_, int relevance):
-relevance(relevance),
-name(name_),
-changeRate(1)
+Goal::Goal(pairCond effect, pairCond precondition):
+Goal()
 {
-	LoadConditions(name);
+	AddEffect(effect);
+	AddPrecondition(precondition);
 }
+
+/*
+ Goal::Goal(string name_):
+ relevance(1),
+ name(name_),
+ changeRate(1)
+ {
+ //	LoadConditions(name);
+ }
+ 
+ Goal::Goal(string name_, int relevance):
+ relevance(relevance),
+ name(name_),
+ changeRate(1)
+ {
+ //	LoadConditions(name);
+ }
+ */
 
 Goal::~Goal(){
-	satisfactionConds.clear();
-	vitalConds.clear();
+	preconditions.clear();
+	//	vitalConds.clear();
 }
 
 // FUNCTIONS
 void Goal::Update(){
-//	ChangeRelevance(changeRate);
+	//	ChangeRelevance(changeRate);
 	relevance = ofClamp(relevance, 0, relevanceLimit);
 }
 
@@ -50,13 +65,13 @@ string Goal::GetName() const{
 }
 
 int Goal::GetNumCons() const{
-	return satisfactionConds.size();
+	return preconditions.size();
 }
 
 pairCond Goal::GetCondition(int num) const{
 	pairCond pC = pairCond();
 	if(num < GetNumCons()){
-		pC = satisfactionConds.at(num);
+		pC = preconditions.at(num);
 	}
 	return pC;
 }
@@ -93,24 +108,70 @@ bool Goal::IsValid(){
 	return isValid;
 }
 
-/*
-void Goal::AddVitalCondition(pairCond condition){
-	vitalConds.push_back(condition);
+void Goal::AddPrecondition(pairCond pair){
+	preconditions.push_back(pair);
 }
 
-vector<pairCond> Goal::GetVitalConditions(){
-	return vitalConds;
+void Goal::AddEffect(pairCond pair){
+	effects.push_back(pair);
 }
 
-bool Goal::HasVitalCondition(){
-	if(vitalConds.size() > 0){
-		return true;
+bool Goal::CanBeSolvedBy(Goal goal){
+	for(int j = 0; j < goal.effects.size(); ++j){
+		if(CanBeSolvedBy(goal.effects[j])){
+			return true;
+		}
 	}
 	return false;
-//}
+}
+
+bool Goal::CanBeSolvedBy(TimedAction action){
+	for(int i = 0; i < effects.size(); ++i){
+		for(int j = 0; j < action.postConditions.size(); ++j){
+			if(action.postConditions[j] == effects[i]){
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+bool Goal::CanBeSolvedBy(pairCond effect){
+	if(preconditions.empty()){
+//		for(int i = 0; i < effects.size(); ++i){
+//			if(effects[i] == effect){
+//				return true;
+//			}
+//		}
+		return false;
+	}
+	
+	for(int i = 0; i < preconditions.size(); ++i){
+		if(preconditions[i] == effect){
+			return true;
+		}
+	}
+	return false;
+}
+
+/*
+ void Goal::AddVitalCondition(pairCond condition){
+ vitalConds.push_back(condition);
+ }
+ 
+ vector<pairCond> Goal::GetVitalConditions(){
+ return vitalConds;
+ }
+ 
+ bool Goal::HasVitalCondition(){
+ if(vitalConds.size() > 0){
+ return true;
+ }
+ return false;
+ //}
  
  
  //void Goal::SetChangeRate(int newRate){
  //	changeRate = newRate;
  //}
-*/
+ */

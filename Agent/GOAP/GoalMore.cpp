@@ -10,6 +10,54 @@
 #include "GridAgent.h"
 
 // GOAL EXPLORE
+void GoalKnowsOfFood::UpdateValidity(GridAgent& agent){
+	SetValidity(true);
+}
+
+void GoalKnowsOfFood::UpdateRelevance(GridAgent& agent){
+//	if(agent.attributes.NeedIsUrgent(CELL_FOOD)){
+//		ChangeRelevance(1);
+//	}
+//	
+//	if(agent.attributes.NeedIsSatisfied(CELL_FOOD)){
+//		SetRelevance(0);
+//	}
+}
+
+// GOAL B
+void GoalBeAtFood::UpdateValidity(GridAgent& agent){
+	bool knowsFood = agent.memoryModule.KnowsOfCellType(CELL_FOOD);
+	SetValidity(knowsFood);
+}
+
+void GoalBeAtFood::UpdateRelevance(GridAgent& agent){
+
+}
+
+void GoalBeFull::UpdateValidity(GridAgent& agent){
+}
+
+void GoalBeFull::UpdateRelevance(GridAgent& agent){
+		if(agent.attributes.NeedIsUrgent(CELL_FOOD)){
+			ChangeRelevance(1);
+		}
+	
+		if(agent.attributes.NeedIsSatisfied(CELL_FOOD)){
+			SetRelevance(0);
+		}
+}
+
+void GoalRelax::UpdateRelevance(GridAgent& agent){
+	if(!agent.attributes.NeedIsUrgentAny()){
+		ChangeRelevance(1);
+	} else {
+		SetRelevance(0);
+	}
+
+}
+
+/*
+// GOAL EXPLORE
 void GoalExplore::UpdateValidity(GridAgent& agent){
 	// perhaps replace with ...CanMove()
 	SetValidity(true);
@@ -56,4 +104,4 @@ void GoalSleep::UpdateValidity(GridAgent& agent){
 void GoalSleep::UpdateRelevance(GridAgent& agent){
 
 }
-
+*/

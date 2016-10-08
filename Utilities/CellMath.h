@@ -25,7 +25,7 @@ public:
 
 	// provides a function for comparing cell distances
 	// useful as a predicate in sort functions
-	static bool CellDistCompare(pair<GridCell*, float>  a, pair<GridCell*, float>  b);
+	static bool CellDistCompare(std::pair<GridCell*, float>  a, std::pair<GridCell*, float>  b);
 
 	static float GetRatingThreshold(float thresValue);
 	

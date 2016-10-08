@@ -20,19 +20,19 @@ protected:
 	WorldTypes::ItemType resType;
 	
 public:
-	ActionPickupResource(string name_, float expiryTime_, ItemType resType_):
-	TimedAction(name_, expiryTime_),
+	ActionPickupResource(pairCond effect, ItemType resType_):
+	TimedAction(effect),
 	resType(resType_)
 	{
 		//SetConditions(name);
 	}
 	
-	ActionPickupResource(string name_, float expiryTime_, float cost_, ItemType resType_):
-	TimedAction(name_, expiryTime_, cost_),
-	resType(resType_)
-	{
-		//SetConditions(name);
-	}
+//	ActionPickupResource(float expiryTime_, float cost_, ItemType resType_):
+//	TimedAction(expiryTime_, cost_),
+//	resType(resType_)
+//	{
+//		//SetConditions(name);
+//	}
 	
 	void Execute(GridAgent* agent);
 	
@@ -47,19 +47,19 @@ protected:
 	WorldTypes::ItemType resType;
 	
 public:
-	ActionUseCarriedResource(string name_, float expiryTime_, ItemType resType_):
-	TimedAction(name_, expiryTime_),
+	ActionUseCarriedResource(pairCond effect, ItemType resType_):
+	TimedAction(effect),
 	resType(resType_)
 	{
 		//SetConditions(name);
 	}
 	
-	ActionUseCarriedResource(string name_, float expiryTime_, float cost_, ItemType resType_):
-	TimedAction(name_, expiryTime_, cost_),
-	resType(resType_)
-	{
-		//SetConditions(name);
-	}
+//	ActionUseCarriedResource(float expiryTime_, float cost_, ItemType resType_):
+//	TimedAction(expiryTime_, cost_),
+//	resType(resType_)
+//	{
+//		//SetConditions(name);
+//	}
 	
 	void Execute(GridAgent* agent);
 	
@@ -73,19 +73,19 @@ protected:
 	WorldTypes::ItemType resType;
 	
 public:
-	ActionDropResource(string name_, float expiryTime_, ItemType resType_):
-	TimedAction(name_, expiryTime_),
+	ActionDropResource(pairCond effect, ItemType resType_):
+	TimedAction(effect),
 	resType(resType_)
 	{
 		//SetConditions(name);
 	}
 	
-	ActionDropResource(string name_, float expiryTime_, float cost_, ItemType resType_):
-	TimedAction(name_, expiryTime_, cost_),
-	resType(resType_)
-	{
-		//SetConditions(name);
-	}
+//	ActionDropResource(float expiryTime_, float cost_, ItemType resType_):
+//	TimedAction(expiryTime_, cost_),
+//	resType(resType_)
+//	{
+//		//SetConditions(name);
+//	}
 	
 	void Execute(GridAgent* agent);
 	

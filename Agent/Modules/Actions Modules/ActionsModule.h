@@ -18,7 +18,7 @@
 #include "AgentAction.h"
 #include "Goal.h"
 #include "GridAgentActions.h"
-#include "GOAPPlanner.h"
+#include "GOAPPlanner.hpp"
 #include "WorldTypes.h"
 #include "Utility.h"
 
@@ -27,9 +27,9 @@ class GridAgent;
 class ActionsModule{
 	static deque<TimedAction*> possibleActions; // is there a way to group these and use globally?
 	
-	Action* currentAction = NULL;
+	TimedAction* currentAction = NULL;
 	
-	Action* GetNextAction(GridAgent& agent);
+	TimedAction* GetNextAction(GridAgent& agent);
 	
 	AIBase* planner;
 	
@@ -43,7 +43,7 @@ public:
 	AIBase* GetPlanner();
 	
 	void DoNextAction(GridAgent& agent);
-	Action* GetCurrentAction();
+	TimedAction* GetCurrentAction();
 	
 	deque<TimedAction*> getPossibleActions(){
 		return possibleActions;

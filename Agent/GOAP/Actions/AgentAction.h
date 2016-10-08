@@ -19,33 +19,47 @@ class GridAgent;
 class WorldState;
 using namespace WorldTypes;
 
-class Action{
+class TimedAction{
 public:
-	vector<pairCond> preConditions;
+//	vector<pairCond> preConditions;
 	vector<pairCond> postConditions;
     string name;
     
-    virtual ~Action(){}
-    
-	Action():
-	name("neutral action")
+    virtual ~TimedAction(){}
+	
+	// shouldn't have this var? Move to next in hieracrchy
+	int cost;
+	float startTime, totalTime, expiryTime;
+	
+	TimedAction(pairCond effect):
+	expiryTime(1),
+	startTime(ofGetElapsedTimef()),
+	cost(1)
 	{
-        SetConditions(name);
-    }
-    
-    Action(string name_):
-    name(name_)
-	{
-	SetConditions(name);  // Load conditions from file
-    }
-    
+		AddEffect(effect);
+	}
+	
+//	TimedAction(float expiryTime_):
+//	expiryTime(expiryTime_),
+//	startTime(ofGetElapsedTimef()),
+//	cost(1)
+//	{
+//	}
+//	
+//	TimedAction(float expiryTime_, int cost_):
+//	expiryTime(expiryTime_),
+//	startTime(ofGetElapsedTimef()),
+//	cost(cost_)
+//	{
+//	}
+
     // must be declared with the actual action implementation
     // and the effects on the agent
     virtual void Execute(GridAgent* agent) = 0;
     
     virtual bool TaskComplete(GridAgent* agent) = 0;
-    
-    virtual bool IsComplete(GridAgent* agent) = 0;
+	
+//    virtual bool IsComplete(GridAgent* agent) = 0;
 	
 	virtual bool IsValid(GridAgent* agent){
 		return true;
@@ -54,25 +68,44 @@ public:
 	// TODO: could be static and take action as arg also??
 	virtual void GetWorldStateEffect(WorldState& state);
 	
+	// take function pointer?
+	//	virtual void CalculateCost(){}
+	
+	// TODO: replace ofGet... with strategy?
+	bool TimeComplete(){
+		totalTime = ofGetElapsedTimef()-startTime;
+		if(totalTime >= expiryTime){
+			return true;
+		}
+		return false;
+	}
+	
+	virtual bool IsComplete(GridAgent* agent){
+		if(TaskComplete(agent) || TimeComplete()){
+			return true;
+		}
+		return false;
+	}
+	
 //	virtual bool CanSolveCondition(
 	
 	bool PostconsInState(WorldState& state) const;
 	
-	int GetNumPrecons() const{
-		return preConditions.size();
-	}
+//	int GetNumPrecons() const{
+//		return preConditions.size();
+//	}
 	
 	int GetNumPostcons() const{
 		return postConditions.size();
 	}
 	
-	pairCond GetPrecon(int num) const{
-		pairCond pC = pairCond();
-		if(num < GetNumPrecons()){
-		pC = preConditions.at(num);
-		}
-		return pC;
-	}
+//	pairCond GetPrecon(int num) const{
+//		pairCond pC = pairCond();
+//		if(num < GetNumPrecons()){
+//		pC = preConditions.at(num);
+//		}
+//		return pC;
+//	}
 	
 	pairCond GetPostcon(int num) const{
 		pairCond pC = pairCond();
@@ -81,14 +114,16 @@ public:
 		}
 		return pC;
 	}
+	
+	void AddEffect(pairCond effect);
     
     virtual void PrintConditions(){
-		int numPreCons = ActionsRegister::Instance()->ActionCountPreconditions(name);
+//		int numPreCons = ActionsRegister::Instance()->ActionCountPreconditions(name);
 		int numPostCons = ActionsRegister::Instance()->ActionCountPostconditions(name);
 		
-		for(int i = 0; i < numPreCons; i++){
-        cout<<"PreCondition: "<<GetPrecon(i).first<<endl;
-		}
+//		for(int i = 0; i < numPreCons; i++){
+//        cout<<"PreCondition: "<<GetPrecon(i).first<<endl;
+//		}
 		for(int i = 0; i < numPostCons; i++){
         cout<<"PostCondition: "<<GetPostcon(i).first<<endl;
 		}
@@ -96,7 +131,7 @@ public:
 	
 	
 	void ClearConditions(){
-		preConditions.clear();
+//		preConditions.clear();
 		postConditions.clear();
 	}
 	
@@ -104,85 +139,19 @@ private:
 	// set action conditions from xml file
 	// means conditions will not have to be written in new class
 	// once specified in the XML with a matching ACTION:NAME field
-	void SetConditions(string nameIn){
-		ClearConditions();
-		int numPreCons = ActionsRegister::Instance()->ActionCountPreconditions(nameIn);
-		int numPostCons = ActionsRegister::Instance()->ActionCountPostconditions(nameIn);
-
-		for(int i = 0; i < numPreCons; i++){
-			preConditions.push_back(ActionsRegister::Instance()->GetPrecondition(nameIn.c_str(), i));
-		}
-		for(int i = 0; i < numPostCons; i++){
-			postConditions.push_back(ActionsRegister::Instance()->GetPostcondition(nameIn.c_str(), i));
-		}
-	}
-};
-
-class TimedAction: public Action{
-	
-public:
-	// shouldn't have this var? Move to next in hieracrchy
-    int cost;
-    float startTime, totalTime, expiryTime;
-
-    TimedAction(string name_, float expiryTime_):
-    Action(name_),
-    expiryTime(expiryTime_),
-    startTime(ofGetElapsedTimef()),
-    cost(1)
-    {
-    }
-    
-    TimedAction(string name_, float expiryTime_, int cost_):
-    Action(name_),
-    expiryTime(expiryTime_),
-    startTime(ofGetElapsedTimef()),
-    cost(cost_)
-    {
-    }
-
-    virtual void Execute(GridAgent* agent) = 0;
-    
-    virtual bool TaskComplete(GridAgent* agent) = 0;
-	
-	// take function pointer?
-//	virtual void CalculateCost(){}
-	
-	bool TimeComplete(){
-        totalTime = ofGetElapsedTimef()-startTime;
-        if(totalTime >= expiryTime){
-            return true;
-        }
-        return false;
-    }
-    
-	bool IsComplete(GridAgent* agent){
-        if(TaskComplete(agent) || TimeComplete()){
-            return true;
-        }
-        return false;
-    }
-};
-
-//class LocationAction: public TimedAction{
-//	float distance;
-//	
-//public:
-//LocationAction(string name_, float expiryTime_):
-//	TimedAction(name_, expiryTime_)
-//	{
-//	}
-//	
-//LocationAction(string name_, float expiryTime_, int cost_):
-//	TimedAction(name_, expiryTime_, cost_)
-//	{
-//	}
-//	
-//	void SetDistance(ofVec2f agentPos, ofVec2f targetPos){
-//		distance = Utility::GetGridDistance(agentPos, targetPos);
-//	}
-//	
-//	//	void CalculateCost(){}
+//	void SetConditions(string nameIn){
+//		ClearConditions();
+//		int numPreCons = ActionsRegister::Instance()->ActionCountPreconditions(nameIn);
+//		int numPostCons = ActionsRegister::Instance()->ActionCountPostconditions(nameIn);
 //
-//};
+//		for(int i = 0; i < numPreCons; i++){
+//			preConditions.push_back(ActionsRegister::Instance()->GetPrecondition(nameIn.c_str(), i));
+//		}
+//		for(int i = 0; i < numPostCons; i++){
+//			postConditions.push_back(ActionsRegister::Instance()->GetPostcondition(nameIn.c_str(), i));
+//		}
+//	}
+
+};
+
 #endif /* defined(__AgentGridActions__AgentAction__) */

@@ -20,17 +20,17 @@ protected:
 	WorldTypes::ItemType targetType;
 	
 public:
-	ActionChangeCell(string name_, float expiryTime_, ItemType targetType_):
-	TimedAction(name_, expiryTime_),
+	ActionChangeCell(pairCond effect, ItemType targetType_):
+	TimedAction(effect),
 	targetType(targetType_)
 	{
 	}
 	
-	ActionChangeCell(string name_, float expiryTime_, float cost_, ItemType targetType_):
-	TimedAction(name_, expiryTime_, cost_),
-	targetType(targetType_)
-	{
-	}
+//	ActionChangeCell(float expiryTime_, float cost_, ItemType targetType_):
+//	TimedAction(expiryTime_, cost_),
+//	targetType(targetType_)
+//	{
+//	}
 	
 	void Execute(GridAgent* agent);
 	
@@ -39,15 +39,15 @@ public:
 
 class ActionBuildHome: public TimedAction{
 public:
-	ActionBuildHome(string name_, float expiryTime_):
-	TimedAction(name_, expiryTime_)
+	ActionBuildHome(pairCond effect):
+	TimedAction(effect)
 	{
 	}
 	
-	ActionBuildHome(string name_, float expiryTime_, float cost_):
-	TimedAction(name_, expiryTime_, cost_)
-	{
-	}
+//	ActionBuildHome(float expiryTime_, float cost_):
+//	TimedAction(expiryTime_, cost_)
+//	{
+//	}
 	
 	void Execute(GridAgent* agent);
 	
@@ -58,15 +58,15 @@ public:
 
 class ActionDestroyHome: public TimedAction{
 public:
-	ActionDestroyHome(string name_, float expiryTime_):
-	TimedAction(name_, expiryTime_)
+	ActionDestroyHome(pairCond effect):
+	TimedAction(effect)
 	{
 	}
 	
-	ActionDestroyHome(string name_, float expiryTime_, float cost_):
-	TimedAction(name_, expiryTime_, cost_)
-	{
-	}
+//	ActionDestroyHome(float expiryTime_, float cost_):
+//	TimedAction(expiryTime_, cost_)
+//	{
+//	}
 	
 	void Execute(GridAgent* agent);
 	

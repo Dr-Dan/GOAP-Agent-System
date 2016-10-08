@@ -10,9 +10,13 @@
 #include "GridAgent.h"
 
 deque<TimedAction*> ActionsModule::possibleActions = {
-	new ActionWander("Wander", 2),
-	
-	new ActionWander("Find Food", 2),
+	new ActionIdle(pairCond("is waiting", 1)),
+	new ActionWander(pairCond("found food", 1)),
+	new ActionGoto(pairCond("at food", 1), WorldTypes::CELL_FOOD, WorldTypes::NEAREST_CELL),
+	new ActionPickupResource(pairCond("has food", 1), WorldTypes::CELL_FOOD),
+	new ActionUseCarriedResource(pairCond("used food", 1), WorldTypes::CELL_FOOD)
+
+	/*
 	new ActionWander("Find Wood", 2),
 	
 	new ActionWander("Find Home", 2),
@@ -45,6 +49,7 @@ deque<TimedAction*> ActionsModule::possibleActions = {
 	// CONSUME
 	new ActionSleep("Sleep", 4),
 	new ActionUseCarriedResource("Eat", 4, WorldTypes::CELL_FOOD)
+	 */
 };
 
 ActionsModule::~ActionsModule(){
@@ -72,10 +77,10 @@ void ActionsModule::Update(GridAgent& agent){
 }
 
 
-Action* ActionsModule::GetNextAction(GridAgent& agent){
+TimedAction* ActionsModule::GetNextAction(GridAgent& agent){
 	//	BuildTree(agent);
 	
-	Action* nextAction = NULL;
+	TimedAction* nextAction = NULL;
 	//	nextAction = actionTree->GetActionForState(*agent.stateModule.GetCurrentState());
 	nextAction = planner->GetNextAction(agent);
 	
@@ -83,14 +88,14 @@ Action* ActionsModule::GetNextAction(GridAgent& agent){
 }
 
 void ActionsModule::DoNextAction(GridAgent& agent){
-	Action* nextAction = GetNextAction(agent);
+	TimedAction* nextAction = GetNextAction(agent);
 	if(nextAction && nextAction->IsValid(&agent)){
 		currentAction = nextAction;
 		currentAction->Execute(&agent);
 	}
 }
 
-Action* ActionsModule::GetCurrentAction(){
+TimedAction* ActionsModule::GetCurrentAction(){
 	if(currentAction){
 		return currentAction;
 	}
