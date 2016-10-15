@@ -31,12 +31,22 @@ public:
 	int cost;
 	float startTime, totalTime, expiryTime;
 	
-	TimedAction(pairCond effect):
+//	TimedAction(pairCond effect):
+//	expiryTime(1),
+//	startTime(ofGetElapsedTimef()),
+//	cost(1)
+//	{
+//		AddEffect(effect);
+//	}
+	
+	TimedAction(string name):
 	expiryTime(1),
 	startTime(ofGetElapsedTimef()),
-	cost(1)
+	cost(1),
+	name(name)
 	{
-		AddEffect(effect);
+		SetConditions(name);
+//		AddEffect(effect);
 	}
 
 
@@ -126,18 +136,18 @@ private:
 	// set action conditions from xml file
 	// means conditions will not have to be written in new class
 	// once specified in the XML with a matching ACTION:NAME field
-//	void SetConditions(string nameIn){
-//		ClearConditions();
-//		int numPreCons = ActionsRegister::Instance()->ActionCountPreconditions(nameIn);
-//		int numPostCons = ActionsRegister::Instance()->ActionCountPostconditions(nameIn);
-//
-//		for(int i = 0; i < numPreCons; i++){
-//			preConditions.push_back(ActionsRegister::Instance()->GetPrecondition(nameIn.c_str(), i));
-//		}
-//		for(int i = 0; i < numPostCons; i++){
-//			postConditions.push_back(ActionsRegister::Instance()->GetPostcondition(nameIn.c_str(), i));
-//		}
-//	}
+	void SetConditions(string nameIn){
+		ClearConditions();
+		int numPreCons = ActionsRegister::Instance()->ActionCountPreconditions(nameIn);
+		int numPostCons = ActionsRegister::Instance()->ActionCountPostconditions(nameIn);
+
+		for(int i = 0; i < numPreCons; i++){
+			preConditions.push_back(ActionsRegister::Instance()->GetPrecondition(nameIn.c_str(), i));
+		}
+		for(int i = 0; i < numPostCons; i++){
+			postConditions.push_back(ActionsRegister::Instance()->GetPostcondition(nameIn.c_str(), i));
+		}
+	}
 
 };
 

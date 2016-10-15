@@ -12,24 +12,29 @@
 
 MotivationsModule::MotivationsModule(){
 	// GOALS
-	primaryGoals = {
-		new GoalBeFull(pairCond("is full", 1), pairCond("used food", 1)),
-		new GoalRelax(pairCond("is relaxed", 1), pairCond("is waiting", 1)),
-	};
+//	primaryGoals = {
+//		new GoalBeFull(pairCond("is full", 1), pairCond("used food", 1)),
+//		new GoalRelax(pairCond("is relaxed", 1), pairCond("is waiting", 1)),
+//	};
 	goals = {
-		new GoalBeIdle(pairCond("is waiting", 1)),
-		new GoalKnowsOfFood(pairCond("found food", 1)),
-		new GoalBeAtFood(pairCond("at food", 1), pairCond("found food", 1)),
-		new GoalGetFood(pairCond("has food", 1), pairCond("at food", 1)),
-		new GoalEatFood(pairCond("used food", 1), pairCond("has food", 1)),
+		
+		new Goal("satisfy hunger", 0),
+		new Goal("explore", 0),
+//		new GoalBeIdle(pairCond("is waiting", 1)),
+//		new GoalKnowsOfFood(pairCond("found food", 1)),
+//		new GoalBeAtFood(pairCond("at food", 1), pairCond("found food", 1)),
+//		new GoalGetFood(pairCond("has food", 1), pairCond("at food", 1)),
+//		new GoalEatFood(pairCond("used food", 1), pairCond("has food", 1)),
 //		new GoalEat("Eat Food", 0),
 //		new GoalExplore("Explore", 1),
-		//		Goal("Get Rested", 0),
+
 		
-		//		Goal("Store Food", 0),
-		//		Goal("Store Wood", 0),
-		//		Goal("Build Home", 0),
-		//		Goal("Destroy Home", 0)
+//				Goal("Get Rested", 0),
+//		
+//				Goal("Store Food", 0),
+//				Goal("Store Wood", 0),
+//				Goal("Build Home", 0),
+//				Goal("Destroy Home", 0)
 	};
 	
 	for(int i = 0; i < goals.size(); i++){
@@ -203,5 +208,5 @@ Goal MotivationsModule::GetTopGoal(){
 		}
 	}
 	
-	return *mapGoals.at("Explore");
+	return *mapGoals.at("explore");
 }

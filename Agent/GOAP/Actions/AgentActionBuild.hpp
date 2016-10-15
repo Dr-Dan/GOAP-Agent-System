@@ -20,8 +20,8 @@ protected:
 	WorldTypes::ItemType targetType;
 	
 public:
-	ActionChangeCell(pairCond effect, ItemType targetType_):
-	TimedAction(effect),
+	ActionChangeCell(string name, ItemType targetType_):
+	TimedAction(name),
 	targetType(targetType_)
 	{
 	}
@@ -39,8 +39,8 @@ public:
 
 class ActionBuildHome: public TimedAction{
 public:
-	ActionBuildHome(pairCond effect):
-	TimedAction(effect)
+	ActionBuildHome(string name):
+	TimedAction(name)
 	{
 	}
 	
@@ -58,8 +58,8 @@ public:
 
 class ActionDestroyHome: public TimedAction{
 public:
-	ActionDestroyHome(pairCond effect):
-	TimedAction(effect)
+	ActionDestroyHome(string name):
+	TimedAction(name)
 	{
 	}
 	

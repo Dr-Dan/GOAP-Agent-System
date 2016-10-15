@@ -24,7 +24,7 @@ class GridAgent;
 //	virtual void UpdateValidity(GridAgent& agent);
 //	virtual void UpdateRelevance(GridAgent& agent);
 //};
-
+/*
 class GoalKnowsOfFood: public Goal{
 public:
 	GoalKnowsOfFood():Goal(){}
@@ -108,6 +108,7 @@ public:
 	virtual void UpdateValidity(GridAgent& agent){}
 	virtual void UpdateRelevance(GridAgent& agent){}
 };
+ */
 /*
 
 

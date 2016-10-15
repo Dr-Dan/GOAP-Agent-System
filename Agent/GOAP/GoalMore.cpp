@@ -8,7 +8,7 @@
 
 #include "GoalMore.hpp"
 #include "GridAgent.h"
-
+/*
 // GOAL EXPLORE
 void GoalKnowsOfFood::UpdateValidity(GridAgent& agent){
 	SetValidity(true);
@@ -55,6 +55,7 @@ void GoalRelax::UpdateRelevance(GridAgent& agent){
 	}
 
 }
+*/
 
 /*
 // GOAL EXPLORE

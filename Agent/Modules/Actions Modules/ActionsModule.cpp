@@ -10,11 +10,12 @@
 #include "GridAgent.h"
 
 deque<TimedAction*> ActionsModule::possibleActions = {
-	new ActionIdle(pairCond("is waiting", 1)),
-	new ActionWander(pairCond("found food", 1)),
-	new ActionGoto(pairCond("at food", 1), WorldTypes::CELL_FOOD, WorldTypes::NEAREST_CELL),
-	new ActionPickupResource(pairCond("has food", 1), WorldTypes::CELL_FOOD),
-	new ActionUseCarriedResource(pairCond("used food", 1), WorldTypes::CELL_FOOD)
+//	new ActionIdle("wait"),
+	new ActionWander("explore"),
+	new ActionWander("find food"),
+	new ActionGoto("goto food", WorldTypes::CELL_FOOD, WorldTypes::NEAREST_CELL),
+	new ActionPickupResource("pickup food", WorldTypes::CELL_FOOD),
+	new ActionUseCarriedResource("eat food", WorldTypes::CELL_FOOD)
 
 	/*
 	new ActionWander("Find Wood", 2),

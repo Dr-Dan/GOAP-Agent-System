@@ -19,8 +19,8 @@ protected:
 	WorldTypes::GotoSpec gotoSpec;
 	
 public:
-	ActionGoto(pairCond effect, ItemType gotoType_, GotoSpec gotoSpec_):
-	TimedAction(effect),
+	ActionGoto(string name, ItemType gotoType_, GotoSpec gotoSpec_):
+	TimedAction(name),
 	gotoType(gotoType_),
 	gotoSpec(gotoSpec_)
 	{
@@ -47,8 +47,8 @@ protected:
 	WorldTypes::GotoSpec gotoSpec;
 	
 public:
-	ActionGotoStorage(pairCond effect, GotoSpec gotoSpec_):
-	TimedAction(effect),
+	ActionGotoStorage(string name, GotoSpec gotoSpec_):
+	TimedAction(name),
 	gotoSpec(gotoSpec_)
 	{
 		//SetConditions(name);

@@ -15,9 +15,26 @@ relevance(1),
 //name("Neutral Goal"),
 changeRate(1)
 {
-	//	LoadConditions(name);
+		LoadConditions(name);
 }
 
+Goal::Goal(string name_):
+relevance(1),
+name(name_),
+changeRate(1)
+{
+ 	LoadConditions(name);
+}
+
+Goal::Goal(string name_, int relevance):
+relevance(relevance),
+name(name_),
+changeRate(1)
+{
+ LoadConditions(name);
+}
+
+/*
 Goal::Goal(pairCond effect):
 Goal()
 {
@@ -30,27 +47,10 @@ Goal()
 	AddEffect(effect);
 	AddPrecondition(precondition);
 }
-
-/*
- Goal::Goal(string name_):
- relevance(1),
- name(name_),
- changeRate(1)
- {
- //	LoadConditions(name);
- }
- 
- Goal::Goal(string name_, int relevance):
- relevance(relevance),
- name(name_),
- changeRate(1)
- {
- //	LoadConditions(name);
- }
- */
+*/
 
 Goal::~Goal(){
-	preconditions.clear();
+//	satisfactionConds.clear();
 	//	vitalConds.clear();
 }
 
@@ -65,13 +65,13 @@ string Goal::GetName() const{
 }
 
 int Goal::GetNumCons() const{
-	return preconditions.size();
+	return satisfactionConds.size();
 }
 
 pairCond Goal::GetCondition(int num) const{
 	pairCond pC = pairCond();
 	if(num < GetNumCons()){
-		pC = preconditions.at(num);
+		pC = satisfactionConds.at(num);
 	}
 	return pC;
 }
@@ -108,27 +108,15 @@ bool Goal::IsValid(){
 	return isValid;
 }
 
-void Goal::AddPrecondition(pairCond pair){
-	preconditions.push_back(pair);
+void Goal::AddCondition(pairCond pair){
+	satisfactionConds.push_back(pair);
 }
 
-void Goal::AddEffect(pairCond pair){
-	effects.push_back(pair);
-}
-
-bool Goal::CanBeSolvedBy(Goal goal){
-	for(int j = 0; j < goal.effects.size(); ++j){
-		if(CanBeSolvedBy(goal.effects[j])){
-			return true;
-		}
-	}
-	return false;
-}
 
 bool Goal::CanBeSolvedBy(TimedAction action){
-	for(int i = 0; i < effects.size(); ++i){
+	for(int i = 0; i < satisfactionConds.size(); ++i){
 		for(int j = 0; j < action.postConditions.size(); ++j){
-			if(action.postConditions[j] == effects[i]){
+			if(action.postConditions[j] == satisfactionConds[i]){
 				return true;
 			}
 		}
@@ -137,7 +125,7 @@ bool Goal::CanBeSolvedBy(TimedAction action){
 }
 
 bool Goal::CanBeSolvedBy(pairCond effect){
-	if(preconditions.empty()){
+	if(satisfactionConds.empty()){
 //		for(int i = 0; i < effects.size(); ++i){
 //			if(effects[i] == effect){
 //				return true;
@@ -146,8 +134,8 @@ bool Goal::CanBeSolvedBy(pairCond effect){
 		return false;
 	}
 	
-	for(int i = 0; i < preconditions.size(); ++i){
-		if(preconditions[i] == effect){
+	for(int i = 0; i < satisfactionConds.size(); ++i){
+		if(satisfactionConds[i] == effect){
 			return true;
 		}
 	}

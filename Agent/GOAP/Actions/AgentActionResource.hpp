@@ -20,8 +20,8 @@ protected:
 	WorldTypes::ItemType resType;
 	
 public:
-	ActionPickupResource(pairCond effect, ItemType resType_):
-	TimedAction(effect),
+	ActionPickupResource(string name, ItemType resType_):
+	TimedAction(name),
 	resType(resType_)
 	{
 		//SetConditions(name);
@@ -47,8 +47,8 @@ protected:
 	WorldTypes::ItemType resType;
 	
 public:
-	ActionUseCarriedResource(pairCond effect, ItemType resType_):
-	TimedAction(effect),
+	ActionUseCarriedResource(string name, ItemType resType_):
+	TimedAction(name),
 	resType(resType_)
 	{
 		//SetConditions(name);
@@ -73,8 +73,8 @@ protected:
 	WorldTypes::ItemType resType;
 	
 public:
-	ActionDropResource(pairCond effect, ItemType resType_):
-	TimedAction(effect),
+	ActionDropResource(string name, ItemType resType_):
+	TimedAction(name),
 	resType(resType_)
 	{
 		//SetConditions(name);

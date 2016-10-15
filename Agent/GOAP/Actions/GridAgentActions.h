@@ -22,8 +22,8 @@ class GridAgent;
 
 class ActionSleep: public TimedAction{
 public:
-	ActionSleep(pairCond effect):
-	TimedAction(effect)
+	ActionSleep(string name):
+	TimedAction(name)
 	{
 		//SetConditions(name);
 	}
@@ -45,8 +45,8 @@ public:
 class ActionWander:public TimedAction{
 	
 public:
-	ActionWander(pairCond effect)
-	:TimedAction(effect){
+	ActionWander(string name)
+	:TimedAction(name){
 		
 	}
 	
@@ -63,8 +63,8 @@ public:
 class ActionIdle:public TimedAction{
 	
 public:
-	ActionIdle(pairCond effect)
-	:TimedAction(effect){
+	ActionIdle(string name)
+	:TimedAction(name){
 		
 	}
 	

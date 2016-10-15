@@ -36,13 +36,13 @@ public:
 	// CONSTRUCTORS
 	Goal();
 	
-	Goal(pairCond effect);
+//	Goal(pairCond effect);
+
+//	Goal(pairCond effect, pairCond precondition);
 	
-	Goal(pairCond effect, pairCond precondition);
+	Goal(string name_);
 	
-//	Goal(string name_);
-	
-//	Goal(string name_, int relevance);
+	Goal(string name_, int relevance);
 	
 	// FUNCTIONS
 	
@@ -66,27 +66,25 @@ public:
 	
 	virtual void UpdateValidity(GridAgent& agent){}
 
-	void AddPrecondition(pairCond pair);
-	void AddEffect(pairCond pair);
+	void AddCondition(pairCond pair);
 
 	bool IsValid();
 	
-	bool CanBeSolvedBy(Goal goal);
 	bool CanBeSolvedBy(TimedAction action);
 	bool CanBeSolvedBy(pairCond effect);
 
-	vector<pairCond> preconditions;
-	vector<pairCond> effects;
+	vector<pairCond> satisfactionConds;
+//	vector<pairCond> effects;
 //protected:
 
 	
-//	void LoadConditions(string name_){
-//		int numConds = ActionsRegister::Instance()->GoalCountConditions(name_);
-//		
-//		for(int i = 0; i < numConds; i++){
-//			satisfactionConds.push_back(ActionsRegister::Instance()->GetGoalCondition(name_.c_str(), i));
-//		}
-//	}
+	void LoadConditions(string name_){
+		int numConds = ActionsRegister::Instance()->GoalCountConditions(name_);
+		
+		for(int i = 0; i < numConds; i++){
+			satisfactionConds.push_back(ActionsRegister::Instance()->GetGoalCondition(name_.c_str(), i));
+		}
+	}
 };
 #endif /* defined(__AgentGOAPActionsTestSimpler__Goal__) */
 
