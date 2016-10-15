@@ -21,7 +21,7 @@ using namespace WorldTypes;
 
 class TimedAction{
 public:
-//	vector<pairCond> preConditions;
+	vector<pairCond> preConditions;
 	vector<pairCond> postConditions;
     string name;
     
@@ -38,20 +38,7 @@ public:
 	{
 		AddEffect(effect);
 	}
-	
-//	TimedAction(float expiryTime_):
-//	expiryTime(expiryTime_),
-//	startTime(ofGetElapsedTimef()),
-//	cost(1)
-//	{
-//	}
-//	
-//	TimedAction(float expiryTime_, int cost_):
-//	expiryTime(expiryTime_),
-//	startTime(ofGetElapsedTimef()),
-//	cost(cost_)
-//	{
-//	}
+
 
     // must be declared with the actual action implementation
     // and the effects on the agent
