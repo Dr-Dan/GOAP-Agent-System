@@ -44,6 +44,7 @@ public:
 	
 	void DoNextAction(GridAgent& agent);
 	TimedAction* GetCurrentAction();
+	TimedAction* FindAction(string name);
 	
 	deque<TimedAction*> getPossibleActions(){
 		return possibleActions;

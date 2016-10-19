@@ -34,6 +34,7 @@ public:
 	
 	mapCond GetConditionsMap() const;
     pairCond GetConditionPair(string name) const;
+	pairCond GetConditionPair(int index) const;
     
     bool GetConditionValue(string name) const;
     
@@ -46,6 +47,8 @@ public:
     bool SharesCondition(mapCond conditionsIn) const;
 	
 	bool ContainsConditions(mapCond conditionsIn) const;
+	
+	int GetNumConditions() const;
     
     void PrintValues() const;
     

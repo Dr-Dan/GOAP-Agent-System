@@ -46,6 +46,7 @@ public:
 	name(name)
 	{
 		SetConditions(name);
+//		PrintConditions();
 //		AddEffect(effect);
 	}
 
@@ -88,21 +89,21 @@ public:
 	
 	bool PostconsInState(WorldState& state) const;
 	
-//	int GetNumPrecons() const{
-//		return preConditions.size();
-//	}
+	int GetNumPrecons() const{
+		return preConditions.size();
+	}
 	
 	int GetNumPostcons() const{
 		return postConditions.size();
 	}
 	
-//	pairCond GetPrecon(int num) const{
-//		pairCond pC = pairCond();
-//		if(num < GetNumPrecons()){
-//		pC = preConditions.at(num);
-//		}
-//		return pC;
-//	}
+	pairCond GetPrecon(int num) const{
+		pairCond pC = pairCond();
+		if(num < GetNumPrecons()){
+		pC = preConditions.at(num);
+		}
+		return pC;
+	}
 	
 	pairCond GetPostcon(int num) const{
 		pairCond pC = pairCond();
@@ -115,20 +116,20 @@ public:
 	void AddEffect(pairCond effect);
     
     virtual void PrintConditions(){
-//		int numPreCons = ActionsRegister::Instance()->ActionCountPreconditions(name);
-		int numPostCons = ActionsRegister::Instance()->ActionCountPostconditions(name);
+//	int numPreCons = ActionsRegister::Instance()->ActionCountPreconditions(name);
+//		int numPostCons = ActionsRegister::Instance()->ActionCountPostconditions(name);
 		
-//		for(int i = 0; i < numPreCons; i++){
-//        cout<<"PreCondition: "<<GetPrecon(i).first<<endl;
-//		}
-		for(int i = 0; i < numPostCons; i++){
+		for(int i = 0; i < GetNumPrecons(); i++){
+        cout<<"PreCondition: "<<GetPrecon(i).first<<endl;
+		}
+		for(int i = 0; i < GetNumPostcons(); i++){
         cout<<"PostCondition: "<<GetPostcon(i).first<<endl;
 		}
     }
 	
 	
 	void ClearConditions(){
-//		preConditions.clear();
+		preConditions.clear();
 		postConditions.clear();
 	}
 	
@@ -142,10 +143,10 @@ private:
 		int numPostCons = ActionsRegister::Instance()->ActionCountPostconditions(nameIn);
 
 		for(int i = 0; i < numPreCons; i++){
-			preConditions.push_back(ActionsRegister::Instance()->GetPrecondition(nameIn.c_str(), i));
+			preConditions.push_back(ActionsRegister::Instance()->GetPrecondition(nameIn, i));
 		}
 		for(int i = 0; i < numPostCons; i++){
-			postConditions.push_back(ActionsRegister::Instance()->GetPostcondition(nameIn.c_str(), i));
+			postConditions.push_back(ActionsRegister::Instance()->GetPostcondition(nameIn, i));
 		}
 	}
 

@@ -18,59 +18,59 @@ WorldState* StateModule::GetCurrentState(){
 }
 
 void StateModule::UpdateState(GridAgent* agent){
-//	currentState.SetCondition("Is Exploring", (!agent->attributes.NeedIsUrgent(CELL_FOOD) &&
-//											   !agent->attributes.NeedIsUrgent(CELL_HOME)));
+//	currentState.SetCondition("Is Exploring", (!agent->attributes.NeedIsUrgent(CELL_FOOD) && !agent->attributes.NeedIsUrgent(CELL_HOME)));
 	
-	//	    currentState.SetCondition("Is Hungry", agent->attributes.IsHungry()); // has no use?
-
-	currentState.SetCondition("is full", agent->attributes.NeedIsSatisfied(CELL_FOOD)); // has no use?
-
-	currentState.SetCondition("found food", agent->memoryModule.KnowsOfResourceType(CELL_FOOD));
-
-	currentState.SetCondition("at food", agent->sensorModule.AtCell(CELL_FOOD));
-	currentState.SetCondition("has food", agent->attributes.HasResource(CELL_FOOD));
-
+	//	currentState.SetCondition("Is Hungry", agent->attributes.IsHungry()); // has no use?
+	currentState.SetCondition("isexploring", true); // has no use?
+	
+	currentState.SetCondition("isfull", agent->attributes.NeedIsSatisfied(CELL_FOOD)); // has no use?
+	
+	currentState.SetCondition("foundfood", agent->memoryModule.KnowsOfResourceType(CELL_FOOD));
+	
+	currentState.SetCondition("atfood", agent->sensorModule.AtCell(CELL_FOOD));
+	currentState.SetCondition("hasfood", agent->attributes.HasResource(CELL_FOOD));
+	
 	//
-//	currentState.SetCondition("Wood Found", agent->memoryModule.KnowsOfResourceType(CELL_WOOD));
-//	currentState.SetCondition("Is At Wood", agent->sensorModule.AtCell(CELL_WOOD));
-//	
-//	currentState.SetCondition("Is Full", agent->attributes.NeedIsSatisfied(CELL_FOOD));
-//	
-//	//    currentState.SetCondition("Is Tired", agent->attributes.IsTired());
-//	currentState.SetCondition("Home Found", agent->memoryModule.HasHome());
-//	currentState.SetCondition("Is At Home", agent->sensorModule.AtCell(CELL_HOME) /* && agent->memoryModule.HasHome()
-//																				   && agent->memoryModule.GetCellFact(agent->sensorModule.GetCurrentCell()->GetId()).IsCellHome()*/);
-//	
-//	currentState.SetCondition("Is Rested", agent->attributes.NeedIsSatisfied(CELL_HOME));
-//	
-//	currentState.SetCondition("Storage Found Food", agent->memoryModule.KnowsOfCellType(CELL_STORAGE));
-//	currentState.SetCondition("Storage Found Wood", agent->memoryModule.KnowsOfCellType(CELL_STORAGE));
-//
-//	currentState.SetCondition("Carrying Food", (agent->attributes.HasResource(CELL_FOOD) /*&&
-//																						  agent->attributes.CanPickupResource(CELL_FOOD, agent->attributes.GetResourcePickupAmt(CELL_FOOD))*/));
-//	
-//	currentState.SetCondition("Carrying Wood", (agent->attributes.HasResource(CELL_WOOD)));
-//	
-//	currentState.SetCondition("Is At Storage Food", agent->sensorModule.AtCell(CELL_STORAGE));
-//	currentState.SetCondition("Is At Storage Wood", agent->sensorModule.AtCell(CELL_STORAGE));
-//
-//	// where to put sort function
-//	currentState.SetCondition("Home Location Found", agent->memoryModule.KnowsOfHomeLocation());
-//	
-//	// this is super convoluted
-//	ofVec2f topHomeLocation = ofVec2f();
-//	GridCell* currentCell = agent->sensorModule.GetCurrentCell();
-//	
-//	agent->memoryModule.GetPosHighestRatingCell(topHomeLocation, CELL_NEUTRAL);
-//	
-//	// shouldn't need to do this
-//	if(currentCell) {
-//	//	cout<<ofToString(homeLocation)<<endl;
-//	currentState.SetCondition("Is At Home Location", currentCell->GetGridPos() == topHomeLocation);
-//	currentState.SetCondition("At Owned Home", currentCell->GetId() == agent->memoryModule.GetCurrentHomeCellId() && agent->memoryModule.HasHome());
-//	}
-//	
-//	currentState.SetCondition("Home Placed", agent->memoryModule.HasHome());
+	//	currentState.SetCondition("Wood Found", agent->memoryModule.KnowsOfResourceType(CELL_WOOD));
+	//	currentState.SetCondition("Is At Wood", agent->sensorModule.AtCell(CELL_WOOD));
+	//
+	//	currentState.SetCondition("Is Full", agent->attributes.NeedIsSatisfied(CELL_FOOD));
+	//
+	//	//    currentState.SetCondition("Is Tired", agent->attributes.IsTired());
+	//	currentState.SetCondition("Home Found", agent->memoryModule.HasHome());
+	//	currentState.SetCondition("Is At Home", agent->sensorModule.AtCell(CELL_HOME) /* && agent->memoryModule.HasHome()
+	//																				   && agent->memoryModule.GetCellFact(agent->sensorModule.GetCurrentCell()->GetId()).IsCellHome()*/);
+	//
+	//	currentState.SetCondition("Is Rested", agent->attributes.NeedIsSatisfied(CELL_HOME));
+	//
+	//	currentState.SetCondition("Storage Found Food", agent->memoryModule.KnowsOfCellType(CELL_STORAGE));
+	//	currentState.SetCondition("Storage Found Wood", agent->memoryModule.KnowsOfCellType(CELL_STORAGE));
+	//
+	//	currentState.SetCondition("Carrying Food", (agent->attributes.HasResource(CELL_FOOD) /*&&
+	//																						  agent->attributes.CanPickupResource(CELL_FOOD, agent->attributes.GetResourcePickupAmt(CELL_FOOD))*/));
+	//
+	//	currentState.SetCondition("Carrying Wood", (agent->attributes.HasResource(CELL_WOOD)));
+	//
+	//	currentState.SetCondition("Is At Storage Food", agent->sensorModule.AtCell(CELL_STORAGE));
+	//	currentState.SetCondition("Is At Storage Wood", agent->sensorModule.AtCell(CELL_STORAGE));
+	//
+	//	// where to put sort function
+	//	currentState.SetCondition("Home Location Found", agent->memoryModule.KnowsOfHomeLocation());
+	//
+	//	// this is super convoluted
+	//	ofVec2f topHomeLocation = ofVec2f();
+	//	GridCell* currentCell = agent->sensorModule.GetCurrentCell();
+	//
+	//	agent->memoryModule.GetPosHighestRatingCell(topHomeLocation, CELL_NEUTRAL);
+	//
+	//	// shouldn't need to do this
+	//	if(currentCell) {
+	//	//	cout<<ofToString(homeLocation)<<endl;
+	//	currentState.SetCondition("Is At Home Location", currentCell->GetGridPos() == topHomeLocation);
+	//	currentState.SetCondition("At Owned Home", currentCell->GetId() == agent->memoryModule.GetCurrentHomeCellId() && agent->memoryModule.HasHome());
+	//	}
+	//
+	//	currentState.SetCondition("Home Placed", agent->memoryModule.HasHome());
 	
 	
 	

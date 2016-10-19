@@ -11,11 +11,11 @@
 
 deque<TimedAction*> ActionsModule::possibleActions = {
 //	new ActionIdle("wait"),
-	new ActionWander("explore"),
-	new ActionWander("find food"),
-	new ActionGoto("goto food", WorldTypes::CELL_FOOD, WorldTypes::NEAREST_CELL),
-	new ActionPickupResource("pickup food", WorldTypes::CELL_FOOD),
-	new ActionUseCarriedResource("eat food", WorldTypes::CELL_FOOD)
+	new ActionWander("wander"),
+	new ActionWander("findfood"),
+	new ActionGoto("gotofood", WorldTypes::CELL_FOOD, WorldTypes::NEAREST_CELL),
+	new ActionPickupResource("pickupfood", WorldTypes::CELL_FOOD),
+	new ActionUseCarriedResource("eatfood", WorldTypes::CELL_FOOD)
 
 	/*
 	new ActionWander("Find Wood", 2),
@@ -101,6 +101,15 @@ TimedAction* ActionsModule::GetCurrentAction(){
 		return currentAction;
 	}
 	return NULL;
+}
+
+TimedAction* ActionsModule::FindAction(string name){
+	for(int i = 0; i < possibleActions.size(); ++i){
+		if(possibleActions[i]->name == name){
+			return possibleActions[i];
+		}
+	}
+	return nullptr;
 }
 
 AIBase* ActionsModule:: GetPlanner(){

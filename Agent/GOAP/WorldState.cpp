@@ -56,6 +56,28 @@ pairCond WorldState::GetConditionPair(string name) const{
 	return pairOut;
 }
 
+pairCond WorldState::GetConditionPair(int index) const{
+	pairCond pairOut;
+	int j = 0;
+//	mapCond::const_iterator mi = conditions.begin();
+//	for(int i = 0; i < conditions.size(); ++i){
+//		++mi;
+//	}
+//	return *mi;
+	if(index >= conditions.size()){
+		printf("index %d is larger than the conditions map", index);
+		return pairCond();
+	}
+	
+	for(mapCond::const_iterator i = conditions.begin(); i != conditions.end(); ++i, ++j){
+		
+		if(j == index){
+		return *i;
+		}
+	}
+}
+
+
 bool WorldState::GetConditionValue(string name) const{
 	bool conditionStatus = false;
 	if(conditions.count(name)){
@@ -121,6 +143,10 @@ bool WorldState::SharesCondition(mapCond conditionsIn) const{
 		}
 	}
 	return false;
+}
+
+int WorldState::GetNumConditions() const{
+	return conditions.size();
 }
 
 void WorldState::PrintValues() const{

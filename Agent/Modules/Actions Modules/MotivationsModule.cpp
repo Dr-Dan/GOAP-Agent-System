@@ -12,14 +12,14 @@
 
 MotivationsModule::MotivationsModule(){
 	// GOALS
-//	primaryGoals = {
-//		new GoalBeFull(pairCond("is full", 1), pairCond("used food", 1)),
-//		new GoalRelax(pairCond("is relaxed", 1), pairCond("is waiting", 1)),
-//	};
+	primaryGoals = {
+		new Goal("satisfyhunger", 0),
+		new Goal("discover", 0),
+	};
 	goals = {
 		
-		new Goal("satisfy hunger", 0),
-		new Goal("explore", 0),
+		new Goal("satisfyhunger", 0),
+		new Goal("discover", 0),
 //		new GoalBeIdle(pairCond("is waiting", 1)),
 //		new GoalKnowsOfFood(pairCond("found food", 1)),
 //		new GoalBeAtFood(pairCond("at food", 1), pairCond("found food", 1)),
@@ -85,14 +85,14 @@ void MotivationsModule::UpdateGoal(GridAgent* agent){
 	//	}
 	
 	// eat
-	//	if(agent->attributes.NeedIsUrgent(CELL_FOOD)){
-	//		ChangeGoalRelevance("Eat Food", 1);
-	//		SetGoalRelevance("Explore", 0);
-	//	}
-	//
-	//	if(agent->attributes.NeedIsSatisfied(CELL_FOOD)){
-	//		SetGoalRelevance("Eat Food", 0);
-	//	}
+		if(agent->attributes.NeedIsUrgent(CELL_FOOD)){
+			ChangeGoalRelevance("satisfyhunger", 1);
+			SetGoalRelevance("discover", 0);
+		}
+	
+		if(agent->attributes.NeedIsSatisfied(CELL_FOOD)){
+			SetGoalRelevance("satisfyhunger", 0);
+		}
 	
 	/*
 	 // sleep
@@ -154,10 +154,10 @@ void MotivationsModule::UpdateGoalValidity(GridAgent* agent){
 	 mapGoals.at("Store Wood")->SetValidity(agent->memoryModule.KnowsOfCellType(CELL_STORAGE) &&
 	 agent->memoryModule.KnowsOfUnfilledStorage());
 	 
-	 
-	 //	if(agent->memoryModule.KnowsOfCellType(CELL_FOOD)){
-	 mapGoals.at("Eat Food")->SetValidity(agent->memoryModule.KnowsOfCellType(CELL_FOOD));
 	 */
+	 //	if(agent->memoryModule.KnowsOfCellType(CELL_FOOD)){
+	 mapGoals.at("satisfyhunger")->SetValidity(agent->memoryModule.KnowsOfCellType(CELL_FOOD));
+	 
 	
 //	map<string, Goal*>::iterator i{mapGoals.begin()};
 	for(int i = 0;i < primaryGoals.size(); ++i){
@@ -208,5 +208,5 @@ Goal MotivationsModule::GetTopGoal(){
 		}
 	}
 	
-	return *mapGoals.at("explore");
+	return *mapGoals.begin()->second;
 }

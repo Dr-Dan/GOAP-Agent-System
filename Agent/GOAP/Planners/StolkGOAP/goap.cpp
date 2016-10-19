@@ -94,7 +94,6 @@ bool goap::goap_worldstate_set( actionplanner_t* ap, worldstate_t* ws, const cha
 	// store any bits that are already not important and not set in the current atom
 	// e.g. dontcare->1111, idx=0->~0001=1110 ::: 1111 & 1110 = (1111)1110 = -2
 	ws->dontcare &= ~( 1LL << idx );
-	printf("dontcare: %lld\n", ws->dontcare);
 	return true;
 }
 
