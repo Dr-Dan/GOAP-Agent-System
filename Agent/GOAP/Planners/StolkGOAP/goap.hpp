@@ -2,9 +2,8 @@
 //  goap.hpp
 //  GPGOAP_cpp
 //
-//  Created by D J Clarke on 11/09/2016.
-//  Copyright © 2016 D J Clarke. All rights reserved.
-//
+
+// From from Abraham T. Stolk's GOAP repo: https://github.com/stolk/GPGOAP
 
 #ifndef goap_hpp
 #define goap_hpp

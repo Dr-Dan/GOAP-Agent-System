@@ -2,9 +2,7 @@
 //  astar.cpp
 //  GPGOAP_cpp
 //
-//  Created by D J Clarke on 11/09/2016.
-//  Copyright © 2016 D J Clarke. All rights reserved.
-//
+
 
 #include "astar.hpp"
 #include "goap.hpp"
