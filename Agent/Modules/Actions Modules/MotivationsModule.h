@@ -47,7 +47,7 @@ public:
 	Goal GetTopGoal();
 	
 	vector<Goal*> goals;
-	vector<Goal*> primaryGoals;
+//	vector<Goal*> primaryGoals;
 
 };
 #endif /* defined(__AgentGOBGridTest__MotivationsModule__) */

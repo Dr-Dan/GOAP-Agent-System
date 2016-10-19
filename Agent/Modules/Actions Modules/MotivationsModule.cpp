@@ -12,14 +12,16 @@
 
 MotivationsModule::MotivationsModule(){
 	// GOALS
-	primaryGoals = {
-		new Goal("satisfyhunger", 0),
-		new Goal("discover", 0),
-	};
+//	primaryGoals = {
+//		new Goal("satisfyhunger", 0),
+//		new Goal("discover", 0),
+//	};
 	goals = {
 		
 		new Goal("satisfyhunger", 0),
 		new Goal("discover", 0),
+		new Goal("getrested", 0),
+		new Goal("buildhome", 0),
 //		new GoalBeIdle(pairCond("is waiting", 1)),
 //		new GoalKnowsOfFood(pairCond("found food", 1)),
 //		new GoalBeAtFood(pairCond("at food", 1), pairCond("found food", 1)),
@@ -29,8 +31,7 @@ MotivationsModule::MotivationsModule(){
 //		new GoalExplore("Explore", 1),
 
 		
-//				Goal("Get Rested", 0),
-//		
+//
 //				Goal("Store Food", 0),
 //				Goal("Store Wood", 0),
 //				Goal("Build Home", 0),
@@ -57,16 +58,27 @@ void MotivationsModule::UpdateGoal(GridAgent* agent){
 	// e.g. GoalRelevanceMaster::SetRelevance(mapGoals["Build Home"])
 	// OR.. GoalRelevanceMaster::SetRelevance(GoalBuildHome) or
 	
-	/*
+	
 	 // GoalBuildHome.SetRelevance(agentBB)  then...
 	 // for(Goal g: goals){g.setRelevance(agentBB);}
 	 if(agent->attributes.NeedIsUrgent(CELL_HOME) || !agent->memoryModule.HasHome()){
-		SetGoalRelevance("Build Home", 30);
+		SetGoalRelevance("buildhome", 30);
 		//		SetGoalRelevance("Get Rested", 49);
 	 } else{
-		SetGoalRelevance("Build Home", 0);
+		SetGoalRelevance("buildhome", 0);
 	 }
-	 */
+
+	// eat
+		if(agent->attributes.NeedIsUrgent(CELL_FOOD)){
+			ChangeGoalRelevance("satisfyhunger", 1);
+			SetGoalRelevance("discover", 0);
+		}
+	
+		if(agent->attributes.NeedIsSatisfied(CELL_FOOD)){
+			SetGoalRelevance("satisfyhunger", 0);
+		}
+	
+	
 	
 	//	if(agent->memoryModule.HasHome() && knowsBetterCell){
 	//		ChangeGoalRelevance("Destroy Home", 1);
@@ -84,25 +96,16 @@ void MotivationsModule::UpdateGoal(GridAgent* agent){
 	//		ChangeGoalRelevance("Explore", 1);
 	//	}
 	
-	// eat
-		if(agent->attributes.NeedIsUrgent(CELL_FOOD)){
-			ChangeGoalRelevance("satisfyhunger", 1);
-			SetGoalRelevance("discover", 0);
-		}
 	
-		if(agent->attributes.NeedIsSatisfied(CELL_FOOD)){
-			SetGoalRelevance("satisfyhunger", 0);
-		}
-	
-	/*
 	 // sleep
 	 if(agent->attributes.NeedIsUrgent(CELL_HOME) && agent->memoryModule.HasHome()){
-		ChangeGoalRelevance("Get Rested", 1);
+		ChangeGoalRelevance("getrested", 1);
 	 }
 	 if(agent->attributes.NeedIsSatisfied(CELL_HOME)){
-		SetGoalRelevance("Get Rested", 0);
+		SetGoalRelevance("getrested", 0);
 	 }
-	 
+	
+	 /*
 	 // food storage
 	 if(agent->memoryModule.KnowsOfCellType(CELL_STORAGE)){
 		ChangeGoalRelevance("Store Food", 10);
@@ -120,11 +123,11 @@ void MotivationsModule::UpdateGoal(GridAgent* agent){
 	
 //	map<string, Goal*>::iterator i{mapGoals.begin()};
 	
-	for(int i = 0;i < primaryGoals.size(); ++i){
-		primaryGoals[i]->UpdateRelevance(*agent);
-		primaryGoals[i]->Update();
-	}
-	
+//	for(int i = 0;i < primaryGoals.size(); ++i){
+//		primaryGoals[i]->UpdateRelevance(*agent);
+//		primaryGoals[i]->Update();
+//	}
+//	
 	
 	for(int i = 0;i < goals.size(); ++i){
 		goals[i]->UpdateRelevance(*agent);
@@ -153,16 +156,20 @@ void MotivationsModule::UpdateGoalValidity(GridAgent* agent){
 	 
 	 mapGoals.at("Store Wood")->SetValidity(agent->memoryModule.KnowsOfCellType(CELL_STORAGE) &&
 	 agent->memoryModule.KnowsOfUnfilledStorage());
-	 
 	 */
+	
+	mapGoals.at("buildhome")->SetValidity(!agent->memoryModule.HasHome());
+
+	mapGoals.at("getrested")->SetValidity(agent->memoryModule.HasHome());
+	
 	 //	if(agent->memoryModule.KnowsOfCellType(CELL_FOOD)){
 	 mapGoals.at("satisfyhunger")->SetValidity(agent->memoryModule.KnowsOfCellType(CELL_FOOD));
 	 
 	
 //	map<string, Goal*>::iterator i{mapGoals.begin()};
-	for(int i = 0;i < primaryGoals.size(); ++i){
-		primaryGoals[i]->UpdateValidity (*agent);
-	}
+//	for(int i = 0;i < primaryGoals.size(); ++i){
+//		primaryGoals[i]->UpdateValidity (*agent);
+//	}
 	
 for(int i = 0;i < goals.size(); ++i){
 	goals[i]->UpdateValidity (*agent);
@@ -182,22 +189,22 @@ void MotivationsModule::ChangeGoalRelevance(string name, float changeValue){
 }
 
 Goal MotivationsModule::GetTopGoal(){
-	if(!primaryGoals.empty()){
-		Goal* topGoal = primaryGoals[0];
+	if(!goals.empty()){
+		Goal* topGoal = goals[0];
 		
-		sort(primaryGoals.begin(), primaryGoals.end(), goalRelevanceComp);
+		sort(goals.begin(), goals.end(), goalRelevanceComp);
 		//		sort(mapGoals.begin(), mapGoals.end(), goalRelevanceCompMap); // not allowed apparently
 		
 		// reallocate mapGoals
 		mapGoals.clear();
-		for(int i = 0; i < primaryGoals.size(); i++){
-			mapGoals.insert(pair<string, Goal*>(primaryGoals[i]->GetName(), primaryGoals[i]));
+		for(int i = 0; i < goals.size(); i++){
+			mapGoals.insert(pair<string, Goal*>(goals[i]->GetName(), goals[i]));
 		}
 		
 		// return highest ranking valid goal
-		for(int i = 0; i < primaryGoals.size(); i++){
-			if(primaryGoals[i]->IsValid()){
-				Goal goalOut = *primaryGoals[i];
+		for(int i = 0; i < goals.size(); i++){
+			if(goals[i]->IsValid()){
+				Goal goalOut = *goals[i];
 				
 				if(topGoal->GetName() != goalOut.GetName()){
 					goalChanged = true;

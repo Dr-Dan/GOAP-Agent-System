@@ -29,7 +29,7 @@ AgentAttributes::AgentAttributes(){
 // need bank of attribute inc/dec effects somewhere to use?
 void AgentAttributes::UpdateNeeds(){
 	agentNeeds.UpdateNeed(CELL_FOOD);
-//	agentNeeds.UpdateNeed(CELL_HOME);
+	agentNeeds.UpdateNeed(CELL_HOME);
 }
 
 // ---------------------------------------------

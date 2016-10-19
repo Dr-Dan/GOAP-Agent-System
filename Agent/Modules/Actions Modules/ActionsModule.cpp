@@ -10,46 +10,59 @@
 #include "GridAgent.h"
 
 deque<TimedAction*> ActionsModule::possibleActions = {
-//	new ActionIdle("wait"),
+	//	new ActionIdle("wait"),
 	new ActionWander("wander"),
 	new ActionWander("findfood"),
+	new ActionWander("findwood"),
+	new ActionWander("findhome"),
+	new ActionWander("findhomelocation"),
+	
 	new ActionGoto("gotofood", WorldTypes::CELL_FOOD, WorldTypes::NEAREST_CELL),
+	new ActionGoto("gotowood", WorldTypes::CELL_WOOD, WorldTypes::NEAREST_CELL),
+		 new ActionGoto("gotohomelocation", WorldTypes::CELL_NEUTRAL, WorldTypes::NEAREST_BUILD_LOC),
+	new ActionGoto("gotoownedhome", WorldTypes::CELL_HOME, WorldTypes::NEAREST_OWNED_LOC),
+	
+	
 	new ActionPickupResource("pickupfood", WorldTypes::CELL_FOOD),
-	new ActionUseCarriedResource("eatfood", WorldTypes::CELL_FOOD)
+	new ActionPickupResource("pickupwood", WorldTypes::CELL_WOOD),
+	
+	new ActionUseCarriedResource("eatfood", WorldTypes::CELL_FOOD),
+	new ActionSleep("sleep"),
 
+	new ActionBuildHome("placehome"),
 	/*
-	new ActionWander("Find Wood", 2),
-	
-	new ActionWander("Find Home", 2),
-	new ActionWander("Find Home Location", 2),
-	
-	new ActionWander("Find Storage Food", 2),
-	new ActionWander("Find Storage Wood", 2),
-	
-	// GOTO
-	new ActionGoto("Goto Food", 4, WorldTypes::CELL_FOOD, WorldTypes::NEAREST_CELL),
-	new ActionGoto("Goto Wood", 4, WorldTypes::CELL_WOOD, WorldTypes::NEAREST_CELL),
-	new ActionGoto("Goto Home", 4, WorldTypes::CELL_HOME, WorldTypes::NEAREST_OWNED_LOC),
-	new ActionGotoStorage("Goto Storage Food", 4,  WorldTypes::NEAREST_CELL),
-	new ActionGotoStorage("Goto Storage Wood", 4,  WorldTypes::NEAREST_CELL),
-	new ActionGoto("Goto Home Location", 4, WorldTypes::CELL_NEUTRAL, WorldTypes::NEAREST_BUILD_LOC),
-	new ActionGoto("Goto Owned Home", 4, WorldTypes::CELL_HOME, WorldTypes::NEAREST_OWNED_LOC),
-	
-	// PICKUP
-	new ActionPickupResource("Pickup Food", 4, WorldTypes::CELL_FOOD),
-	new ActionPickupResource("Pickup Wood", 4, WorldTypes::CELL_WOOD),
-	
-	// DEPOSIT
-	new ActionDropResource("Deposit Food", 4, WorldTypes::CELL_FOOD),
-	new ActionDropResource("Deposit Wood", 4, WorldTypes::CELL_WOOD),
-	
-	// CONSTRUCT
-	new ActionBuildHome("Place Home", 4),
-	new ActionDestroyHome("Destroy Home", 4),
-	
-	// CONSUME
-	new ActionSleep("Sleep", 4),
-	new ActionUseCarriedResource("Eat", 4, WorldTypes::CELL_FOOD)
+	 new ActionWander("Find Wood", 2),
+	 
+	 
+	 new ActionWander("Find Home Location", 2),
+	 
+	 new ActionWander("Find Storage Food", 2),
+	 new ActionWander("Find Storage Wood", 2),
+	 
+	 // GOTO
+	 new ActionGoto("Goto Food", 4, WorldTypes::CELL_FOOD, WorldTypes::NEAREST_CELL),
+	 new ActionGoto("Goto Wood", 4, WorldTypes::CELL_WOOD, WorldTypes::NEAREST_CELL),
+	 
+	 new ActionGotoStorage("Goto Storage Food", 4,  WorldTypes::NEAREST_CELL),
+	 new ActionGotoStorage("Goto Storage Wood", 4,  WorldTypes::NEAREST_CELL),
+	 new ActionGoto("Goto Home Location", 4, WorldTypes::CELL_NEUTRAL, WorldTypes::NEAREST_BUILD_LOC),
+	 new ActionGoto("Goto Owned Home", 4, WorldTypes::CELL_HOME, WorldTypes::NEAREST_OWNED_LOC),
+	 
+	 // PICKUP
+	 new ActionPickupResource("Pickup Food", 4, WorldTypes::CELL_FOOD),
+	 new ActionPickupResource("Pickup Wood", 4, WorldTypes::CELL_WOOD),
+	 
+	 // DEPOSIT
+	 new ActionDropResource("Deposit Food", 4, WorldTypes::CELL_FOOD),
+	 new ActionDropResource("Deposit Wood", 4, WorldTypes::CELL_WOOD),
+	 
+	 // CONSTRUCT
+	 new ActionBuildHome("Place Home", 4),
+	 new ActionDestroyHome("Destroy Home", 4),
+	 
+	 // CONSUME
+	 new ActionSleep("Sleep", 4),
+	 new ActionUseCarriedResource("Eat", 4, WorldTypes::CELL_FOOD)
 	 */
 };
 
@@ -64,7 +77,7 @@ ActionsModule::ActionsModule(){
 	// ACTIONS
 	// exploration
 	// for each in WanderActions:
-
+	
 	
 	// ---------------------------------------
 	

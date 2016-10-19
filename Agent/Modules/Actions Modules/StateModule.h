@@ -19,7 +19,8 @@ class StateModule{
 public:
 	StateModule():
 	currentState(){
-		
+		currentState.SetCondition("athomelocation", false);
+		currentState.SetCondition("atownedhome", false);
 	}
 	
 	void UpdateState(GridAgent* agent);
