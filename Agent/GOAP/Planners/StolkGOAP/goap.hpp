@@ -3,7 +3,8 @@
 //  GPGOAP_cpp
 //
 
-// From from Abraham T. Stolk's GOAP repo: https://github.com/stolk/GPGOAP
+// from Abraham T. Stolk's excellent GOAP repo: https://github.com/stolk/GPGOAP
+// Under the Apache 2.0 license: http://www.apache.org/licenses/LICENSE-2.0
 
 #ifndef goap_hpp
 #define goap_hpp

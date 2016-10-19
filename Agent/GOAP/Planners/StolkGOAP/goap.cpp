@@ -3,6 +3,8 @@
 //  GPGOAP_cpp
 //
 
+// from Abraham T. Stolk's excellent GOAP repo: https://github.com/stolk/GPGOAP
+// Under the Apache 2.0 license: http://www.apache.org/licenses/LICENSE-2.0
 
 #include "goap.hpp"
 #include "astar.hpp"
