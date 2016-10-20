@@ -29,6 +29,7 @@ class Goal{
 	float relevance;
 	float changeRate;
 	
+
 	
 public:
 	

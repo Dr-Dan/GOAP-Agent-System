@@ -31,10 +31,11 @@ public:
 	void SetupResourceRandom(ItemType itemType);
 
 	void ChangeResourceAmt(int amt);
+	void SetResourceAmt(int amt);
 	
 	ItemType GetType() const;
 	
-	float GetAmtResource() const;
+	int GetAmtResource() const;
 
 };
 #endif /* defined(__agentGridProto__Resource__) */

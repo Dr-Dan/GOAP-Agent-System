@@ -57,8 +57,8 @@ public:
 	
 	vector<Resource> GetResources() const;
 	
-	float GetAmtResource(WorldTypes::ItemType type) const;
-	float GetAmtResourceTotal() const;
+	int GetAmtResource(WorldTypes::ItemType type) const;
+	int GetAmtResourceTotal() const;
 	
 	
 	// -------------------------------------------------------------------------------
@@ -71,23 +71,17 @@ public:
 	
 	// sum all stored resources and compare against max capacity
 	bool IsFull();
+	bool ContainsAnyResource();
 	
 	bool CanAddResources(ItemType resType, int amt);
 	
-	bool HasResources(ItemType resType, int amt);
+	bool HasResourceAmt(ItemType resType, int amt);
 	bool HasNoResource(vector<Resource>& res, WorldTypes::ItemType type) const;
 	
 	bool HasResource() const;
 	bool HasResourceNext() const;
 
 	// -----------------------------------------------------------------
-	// Resource Changers
-	
-	bool AddResource(ItemType resType, int amt);
-	
-	// this returns the amount that is removed if possible
-	int RemoveResources(ItemType resType, int amt);
-	
 
 };
 #endif /* ResourceHandler_hpp */

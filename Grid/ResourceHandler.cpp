@@ -22,17 +22,30 @@ void ResourceHandler::SetupType(ItemType type){
 }
 
 void ResourceHandler::AddResourceType(ItemType type, int amtRes){
-	resourcesNext.push_back(Resource());
-	resourcesNext.back().SetupResource(type, amtRes);
+	int resExistsAt = -1;
+	for(int i = 0; i < resourcesNext.size(); ++i){
+		if(resourcesNext[i].GetType() == type){
+			resExistsAt = i;
+			break;
+		}
+	}
+	
+	if(resExistsAt != -1){
+		resourcesNext[resExistsAt].SetResourceAmt(amtRes);
+	} else{
+		resourcesNext.push_back(Resource());
+		resourcesNext.back().SetupResource(type, amtRes);
+	}
 }
 
 void ResourceHandler::ClearResources(){
 	resourcesNext.clear();
+	resourcesCur.clear();
 }
 
 void ResourceHandler::SwapStates(){
-		resourcesCur = resourcesNext;
-	}
+	resourcesCur = resourcesNext;
+}
 
 
 // these both needn't exist?
@@ -64,7 +77,7 @@ vector<Resource> ResourceHandler:: GetResources() const{
 	return resourcesNext;
 }
 
-float ResourceHandler::GetAmtResource(WorldTypes::ItemType type) const{
+int ResourceHandler::GetAmtResource(WorldTypes::ItemType type) const{
 	for(int i = 0; i < resourcesNext.size(); i++){
 		if(resourcesNext[i].GetType() == type){
 			return resourcesNext[i].GetAmtResource();
@@ -73,10 +86,10 @@ float ResourceHandler::GetAmtResource(WorldTypes::ItemType type) const{
 	return 0;
 }
 
-float ResourceHandler::GetAmtResourceTotal() const{
-	float totalResources = 0;
+int ResourceHandler::GetAmtResourceTotal() const{
+	int totalResources = 0;
 	for(int i = 0; i < resourcesNext.size(); i++){
-			totalResources += resourcesNext[i].GetAmtResource();
+		totalResources += resourcesNext[i].GetAmtResource();
 	}
 	
 	return totalResources;
@@ -103,27 +116,36 @@ bool ResourceHandler::CellContainsResource(ItemType resType){
 
 
 bool ResourceHandler::IsFull(){
-	int resTotal = 0;
-	for(Resource res: resourcesNext){
-		resTotal += res.GetAmtResource();
-	}
-	if(resTotal >= GridValues::MAX_RESOURCES){
+	if(GetAmtResourceTotal() >= GridValues::MAX_RESOURCES){
 		return true;
+	}
+	return false;
+}
+
+bool ResourceHandler::ContainsAnyResource(){
+	if(resourcesNext.empty()){
+		return false;
+	}
+	
+	for(Resource res: resourcesNext){
+		if(res.GetAmtResource() > 0){
+			return true;
+		}
 	}
 	return false;
 }
 
 
 bool ResourceHandler::CanAddResources(ItemType resType, int amt){
-	if(GetAmtResource(resType) + amt <= GridValues::MAX_RESOURCES){
+	if(GetAmtResourceTotal()   + amt <= GridValues::MAX_RESOURCES){
 		return true;
 	}
 	//	cout<<"Cell: "<<GetId()<<" Is full of type "<<resType<<endl;
 	return false;
 }
 
-bool ResourceHandler::HasResources(ItemType resType, int amt){
-	if(CellContainsResource(resType) && amt <= GetAmtResource(resType)){
+bool ResourceHandler::HasResourceAmt(ItemType resType, int amt){
+	if(CellContainsResource(resType) && GetAmtResource(resType) >= amt){
 		return true;
 	}
 	//	cout<<"Cell: "<<GetId()<<" Has no resources of type "<<resType<<endl;
@@ -152,14 +174,4 @@ bool ResourceHandler::HasNoResource(vector<Resource>& res, WorldTypes::ItemType 
 	return false;
 }
 
-// -----------------------------------------------------------------
-// Resource Changers
-
-bool ResourceHandler::AddResource(ItemType resType, int amt) {
-	return ResourceUtility::AddResource(GetResource(resType), amt);
-}
-
-int ResourceHandler::RemoveResources(ItemType resType, int amt){
-	return ResourceUtility::RemoveResources(GetResource(resType), amt);
-}
 

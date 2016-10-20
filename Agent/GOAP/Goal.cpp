@@ -12,7 +12,7 @@
 
 Goal::Goal():
 relevance(1),
-//name("Neutral Goal"),
+name("Neutral Goal"),
 changeRate(1)
 {
 		LoadConditions(name);

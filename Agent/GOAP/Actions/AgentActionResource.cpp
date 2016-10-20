@@ -20,8 +20,11 @@ void ActionPickupResource::Execute(GridAgent* agent){
 	int pickupAmt = agent->attributes.GetResourcePickupAmt(resType);
 	GridCell* currentCell = agent->sensorModule.GetCurrentCell(); // get agent's cell
 	
+	// int amtRemoved = Utility::RemoveFromCell(...)
+//	agent->attributes.PickupResource()
 	//	    if(currentCell->HasResources(resType, pickupAmt)){
-	agent->attributes.PickupResource(resType, pickupAmt, currentCell);
+//	agent->attributes.PickupResource(resType, pickupAmt, currentCell);
+	ResourceUtility::PickupResource(resType, pickupAmt, &agent->attributes, currentCell);
 	//	    }
 }
 
@@ -71,7 +74,7 @@ void ActionDropResource::Execute(GridAgent* agent){
 	int dropAmt = agent->attributes.GetResourceDropAmt(resType);
 	
 	// this is maybe a little dodgy?? And not consistent with other stuff
-	agent->attributes.DepositResource(resType, dropAmt, agent->sensorModule.GetCurrentCell());
+	ResourceUtility::DepositResource(resType, dropAmt, &agent->attributes, agent->sensorModule.GetCurrentCell());
 }
 
 bool ActionDropResource::TaskComplete(GridAgent* agent){

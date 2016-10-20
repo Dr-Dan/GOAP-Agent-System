@@ -68,6 +68,13 @@ int AgentAttributes::GetResourceDropAmt(ItemType resType){
 	return 0;
 }
 
+bool AgentAttributes::CanPickupResource(ItemType resType, float amt){
+	if(mapResources[resType].amtCarried + amt <= mapResources[resType].maxCarried){
+		return true;
+	}
+	return false;
+}
+
 bool AgentAttributes::PickupResource(ItemType resName, int amt){
 	if(CanPickupResource(resName, amt)){
 		mapResources[resName].amtCarried += amt;
@@ -77,49 +84,46 @@ bool AgentAttributes::PickupResource(ItemType resName, int amt){
 	return false;
 }
 
-bool AgentAttributes::CanPickupResource(ItemType resType, float amt){
-	if(mapResources[resType].amtCarried + amt <= mapResources[resType].maxCarried){
-		return true;
-	}
-	return false;
+//bool AgentAttributes::PickupResource(ItemType resType, float amt, GridCell* targetCell){
+//	if(CanPickupResource(resType, amt)){
+//		mapResources[resType].amtCarried += targetCell->GetResourceHandler()->RemoveResources(resType, amt);
+//		return true;
+//	}
+//	cout<<"I can't take more resources"<<endl;
+//	return false;
+//}
+
+//bool AgentAttributes::DepositResource(ItemType resType, float amt, GridCell* targetCell){
+//	if(CanUseResource(resType, amt)){
+//		bool can_deposit = ResourceUtility::AddResource(targetCell->GetResourceHandler()->GetResource(resType), amt);
+////		bool can_deposit = targetCellOther->AddResource(resType, amt);
+//		if(can_deposit){
+//			mapResources[resType].amtCarried -= amt;
+//			return true;
+//		} else {
+//			cout<<"Cannot deposit type: "<< resType<<endl;
+//		}
+//		
+//	} else{
+//		cout<<"I don't have the resources"<<endl;
+//	}
+//	
+//	return false;
+//}
+
+bool AgentAttributes::ChangeResourceAmount(ItemType resType, float amt){
+	mapResources[resType].amtCarried += amt;
 }
 
-bool AgentAttributes::PickupResource(ItemType resType, float amt, GridCell* targetCell){
-	if(CanPickupResource(resType, amt)){
-		mapResources[resType].amtCarried += targetCell->GetResourceHandler()->RemoveResources(resType, amt);
-		return true;
-	}
-	cout<<"I can't take more resources"<<endl;
-	return false;
-}
-
-bool AgentAttributes::DepositResource(ItemType resType, float amt, GridCell* targetCell){
-	if(CanUseResource(resType, amt)){
-		bool can_deposit = ResourceUtility::AddResource(targetCell->GetResourceHandler()->GetResource(resType), amt);
-//		bool can_deposit = targetCellOther->AddResource(resType, amt);
-		if(can_deposit){
-			mapResources[resType].amtCarried -= amt;
-			return true;
-		} else {
-			cout<<"Cannot deposit type: "<< resType<<endl;
-		}
-		
-	} else{
-		cout<<"I don't have the resources"<<endl;
-	}
-	
-	return false;
-}
-
-bool AgentAttributes::GiveResource(ItemType resType, float amt, GridAgent* agentOther){
-	if(CanUseResource(resType, amt)){
-		if(agentOther->attributes.PickupResource(resType, amt)){
-			return true;
-		}
-	}
-	cout<<"I don't have the resources"<<endl;
-	return false;
-}
+//bool AgentAttributes::GiveResource(ItemType resType, float amt, GridAgent* agentOther){
+//	if(CanUseResource(resType, amt)){
+//		if(agentOther->attributes.PickupResource(resType, amt)){
+//			return true;
+//		}
+//	}
+//	cout<<"I don't have the resources"<<endl;
+//	return false;
+//}
 
 bool AgentAttributes::CanUseResource(ItemType resType, float amt){
 	if(amt <= mapResources[resType].amtCarried &&

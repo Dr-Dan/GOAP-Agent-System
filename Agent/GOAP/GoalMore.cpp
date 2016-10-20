@@ -8,56 +8,7 @@
 
 #include "GoalMore.hpp"
 #include "GridAgent.h"
-/*
-// GOAL EXPLORE
-void GoalKnowsOfFood::UpdateValidity(GridAgent& agent){
-	SetValidity(true);
-}
 
-void GoalKnowsOfFood::UpdateRelevance(GridAgent& agent){
-//	if(agent.attributes.NeedIsUrgent(CELL_FOOD)){
-//		ChangeRelevance(1);
-//	}
-//	
-//	if(agent.attributes.NeedIsSatisfied(CELL_FOOD)){
-//		SetRelevance(0);
-//	}
-}
-
-// GOAL B
-void GoalBeAtFood::UpdateValidity(GridAgent& agent){
-	bool knowsFood = agent.memoryModule.KnowsOfCellType(CELL_FOOD);
-	SetValidity(knowsFood);
-}
-
-void GoalBeAtFood::UpdateRelevance(GridAgent& agent){
-
-}
-
-void GoalBeFull::UpdateValidity(GridAgent& agent){
-}
-
-void GoalBeFull::UpdateRelevance(GridAgent& agent){
-		if(agent.attributes.NeedIsUrgent(CELL_FOOD)){
-			ChangeRelevance(1);
-		}
-	
-		if(agent.attributes.NeedIsSatisfied(CELL_FOOD)){
-			SetRelevance(0);
-		}
-}
-
-void GoalRelax::UpdateRelevance(GridAgent& agent){
-	if(!agent.attributes.NeedIsUrgentAny()){
-		ChangeRelevance(1);
-	} else {
-		SetRelevance(0);
-	}
-
-}
-*/
-
-/*
 // GOAL EXPLORE
 void GoalExplore::UpdateValidity(GridAgent& agent){
 	// perhaps replace with ...CanMove()
@@ -72,37 +23,77 @@ void GoalExplore::UpdateRelevance(GridAgent& agent){
 	}
 }
 
-// GOAL EAT
-void GoalEat::UpdateValidity(GridAgent& agent){
-	SetValidity(agent.memoryModule.KnowsOfCellType(CELL_FOOD) ||
-				agent.attributes.HasResource(CELL_FOOD));
+
+void GoalSatisfyNeed::UpdateValidity(GridAgent &agent){
+	SetValidity(agent.memoryModule.KnowsOfCellType(resType));
 }
 
-void GoalEat::UpdateRelevance(GridAgent& agent){
-	if(agent.attributes.NeedIsUrgent(CELL_FOOD)){
-		ChangeRelevance(1);
-	}
+void GoalSatisfyNeed::UpdateRelevance(GridAgent &agent){
 	
-	if(agent.attributes.NeedIsSatisfied(CELL_FOOD)){
-		SetRelevance(0);
+	if(resType == CELL_HOME){
+		if(agent.attributes.NeedIsUrgent(CELL_HOME) && agent.memoryModule.HasHome()){
+			ChangeRelevance(1);
+		}
+		if(agent.attributes.NeedIsSatisfied(CELL_HOME)){
+			SetRelevance(0);
+		}
+	} else {
+		if(agent.attributes.NeedIsUrgent(resType)){
+			ChangeRelevance(1);
+		}
+		
+		if(agent.attributes.NeedIsSatisfied(resType)){
+			SetRelevance(0);
+		}
 	}
 }
 
 // GOAL BUILD HOME
-void GoalBuildHome::UpdateValidity(GridAgent& agent){
-	SetValidity(!agent.memoryModule.HasHome());
+void GoalBuild::UpdateValidity(GridAgent& agent){
+	if(resType == CELL_HOME){
+		SetValidity(!agent.memoryModule.HasHome());
+	}
 }
 
-void GoalBuildHome::UpdateRelevance(GridAgent& agent){
-
+void GoalBuild::UpdateRelevance(GridAgent& agent){
+	if(resType == CELL_HOME){
+		if(agent.attributes.NeedIsUrgent(CELL_HOME)
+		   /* || !agent.memoryModule.HasHome()*/){
+			SetRelevance(30);
+		} else{
+			SetRelevance(0);
+		}
+	}
 }
 
-// GOAL SLEEP
-void GoalSleep::UpdateValidity(GridAgent& agent){
-	SetValidity(agent.memoryModule.HasHome());
+// GOAL DESTROY HOME
+void GoalDestroyBuilding::UpdateValidity(GridAgent& agent){
+	if(resType == CELL_HOME){
+		SetValidity(agent.memoryModule.ShouldDestroyHome());
+	}
 }
 
-void GoalSleep::UpdateRelevance(GridAgent& agent){
-
+void GoalDestroyBuilding::UpdateRelevance(GridAgent& agent){
+	if(resType == CELL_HOME){
+		if(agent.memoryModule.HasHome() && agent.memoryModule.ShouldDestroyHome()){
+			ChangeRelevance(1);
+		} else{
+			SetRelevance(0);
+		}
+	}
 }
-*/
+
+// GOAL STORE RESOURCE
+void GoalStoreResource::UpdateValidity(GridAgent& agent){
+	SetValidity(agent.memoryModule.KnowsOfCellType(CELL_STORAGE) &&
+				agent.memoryModule.KnowsOfUnfilledStorage());
+}
+
+void GoalStoreResource::UpdateRelevance(GridAgent& agent){
+	// food storage
+	if(agent.memoryModule.KnowsOfCellType(CELL_STORAGE)){
+		ChangeRelevance(10);
+	} else{
+		SetRelevance(0);
+	}
+}

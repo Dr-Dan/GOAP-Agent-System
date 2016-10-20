@@ -16,12 +16,14 @@ deque<TimedAction*> ActionsModule::possibleActions = {
 	new ActionWander("findwood"),
 	new ActionWander("findhome"),
 	new ActionWander("findhomelocation"),
+	new ActionWander("findstoragefood"),
 	
 	new ActionGoto("gotofood", WorldTypes::CELL_FOOD, WorldTypes::NEAREST_CELL),
 	new ActionGoto("gotowood", WorldTypes::CELL_WOOD, WorldTypes::NEAREST_CELL),
 		 new ActionGoto("gotohomelocation", WorldTypes::CELL_NEUTRAL, WorldTypes::NEAREST_BUILD_LOC),
 	new ActionGoto("gotoownedhome", WorldTypes::CELL_HOME, WorldTypes::NEAREST_OWNED_LOC),
-	
+	new ActionGotoStorage("gotostoragefood", WorldTypes::NEAREST_CELL),
+
 	
 	new ActionPickupResource("pickupfood", WorldTypes::CELL_FOOD),
 	new ActionPickupResource("pickupwood", WorldTypes::CELL_WOOD),
@@ -29,11 +31,14 @@ deque<TimedAction*> ActionsModule::possibleActions = {
 	new ActionUseCarriedResource("eatfood", WorldTypes::CELL_FOOD),
 	new ActionSleep("sleep"),
 
+	new ActionDropResource("depositfood", WorldTypes::CELL_FOOD),
+
 	new ActionBuildHome("placehome"),
+	new ActionDestroyHome("destroyhome"),
+
 	/*
 	 new ActionWander("Find Wood", 2),
-	 
-	 
+
 	 new ActionWander("Find Home Location", 2),
 	 
 	 new ActionWander("Find Storage Food", 2),

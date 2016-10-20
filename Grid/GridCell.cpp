@@ -91,17 +91,17 @@ void GridCell::SetupType(ItemType type){
 void GridCell::UpdateOverlay(WorldTypes::OverlayType overlayType){
 	//	if(IsChanged()){
 	
-	if(!resHandler.HasResource()){
-		if(cellType == CELL_HOME){
-			cellDisplay.SetCellType(CELL_HOME);
-		} else{
-			cellDisplay.SetCellType(CELL_NEUTRAL);
-		}
-	} else if(cellType == CELL_STORAGE){
-		cellDisplay.SetCellType(CELL_STORAGE);
-	} else{
+//	if(!resHandler.ContainsAnyResource()){
+//		if(cellType == CELL_HOME){
+//			cellDisplay.SetCellType(CELL_HOME);
+//		} else{
+//			cellDisplay.SetCellType(CELL_NEUTRAL);
+//		}
+//	} else if(cellType == CELL_STORAGE){
+//		cellDisplay.SetCellType(CELL_STORAGE);
+//	} else{
 		cellDisplay.SetCellType(cellType);
-	}
+//	}
 	
 	cellDisplay.UpdateOverlay(overlayType, mapRatings[CELL_FOOD], mapRatings[CELL_WOOD], mapRatings[CELL_HOME], combinedRating);
 }
@@ -109,7 +109,7 @@ void GridCell::UpdateOverlay(WorldTypes::OverlayType overlayType){
 void GridCell::Update(){
 	bool hasRes = false;
 	
-	if(resHandler.HasResourceNext()){
+	if(resHandler.ContainsAnyResource()){
 		hasRes = true;
 	}
 	
@@ -118,8 +118,6 @@ void GridCell::Update(){
 	if(!hasRes &&
 	   (cellType != CELL_HOME && cellType != CELL_STORAGE)){
 		   SetupType(CELL_NEUTRAL);
-//		   isResourceNext = false;
-//		   SetChanged(true);
 	   }
 }
 

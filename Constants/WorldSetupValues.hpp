@@ -12,6 +12,6 @@
 #include <stdio.h>
 class WorldSetupValues{
 public:
-	static const int NUM_AGENTS{10};
+	static const int NUM_AGENTS{5};
 };
 #endif /* WorldSetupValues_hpp */

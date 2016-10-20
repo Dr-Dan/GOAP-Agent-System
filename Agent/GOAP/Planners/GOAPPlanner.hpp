@@ -39,7 +39,7 @@ public:
 	// or access function to interface with actionplanner
 	void state_conditions_to_ap(WorldState state, worldstate_t* fr, actionplanner_t* ap);
 	
-	Goal GetTargetGoal(Goal primaryGoal, WorldState* state, vector<Goal*>& allGoals);
+//	Goal GetTargetGoal(Goal primaryGoal, WorldState* state, vector<Goal*>& allGoals);
 	
 };
 #endif /* GOAPPlanner_hpp */

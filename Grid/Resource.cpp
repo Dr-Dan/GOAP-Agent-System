@@ -35,11 +35,14 @@ void Resource::ChangeResourceAmt(int amt){
 	amtRes += amt;
 }
 
+void Resource::SetResourceAmt(int amt){
+	amtRes = amt;
+}
 
 ItemType Resource::GetType() const{
 	return itemType;
 }
 
-float Resource::GetAmtResource() const{
+int Resource::GetAmtResource() const{
 	return amtRes;
 }

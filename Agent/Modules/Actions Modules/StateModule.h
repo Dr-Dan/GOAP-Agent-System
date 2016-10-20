@@ -21,6 +21,7 @@ public:
 	currentState(){
 		currentState.SetCondition("athomelocation", false);
 		currentState.SetCondition("atownedhome", false);
+		currentState.SetCondition("homedestroyed", false);
 	}
 	
 	void UpdateState(GridAgent* agent);
